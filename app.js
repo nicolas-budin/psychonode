@@ -9,6 +9,7 @@ var loginRouter = require('./routes/login');
 var usersRouter = require('./routes/users');
 var dispatchRouter = require('./routes/dispatch');
 
+var orm = require('./services/OrmService');
 
 var app = express();
 

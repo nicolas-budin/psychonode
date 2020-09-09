@@ -1,33 +1,23 @@
 var express = require('express');
 var router = express.Router();
 
-// db
-const sqlite3 = require('sqlite3').verbose();
+var {findAllUsers} = require('./../services/OrmService')
 
-/* GET home page. */
+
+/**
+ * login form: list of user ids.
+ */
 router.get('/', function(req, res, next) {
 
-  db = new sqlite3.Database('./sample.db');
+  findAllUsers((users) => {
+        res.render('login', {users: users});
+      }, error => {
 
-  let sql = `SELECT * FROM user ORDER BY id`;
-
-  db.all(sql, [], (err, rows) => {
-
-    if (err) {
-      throw err;
-    }
-
-    rows.forEach((row) => {
-      console.log(row.id);
-    });
-
-    res.render('login', {users: rows});
-
-    // close the database connection
-    db.close();
-
-  });
-
+        let msg = 'Unable to get user list from database';
+        console.error(msg, error);
+        res.render('error', {message: msg, error: error});
+      }
+  );
 
 });
 
