@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="card">
+    <div class="card-header">
+        User Data
+    </div>
+    <div class="card-body">
+        <form action="/dispatch" method="post">
+
+            <div class="form-group">
+                <label for="login" class="col-form-label">Login</label>
+                <input type="text" readonly class="form-control" id="login" name="login" value="<%= user.id %>">
+            </div>
+
+            <div class="form-group">
+                <label for="age" class="col-form-label">Age</label>
+                <input type="text" class="form-control" id="age" name="age" value="<%= user.age %>">
+            </div>
+
+            <div class="form-group">
+                <label for="sex" class="col-form-label">Sex</label>
+                <input type="text" class="form-control" id="sex" name="sex" value="<%= user.sex %>">
+            </div>
+
+            <div class="form-group">
+                <label for="level" class="col-form-label">Level</label>
+                <input type="text" class="form-control" id="level" name="level" value="<%= user.level %>">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>
