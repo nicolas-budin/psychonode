@@ -19,8 +19,6 @@
         </div>
         <select id="login" name="login" class="custom-select" id="inputGroupSelect01">
 
-            <option selected>Choose...</option>
-
             <% users.forEach(function(entry) { %>
                 <option name="<%= entry.id %>" value="<%= entry.id %>"><%= entry.id %></option>
             <% }) %>
