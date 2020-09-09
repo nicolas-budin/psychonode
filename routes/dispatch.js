@@ -20,7 +20,7 @@ router.post('/', function(req, res, next) {
     } else {
 
       // form is not correctly filled
-      if (req.body.age == 0 || req.body.level == '' || req.body.sex == '') {
+      if (req.body.age == '' || req.body.level == '' || req.body.sex == '') {
         res.render('user', {user: user});
 
       // save form
