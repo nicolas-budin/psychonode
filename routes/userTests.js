@@ -9,7 +9,7 @@ var {findTestsByUserId} = require('./../services/OrmService')
 router.get('/:id', function (req, res, next) {
 
     findTestsByUserId(req.params.id).then(tests => {
-        res.render('tests', {tests: tests});
+        res.render('tests', {userId: req.params.id, tests: tests});
     }).catch(error => {
         let msg = 'Unable to get user tests';
         console.error(msg, error);
