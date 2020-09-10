@@ -11,27 +11,23 @@
 <body>
 <div class="card">
     <div class="card-header">
-        Users
+        User Tests
     </div>
     <div class="card-body">
         <table class="table table-striped">
             <thead>
             <tr>
                 <th>id</th>
-                <th>age</th>
-                <th>level</th>
-                <th>sex</th>
-                <th>tests</th>
+                <th>first Step</th>
+                <th>Completed</th>
             </tr>
             </thead>
             <tbody>
-            <% users.forEach(function(entry) { %>
+            <% tests.forEach(function(entry) { %>
                 <tr>
-                    <td><a href="user/<%=entry.id%>"><%= entry.id %></a></td>
-                    <td><%= entry.age %></td>
-                    <td><%= entry.level %></td>
-                    <td><%= entry.sex %></td>
-                    <td><a href="user_tests/<%=entry.id%>">tests</a></td>
+                    <td><%= entry.id %></td>
+                    <td><%= entry.is_first_step ? 'TRUE' : 'FALSE'%></td>
+                    <td><%= entry.is_completed ? 'TRUE' : 'FALSE' %></td>
                 </tr>
             <% }) %>
             </tbody>

@@ -77,12 +77,80 @@ TestDefinition.init({
 
 
 
+class Test extends Model {
+}
+
+Test.init({
+
+    id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+
+    is_first_step: {
+        type: DataTypes.BOOLEAN
+    },
+    is_completed: {
+        type: DataTypes.BOOLEAN
+    }
+}, {
+
+    sequelize,
+    modelName: 'test',
+    freezeTableName: true,
+    timestamps: false
+});
+
+
+class TestElement extends Model {
+}
+
+TestElement.init({
+
+    id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true
+    },
+    test_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    test_definition_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    is_success: {
+        type: DataTypes.BOOLEAN
+    },
+    is_redo: {
+        type: DataTypes.BOOLEAN
+    },
+    is_redisplay: {
+        type: DataTypes.BOOLEAN
+    }
+}, {
+
+    sequelize,
+    modelName: 'test_element',
+    freezeTableName: true,
+    timestamps: false
+});
+
+
 //
 // methods
 //
 
 const findAllUsers = (success, error) => {
-    User.findAll().then(success).catch(error);
+    User.findAll({
+        order: [['id','ASC']]
+    }).then(success).catch(error);
 
 }
 
@@ -94,8 +162,33 @@ const findUserById = function (id) {
 
 
 const findAllTestDefinitions = (success, error) => {
-    TestDefinition.findAll().then(success).catch(error);
+    TestDefinition.findAll({
+        order: [['id','ASC']]
+    }).then(success).catch(error);
 
+}
+
+
+const findTestsByUserId = function (userId) {
+    return new Promise((success, error) => {
+        Test.findAll({
+            where: {
+                user_id: userId
+            },
+            order: [['id','DESC']]
+        }).then(success).catch(error);
+    });
+}
+
+const findTestElementByTestId = function (testId) {
+    return new Promise((success, error) => {
+        TestElement.findAll({
+            where: {
+                test_id: testId
+            },
+            order: [['id','DESC']]
+        }).then(success).catch(error);
+    });
 }
 
 
@@ -107,3 +200,6 @@ exports.findAllUsers = findAllUsers;
 exports.findUserById = findUserById;
 
 exports.findAllTestDefinitions = findAllTestDefinitions;
+
+exports.findTestsByUserId = findTestsByUserId;
+exports.findTestElementByTestId = findTestElementByTestId;
