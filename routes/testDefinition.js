@@ -1,18 +1,18 @@
 var express = require('express');
 var router = express.Router();
 
-var {findTestDefinitionById} = require('./../services/OrmService')
+var {findAllTestDefinitions} = require('./../services/OrmService')
 
 /**
  * shows entries in test definition
  */
-router.get('/:id', function (req, res, next) {
+router.get('/', function (req, res, next) {
 
-    findTestDefinitionById((req.params.id)).then (tests => {
-            res.render('testDefinition', {tests: tests});
-        }).catch(error => {
+    findAllTestDefinitions((testDefinitions) => {
+            res.render('testDefinition', {testDefinitions: testDefinitions});
+        }, error => {
 
-            let msg = 'Unable to get tests from database';
+        let msg = 'Unable to get tests from database';
             console.error(msg, error);
             res.render('error', {message: msg, error: error});
         }

@@ -58,10 +58,6 @@ TestDefinition.init({
         allowNull: false,
         primaryKey: true
     },
-    test_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
     question: {
         type: DataTypes.STRING,
         allowNull: false
@@ -97,18 +93,10 @@ const findUserById = function (id) {
 }
 
 
-const findTestDefinitionById = function (testId) {
-    return new Promise((success, error) => {
-        TestDefinition.findAll({
-            where: {
-                test_id: testId
-            }
-        }).then(success).catch(error);
-    });
+const findAllTestDefinitions = (success, error) => {
+    TestDefinition.findAll().then(success).catch(error);
+
 }
-
-
-findTestDefinitionById(1).then(defs => console.log(defs));
 
 
 //
@@ -118,4 +106,4 @@ exports.sequelize = sequelize;
 exports.findAllUsers = findAllUsers;
 exports.findUserById = findUserById;
 
-exports.findTestDefinitionById = findTestDefinitionById;
+exports.findAllTestDefinitions = findAllTestDefinitions;
