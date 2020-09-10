@@ -11,6 +11,7 @@ var userRouter = require('./routes/user');
 var dispatchRouter = require('./routes/dispatch');
 var testDefinitionRouter = require('./routes/testDefinition');
 var userTestsRouter = require('./routes/userTests');
+var testRouter = require('./routes/test');
 
 var orm = require('./services/OrmService');
 
@@ -33,6 +34,7 @@ app.use('/user', userRouter);
 app.use('/dispatch', dispatchRouter);
 app.use('/test_definition', testDefinitionRouter);
 app.use('/user_tests', userTestsRouter);
+app.use('/test', testRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

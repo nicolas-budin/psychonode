@@ -180,7 +180,7 @@ const findTestsByUserId = function (userId) {
     });
 }
 
-const findTestElementByTestId = function (testId) {
+const findTestElementsByTestId = function (testId) {
     return new Promise((success, error) => {
         TestElement.findAll({
             where: {
@@ -202,4 +202,4 @@ exports.findUserById = findUserById;
 exports.findAllTestDefinitions = findAllTestDefinitions;
 
 exports.findTestsByUserId = findTestsByUserId;
-exports.findTestElementByTestId = findTestElementByTestId;
+exports.findTestElementsByTestId = findTestElementsByTestId;
