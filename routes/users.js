@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var {findAllUsers, findUserById, findTestsByUserId} = require('./../services/OrmService')
+var {findAllUsers, findUserById, findTestsByUserId, findTestElementsByTestId} = require('./../services/OrmService')
 
 /**
  * - shows list of all users
@@ -35,6 +35,16 @@ router.get('/', function (req, res, next) {
         res.render('tests', {userId: req.params.id, tests: tests});
     }).catch(error => {
         let msg = 'Unable to get user tests';
+        console.error(msg, error);
+        res.render('error', {message: msg, error: error});
+    });
+
+}).get('/:userId/tests/:id', function (req, res, next) {
+
+    findTestElementsByTestId(req.params.id).then(testElements => {
+        res.render('test', {testElements: testElements});
+    }).catch(error => {
+        let msg = 'Unable to get test elements';
         console.error(msg, error);
         res.render('error', {message: msg, error: error});
     });
