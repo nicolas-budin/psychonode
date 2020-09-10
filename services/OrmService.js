@@ -30,21 +30,55 @@ User.init({
         primaryKey: true
     },
     age: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
     },
     sex: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING
     },
     level: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING
     }
 }, {
 
-    sequelize, // We need to pass the connection instance
-    modelName: 'user', // We need to choose the model name,
+    sequelize, // connection instance
+    modelName: 'user', // model name,
     freezeTableName: true,
     timestamps: false
 });
+
+
+
+class TestDefinition extends Model {
+}
+
+TestDefinition.init({
+
+    id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true
+    },
+    test_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    question: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    answer: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+}, {
+
+    sequelize,
+    modelName: 'test_definition',
+    freezeTableName: true,
+    timestamps: false
+});
+
+
 
 
 //
@@ -56,12 +90,25 @@ const findAllUsers = (success, error) => {
 
 }
 
-
 const findUserById = function (id) {
     return new Promise((success, error) => {
         User.findByPk(id).then(success).catch(error);
     });
 }
+
+
+const findTestDefinitionById = function (testId) {
+    return new Promise((success, error) => {
+        TestDefinition.findAll({
+            where: {
+                test_id: testId
+            }
+        }).then(success).catch(error);
+    });
+}
+
+
+findTestDefinitionById(1).then(defs => console.log(defs));
 
 
 //
@@ -70,3 +117,5 @@ const findUserById = function (id) {
 exports.sequelize = sequelize;
 exports.findAllUsers = findAllUsers;
 exports.findUserById = findUserById;
+
+exports.findTestDefinitionById = findTestDefinitionById;
