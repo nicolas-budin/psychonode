@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
+const {QueryTypes, Sequelize, DataTypes, Model} = require('sequelize');
 
 
 // creates rdbms access
@@ -37,6 +37,12 @@ User.init({
     },
     level: {
         type: DataTypes.STRING
+    },
+    createdAt: {
+        type: DataTypes.DATE
+    },
+    updatedAt: {
+        type: DataTypes.DATE
     }
 }, {
 
@@ -45,7 +51,6 @@ User.init({
     freezeTableName: true,
     timestamps: false
 });
-
 
 
 class TestDefinition extends Model {
@@ -65,6 +70,12 @@ TestDefinition.init({
     answer: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    createdAt: {
+        type: DataTypes.DATE
+    },
+    updatedAt: {
+        type: DataTypes.DATE
     }
 }, {
 
@@ -73,8 +84,6 @@ TestDefinition.init({
     freezeTableName: true,
     timestamps: false
 });
-
-
 
 
 class Test extends Model {
@@ -88,7 +97,7 @@ Test.init({
         primaryKey: true
     },
     user_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
 
@@ -97,6 +106,15 @@ Test.init({
     },
     is_completed: {
         type: DataTypes.BOOLEAN
+    },
+    is_aborted: {
+        type: DataTypes.BOOLEAN
+    },
+    createdAt: {
+        type: DataTypes.DATE
+    },
+    updatedAt: {
+        type: DataTypes.DATE
     }
 }, {
 
@@ -133,6 +151,15 @@ TestElement.init({
     },
     is_redisplay: {
         type: DataTypes.BOOLEAN
+    },
+    user_answer: {
+        type: DataTypes.TEXT
+    },
+    createdAt: {
+        type: DataTypes.DATE
+    },
+    updatedAt: {
+        type: DataTypes.DATE
     }
 }, {
 
@@ -149,7 +176,7 @@ TestElement.init({
 
 const findAllUsers = (success, error) => {
     User.findAll({
-        order: [['id','ASC']]
+        order: [['id', 'ASC']]
     }).then(success).catch(error);
 
 }
@@ -163,7 +190,7 @@ const findUserById = function (id) {
 
 const findAllTestDefinitions = (success, error) => {
     TestDefinition.findAll({
-        order: [['id','ASC']]
+        order: [['id', 'ASC']]
     }).then(success).catch(error);
 
 }
@@ -175,7 +202,20 @@ const findTestsByUserId = function (userId) {
             where: {
                 user_id: userId
             },
-            order: [['id','DESC']]
+            order: [['id', 'DESC']]
+        }).then(success).catch(error);
+    });
+}
+
+const findAvailableTestsByUserId = function (userId) {
+    return new Promise((success, error) => {
+        Test.findAll({
+            where: {
+                user_id: userId,
+                is_aborted: false,
+                is_completed: false
+            },
+            order: [['id', 'DESC']]
         }).then(success).catch(error);
     });
 }
@@ -186,8 +226,29 @@ const findTestElementsByTestId = function (testId) {
             where: {
                 test_id: testId
             },
-            order: [['id','DESC']]
+            order: [['id', 'DESC']]
         }).then(success).catch(error);
+    });
+}
+
+
+const findAvailableTestElementsAndTemplatesByTestId = function (testId) {
+    return new Promise((success, error) => {
+        sequelize.query("select t.id, te.user_answer, td.question, td.answer\n" +
+            "from test t,\n" +
+            "     test_element te,\n" +
+            "     test_definition td\n" +
+            "where t.id = 1\n" +
+            "  and te.test_definition_id = td.id\n" +
+            "  and te.is_success = false\n" +
+            "  and te.updatedAt is NULL\n" +
+            "order by td.id asc",
+            {
+                type: QueryTypes.SELECT,
+                replacements: {testId: testId},
+                logging: console.log,
+                raw: false
+            }).then(success).catch(error);
     });
 }
 
@@ -202,4 +263,8 @@ exports.findUserById = findUserById;
 exports.findAllTestDefinitions = findAllTestDefinitions;
 
 exports.findTestsByUserId = findTestsByUserId;
+exports.findAvailableTestsByUserId = findAvailableTestsByUserId;
+
 exports.findTestElementsByTestId = findTestElementsByTestId;
+
+exports.findAvailableTestElementsAndTemplatesByTestId = findAvailableTestElementsAndTemplatesByTestId;

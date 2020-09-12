@@ -1,18 +1,22 @@
 -- enables foreign keys
-
 PRAGMA foreign_keys = ON;
 PRAGMA foreign_keys;
 
+-- clean tables
+drop table if exists test_element;
+drop table if exists test;
+drop table if exists test_definition;
+drop table if exists user;
+
 -- user
-
-drop table user;
-
 CREATE TABLE user
 (
-    id    text PRIMARY KEY,
-    age   integer,
-    sex   text,
-    level text
+    id        text PRIMARY KEY,
+    age       integer,
+    sex       text,
+    level     text,
+    createdAt date DEFAULT (datetime('now', 'localtime')),
+    updatedAt date
 );
 
 insert into user (id, age, sex, level)
@@ -26,40 +30,52 @@ select *
 from user;
 
 -- test definition
-
-drop table test_definition;
-
 create table test_definition
 (
-    id       integer PRIMARY KEY,
-    question text not null,
-    answer   text not null
+    id        integer PRIMARY KEY AUTOINCREMENT,
+    question  text not null,
+    answer    text not null,
+    createdAt date DEFAULT (datetime('now', 'localtime')),
+    updatedAt date
 );
 
-insert into test_definition (id, question, answer)
-values (1, 'poulet', 'chicken');
-insert into test_definition (id, question, answer)
-values (2, 'voiture', 'car');
-insert into test_definition (id, question, answer)
-values (3, 'avion', 'plane');
-
+insert into test_definition (question, answer)
+values ('poulet', 'chicken');
+insert into test_definition (question, answer)
+values ('voiture', 'car');
+insert into test_definition (question, answer)
+values ('avion', 'plane');
+insert into test_definition (question, answer)
+values ('pizza', 'pizza');
+insert into test_definition (question, answer)
+values ('banane', 'banana');
 
 select *
 from test_definition;
 
-drop table test;
-
+-- test
 create table test
 (
     id            integer PRIMARY KEY AUTOINCREMENT,
-    user_id       integer not null,
+    user_id       text not null,
     is_first_step boolean default true,
     is_completed  boolean default false,
+    is_aborted  boolean default false,
+    createdAt     date    DEFAULT (datetime('now', 'localtime')),
+    updatedAt     date,
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
-drop table test_element;
+insert into test (user_id)
+values ('nb');
 
+insert into test (user_id)
+values ('nc');
+
+select *
+from test;
+
+-- test element
 create table test_element
 (
     id                 integer PRIMARY KEY AUTOINCREMENT,
@@ -68,7 +84,18 @@ create table test_element
     is_success         boolean default false,
     is_redo            boolean default false,
     is_redisplay       boolean default false,
+    user_answer        text,
+    createdAt          date    DEFAULT (datetime('now', 'localtime')),
+    updatedAt          date,
     FOREIGN KEY (test_id) REFERENCES test (id),
     FOREIGN KEY (test_definition_id) REFERENCES test_definition (id)
 );
 
+insert into test_element (test_id, test_definition_id)
+values (1, 1);
+insert into test_element (test_id, test_definition_id)
+values (1, 2);
+
+
+select *
+from test_element;
