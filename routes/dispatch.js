@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var {findUserById} = require('./../services/OrmService')
+var {findTestElementById, findTestDefinitionById, findUserById} = require('./../services/OrmService')
 var {runTest} = require('./../services/appService')
 
 /**
@@ -36,8 +36,7 @@ router.post('/', function (req, res, next) {
 
                     runTest(user.id).then(test => {
                         console.info("result of run test " + test)
-                        // TODO : test page
-                        res.render('testElement', {user: user, entry : test});
+                        res.render('testElement', {user: user.id, entry : test});
 
                     }).catch(error => {
                         let msg = 'Unable to get test';
@@ -61,13 +60,68 @@ router.post('/', function (req, res, next) {
 
 }).post('/:action', function (req, res, next) {
 
-    const question = req.body.question;
-    const answer = req.body.answer;
 
-    const msg = question + ":" + answer;
+    const user = req.body.user;
 
-    console.log(msg);
-    res.render('message', {message: msg});
+    if(req.params.action === 'submit') {
+
+        let test = {
+
+            test_id: req.body.test_id,
+            test_element_id: req.body.test_element_id,
+            test_definition_id: req.body.test_definition_id,
+            question: req.body.question,
+            answer: req.body.answer,
+        }
+
+        findTestDefinitionById(test.test_definition_id).then(testDefinition => {
+
+            findTestElementById(test.test_element_id).then(testElement => {
+
+                testElement.user_answer = test.answer;
+
+                if (testDefinition.answer === test.answer) {
+                    testElement.is_success = true;
+                }
+
+                testElement.save().then(testElement => {
+
+
+                    if (testElement.is_success) {
+                        res.render('testAnswer', {user: user, entry: test});
+                    } else {
+                        res.render('testElement', {user: user, entry: test});
+                    }
+
+                }).catch(error => {
+                    res.render('error', {message: "", error: error});
+                })
+
+
+            }).catch(error => {
+                res.render('error', {message: "", error: error});
+            })
+
+        }).catch(error => {
+            res.render('error', {message: "", error: error});
+        })
+
+
+    } else {
+
+        runTest(user).then(test => {
+            console.info("result of run test " + test)
+            res.render('testElement', {user: user, entry : test});
+
+        }).catch(error => {
+            let msg = 'Unable to get test';
+            res.render('error', {message: "", error: error});
+
+        });
+
+    }
+
+
 
 });
 

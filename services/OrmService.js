@@ -48,8 +48,7 @@ User.init({
 
     sequelize, // connection instance
     modelName: 'user', // model name,
-    freezeTableName: true,
-    timestamps: false
+    freezeTableName: true
 });
 
 
@@ -81,8 +80,7 @@ TestDefinition.init({
 
     sequelize,
     modelName: 'test_definition',
-    freezeTableName: true,
-    timestamps: false
+    freezeTableName: true
 });
 
 
@@ -120,8 +118,7 @@ Test.init({
 
     sequelize,
     modelName: 'test',
-    freezeTableName: true,
-    timestamps: false
+    freezeTableName: true
 });
 
 
@@ -165,8 +162,7 @@ TestElement.init({
 
     sequelize,
     modelName: 'test_element',
-    freezeTableName: true,
-    timestamps: false
+    freezeTableName: true
 });
 
 
@@ -193,6 +189,12 @@ const findAllTestDefinitions = (success, error) => {
         order: [['id', 'ASC']]
     }).then(success).catch(error);
 
+}
+
+const findTestDefinitionById = function (id) {
+    return new Promise((success, error) => {
+        TestDefinition.findByPk(id).then(success).catch(error);
+    });
 }
 
 
@@ -255,6 +257,11 @@ const findTestElementsByTestId = function (testId) {
     });
 }
 
+const findTestElementById = function (id) {
+    return new Promise((success, error) => {
+        TestElement.findByPk(id).then(success).catch(error);
+    });
+}
 
 const createTestElement = function (testDefinitionId, testId) {
     return new Promise((success, error) => {
@@ -278,7 +285,6 @@ const findAvailableTestElementsAndTemplatesByTestId = function (testId) {
             "where t.id = :testId\n" +
             "  and te.test_definition_id = td.id\n" +
             "  and te.is_success = false\n" +
-            "  and te.updatedAt is NULL\n" +
             "order by td.id asc",
             {
                 type: QueryTypes.SELECT,
@@ -301,11 +307,13 @@ exports.findUserById = findUserById;
 
 exports.findAllTestDefinitions = findAllTestDefinitions;
 exports.findAvailableTestDefinitionsByTestId = findAvailableTestDefinitionsByTestId;
+exports.findTestDefinitionById = findTestDefinitionById;
 
 exports.findTestsByUserId = findTestsByUserId;
 exports.findAvailableTestsByUserId = findAvailableTestsByUserId;
 
 exports.findTestElementsByTestId = findTestElementsByTestId;
+exports.findTestElementById = findTestElementById;
 exports.createTestElement = createTestElement;
 
 exports.findAvailableTestElementsAndTemplatesByTestId = findAvailableTestElementsAndTemplatesByTestId;
