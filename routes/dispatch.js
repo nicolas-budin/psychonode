@@ -34,10 +34,10 @@ router.post('/', function (req, res, next) {
 
                     console.info("user " + user.id + " updated");
 
-                    runTest(user.id).then(tests => {
-                        console.info("result of run test " + tests)
+                    runTest(user.id).then(test => {
+                        console.info("result of run test " + test)
                         // TODO : test page
-                        res.render('dispatch', {user: user});
+                        res.render('testElement', {user: user, entry : test});
 
                     }).catch(error => {
                         let msg = 'Unable to get test';
@@ -58,6 +58,16 @@ router.post('/', function (req, res, next) {
         console.error(msg, error);
         res.render('error', {message: msg, error: error});
     });
+
+}).post('/:action', function (req, res, next) {
+
+    const question = req.body.question;
+    const answer = req.body.answer;
+
+    const msg = question + ":" + answer;
+
+    console.log(msg);
+    res.render('message', {message: msg});
 
 });
 

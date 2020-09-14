@@ -60,8 +60,8 @@ TestDefinition.init({
 
     id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     },
     question: {
         type: DataTypes.STRING,
@@ -93,7 +93,7 @@ Test.init({
 
     id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        autoIncrement: true,
         primaryKey: true
     },
     user_id: {
@@ -132,7 +132,7 @@ TestElement.init({
 
     id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        autoIncrement: true,
         primaryKey: true
     },
     test_id: {
@@ -196,6 +196,30 @@ const findAllTestDefinitions = (success, error) => {
 }
 
 
+const findAvailableTestDefinitionsByTestId = function (testId) {
+    return new Promise((success, error) => {
+        sequelize.query("select *\n" +
+            "from test_definition td\n" +
+            "where td.id not in (select td.id\n" +
+            "                    from test_definition td,\n" +
+            "                         test t,\n" +
+            "                         test_element te\n" +
+            "                    where t.id = :testId\n" +
+            "                      and te.test_id = t.id\n" +
+            "                      and te.test_definition_id = td.id\n" +
+            "                    order by td.id asc)",
+            {
+                replacements: {testId: testId},
+                model: TestDefinition,
+                mapToModel: true,
+                logging: console.log
+            }).then(success).catch(error);
+    });
+}
+
+
+
+
 const findTestsByUserId = function (userId) {
     return new Promise((success, error) => {
         Test.findAll({
@@ -232,13 +256,26 @@ const findTestElementsByTestId = function (testId) {
 }
 
 
+const createTestElement = function (testDefinitionId, testId) {
+    return new Promise((success, error) => {
+
+        try {
+            let  testElement =TestElement.create({test_id: testId, test_definition_id : testDefinitionId})
+            success(testElement);
+
+        } catch(exception) {
+            error(exception)
+        }
+    });
+}
+
 const findAvailableTestElementsAndTemplatesByTestId = function (testId) {
     return new Promise((success, error) => {
-        sequelize.query("select t.id, te.user_answer, td.question, td.answer\n" +
+        sequelize.query("select t.id as test_id, te.id as test_element_id, td.id as test_definition_id, te.user_answer, td.question, td.answer\n" +
             "from test t,\n" +
             "     test_element te,\n" +
             "     test_definition td\n" +
-            "where t.id = 1\n" +
+            "where t.id = :testId\n" +
             "  and te.test_definition_id = td.id\n" +
             "  and te.is_success = false\n" +
             "  and te.updatedAt is NULL\n" +
@@ -253,6 +290,8 @@ const findAvailableTestElementsAndTemplatesByTestId = function (testId) {
 }
 
 
+
+
 //
 // export
 //
@@ -261,10 +300,12 @@ exports.findAllUsers = findAllUsers;
 exports.findUserById = findUserById;
 
 exports.findAllTestDefinitions = findAllTestDefinitions;
+exports.findAvailableTestDefinitionsByTestId = findAvailableTestDefinitionsByTestId;
 
 exports.findTestsByUserId = findTestsByUserId;
 exports.findAvailableTestsByUserId = findAvailableTestsByUserId;
 
 exports.findTestElementsByTestId = findTestElementsByTestId;
+exports.createTestElement = createTestElement;
 
 exports.findAvailableTestElementsAndTemplatesByTestId = findAvailableTestElementsAndTemplatesByTestId;

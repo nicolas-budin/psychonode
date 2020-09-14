@@ -32,7 +32,7 @@ from user;
 -- test definition
 create table test_definition
 (
-    id        integer PRIMARY KEY AUTOINCREMENT,
+    id        integer PRIMARY KEY,
     question  text not null,
     answer    text not null,
     createdAt date DEFAULT (datetime('now', 'localtime')),
@@ -56,7 +56,7 @@ from test_definition;
 -- test
 create table test
 (
-    id            integer PRIMARY KEY AUTOINCREMENT,
+    id            integer PRIMARY KEY,
     user_id       text not null,
     is_first_step boolean default true,
     is_completed  boolean default false,
@@ -78,7 +78,7 @@ from test;
 -- test element
 create table test_element
 (
-    id                 integer PRIMARY KEY AUTOINCREMENT,
+    id                 integer PRIMARY KEY,
     test_id            integer not null,
     test_definition_id integer not null,
     is_success         boolean default false,
