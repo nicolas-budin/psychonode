@@ -370,6 +370,22 @@ const getTestElements = (testId, iteration, isDone, isSuccess) => {
 }
 
 
+const findTestElementsAndTemplateByTestElementId = function (testElementId) {
+    return  sequelize.query("select t.id as test_id, te.id as test_element_id, td.id as test_definition_id, te.user_answer, td.question, td.answer\n" +
+            "from test t,\n" +
+            "     test_element te,\n" +
+            "     test_definition td\n" +
+            "where te.id = :testElementId" +
+            "  and te.test_id = t.id\n" +
+            "  and te.test_definition_id = td.id",
+            {
+                type: QueryTypes.SELECT,
+                replacements: {testElementId: testElementId},
+                logging: console.log,
+                raw: false
+    });
+}
+
 const getNextTestElement = async (testId) => {
 
     try {
@@ -401,7 +417,7 @@ const getNextTestElement = async (testId) => {
 
                     console.log("creating new iteration (" + newIteration + ") with " + failedElements.length + " elements");
 
-                    for (let failedElement in failedElements) {
+                    for (let failedElement of failedElements) {
 
                         let testElement = await TestElement.create({
                             test_id: testId,
@@ -433,7 +449,7 @@ const getNextTestElement = async (testId) => {
 
             console.log("creating first test iteration for " + testDefinitions.length +" definitions");
 
-            for (let testDefinition in testDefinitions) {
+            for (let testDefinition of testDefinitions) {
 
                 let testElement = await TestElement.create({
                     test_id: testId,
@@ -447,7 +463,13 @@ const getNextTestElement = async (testId) => {
             }
         }
 
-        return returnedTestElement;
+        let testElementsAndTemplate = undefined;
+        if(returnedTestElement != undefined) {
+
+            testElementsAndTemplate = await findTestElementsAndTemplateByTestElementId(returnedTestElement.id)
+        }
+
+        return testElementsAndTemplate[0];
 
     } catch (error) {
         console.error("Failed to get user list", error);
@@ -457,11 +479,6 @@ const getNextTestElement = async (testId) => {
 }
 
 
-getNextTestElement(1).then(result => {
-    console.info(result);
-}).catch(result => {
-    console.error(result);
-});
 
 
 //
@@ -483,4 +500,8 @@ exports.findTestElementById = findTestElementById;
 exports.createTestElement = createTestElement;
 
 exports.findAvailableTestElementsAndTemplatesByTestId = findAvailableTestElementsAndTemplatesByTestId;
+
+
+
+exports.getNextTestElement = getNextTestElement;
 
