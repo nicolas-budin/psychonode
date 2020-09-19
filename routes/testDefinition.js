@@ -8,11 +8,11 @@ var {findAllTestDefinitions} = require('./../services/OrmService')
  */
 router.get('/', function (req, res, next) {
 
-    findAllTestDefinitions((testDefinitions) => {
-            res.render('testDefinition', {testDefinitions: testDefinitions});
-        }, error => {
+    findAllTestDefinitions().then(testDefinitions => {
+        res.render('testDefinition', {testDefinitions: testDefinitions});
+    }).catch(error => {
 
-        let msg = 'Unable to get tests from database';
+            let msg = 'Unable to get tests from database';
             console.error(msg, error);
             res.render('error', {message: msg, error: error});
         }

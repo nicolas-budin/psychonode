@@ -9,9 +9,10 @@ var {findAllUsers, findUserById, findTestsByUserId, findTestElementsByTestId} = 
  */
 router.get('/', function (req, res, next) {
 
-    findAllUsers((users) => {
-            res.render('users', {users: users});
-        }, error => {
+
+    findAllUsers().then(users => {
+        res.render('users', {users: users});
+    }).catch(error => {
 
             let msg = 'Unable to get user list from database';
             console.error(msg, error);

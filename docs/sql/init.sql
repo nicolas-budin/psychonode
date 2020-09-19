@@ -81,8 +81,10 @@ create table test_element
     id                 integer PRIMARY KEY,
     test_id            integer not null,
     test_definition_id integer not null,
+    iteration          integer default 0,
     is_success         boolean default false,
     is_redo            boolean default false,
+    is_done            boolean default false,
     is_redisplay       boolean default false,
     user_answer        text,
     createdAt          date    DEFAULT (datetime('now', 'localtime')),
@@ -93,9 +95,12 @@ create table test_element
 
 insert into test_element (test_id, test_definition_id)
 values (1, 1);
-insert into test_element (test_id, test_definition_id)
-values (1, 2);
 
+insert into test_element (test_id, test_definition_id, is_done, is_success)
+values (1, 2, true, false);
+
+insert into test_element (test_id, test_definition_id, is_done, is_success)
+values (1, 3, true, true);
 
 select *
 from test_element;

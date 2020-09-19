@@ -140,6 +140,13 @@ TestElement.init({
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    iteration: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    is_done: {
+        type: DataTypes.BOOLEAN
+    },
     is_success: {
         type: DataTypes.BOOLEAN
     },
@@ -170,10 +177,20 @@ TestElement.init({
 // methods
 //
 
-const findAllUsers = (success, error) => {
-    User.findAll({
-        order: [['id', 'ASC']]
-    }).then(success).catch(error);
+const findAllUsers = async () => {
+
+    try {
+
+        const users = await User.findAll({
+            order: [['id', 'ASC']]
+        });
+
+        return users;
+
+    } catch (error) {
+        console.error("Failed to get user list", error);
+        throw error;
+    }
 
 }
 
@@ -184,12 +201,22 @@ const findUserById = function (id) {
 }
 
 
-const findAllTestDefinitions = (success, error) => {
-    TestDefinition.findAll({
-        order: [['id', 'ASC']]
-    }).then(success).catch(error);
+const findAllTestDefinitions = async () => {
+
+    try {
+        const testDefinitions = await TestDefinition.findAll({
+            order: [['id', 'ASC']]
+        });
+
+        return testDefinitions;
+
+    } catch (error) {
+        console.error("Failed to get test definitions", error);
+        throw error;
+    }
 
 }
+
 
 const findTestDefinitionById = function (id) {
     return new Promise((success, error) => {
@@ -218,8 +245,6 @@ const findAvailableTestDefinitionsByTestId = function (testId) {
             }).then(success).catch(error);
     });
 }
-
-
 
 
 const findTestsByUserId = function (userId) {
@@ -267,10 +292,10 @@ const createTestElement = function (testDefinitionId, testId) {
     return new Promise((success, error) => {
 
         try {
-            let  testElement =TestElement.create({test_id: testId, test_definition_id : testDefinitionId})
+            let testElement = TestElement.create({test_id: testId, test_definition_id: testDefinitionId})
             success(testElement);
 
-        } catch(exception) {
+        } catch (exception) {
             error(exception)
         }
     });
@@ -296,6 +321,147 @@ const findAvailableTestElementsAndTemplatesByTestId = function (testId) {
 }
 
 
+const getCurrentTestIteration = (testId) => {
+
+    return sequelize.query(
+        "select te.iteration\n" +
+        "from test t,\n" +
+        "     test_element te\n" +
+        "where t.id = :testId\n" +
+        "  and te.test_id = t.id\n" +
+        "order by te.iteration desc\n" +
+        "limit 1",
+        {
+            type: QueryTypes.SELECT,
+            replacements: {testId: testId},
+            logging: console.log,
+            raw: false
+        });
+}
+
+
+const getFailedTestElements = (testId, iteration) => {
+    return getTestElements(testId, iteration, true, false)
+}
+
+const getAvailableTestElements = (testId, iteration) => {
+    return getTestElements(testId, iteration, false, false)
+}
+const getTestElements = (testId, iteration, isDone, isSuccess) => {
+
+    return sequelize.query(
+        "select te.*\n" +
+        "from test_definition td,\n" +
+        "     test t,\n" +
+        "     test_element te\n" +
+        "where t.id = :testId\n" +
+        "  and te.test_id = t.id\n" +
+        "  and te.test_definition_id = td.id\n" +
+        "  and te.iteration = :iteration\n" +
+        "  and te.is_done = :isDone\n" +
+        "  and te.is_success = :isSuccess\n" +
+        "order by td.id asc;",
+        {
+            type: QueryTypes.SELECT,
+            replacements: {testId: testId, iteration: iteration, isDone: isDone, isSuccess: isSuccess},
+            logging: console.log,
+            raw: false
+        });
+}
+
+
+const getNextTestElement = async (testId) => {
+
+    try {
+
+        let returnedTestElement = undefined;
+
+        // gets the current iteration
+        const iterations = await getCurrentTestIteration(testId)
+
+        // case where there is an existing iteration
+        if (iterations.length != 0) {
+
+            const iteration = iterations[0].iteration;
+
+            // gets the available (i.e. not tested) iteration elements
+            const availableElements = await getAvailableTestElements(testId, iteration)
+
+            // not available elements -> check if must create new iteration
+            if (availableElements.length == 0) {
+
+                console.log("No tests elements left in iteration " + iteration);
+
+                // gets failed elements, i.e. that should be in the next iteration
+                const failedElements = await getFailedTestElements(testId, iteration)
+
+                if (failedElements.length > 0) {
+
+                    const newIteration = iteration + 1;
+
+                    console.log("creating new iteration (" + newIteration + ") with " + failedElements.length + " elements");
+
+                    for (let failedElement in failedElements) {
+
+                        let testElement = await TestElement.create({
+                            test_id: testId,
+                            test_definition_id: failedElements.test_definition_id,
+                            iteration: newIteration
+                        })
+
+                        if (returnedTestElement == undefined) {
+                            returnedTestElement = testElement;
+                        }
+                    }
+
+                } else {
+                    console.log("end of the test " + testId + " (iteration " + iteration +  ")");
+                }
+
+            } else {
+
+                console.log("there are " + availableElements.length +
+                    " remaining elements to be tested in  iteration " + iteration);
+
+                returnedTestElement = availableElements[0];
+            }
+
+        } else {
+
+            const iteration = 0;
+            const testDefinitions = await findAllTestDefinitions();
+
+            console.log("creating first test iteration for " + testDefinitions.length +" definitions");
+
+            for (let testDefinition in testDefinitions) {
+
+                let testElement = await TestElement.create({
+                    test_id: testId,
+                    test_definition_id: testDefinition.id,
+                    iteration: iteration
+                })
+
+                if (returnedTestElement == undefined) {
+                    returnedTestElement = testElement;
+                }
+            }
+        }
+
+        return returnedTestElement;
+
+    } catch (error) {
+        console.error("Failed to get user list", error);
+        throw error;
+    }
+
+}
+
+
+getNextTestElement(1).then(result => {
+    console.info(result);
+}).catch(result => {
+    console.error(result);
+});
 
 
 //
@@ -317,3 +483,4 @@ exports.findTestElementById = findTestElementById;
 exports.createTestElement = createTestElement;
 
 exports.findAvailableTestElementsAndTemplatesByTestId = findAvailableTestElementsAndTemplatesByTestId;
+
