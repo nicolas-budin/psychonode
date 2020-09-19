@@ -225,28 +225,6 @@ const findTestDefinitionById = function (id) {
 }
 
 
-const findAvailableTestDefinitionsByTestId = function (testId) {
-    return new Promise((success, error) => {
-        sequelize.query("select *\n" +
-            "from test_definition td\n" +
-            "where td.id not in (select td.id\n" +
-            "                    from test_definition td,\n" +
-            "                         test t,\n" +
-            "                         test_element te\n" +
-            "                    where t.id = :testId\n" +
-            "                      and te.test_id = t.id\n" +
-            "                      and te.test_definition_id = td.id\n" +
-            "                    order by td.id asc)",
-            {
-                replacements: {testId: testId},
-                model: TestDefinition,
-                mapToModel: true,
-                logging: console.log
-            }).then(success).catch(error);
-    });
-}
-
-
 const findTestsByUserId = function (userId) {
     return new Promise((success, error) => {
         Test.findAll({
@@ -287,39 +265,6 @@ const findTestElementById = function (id) {
         TestElement.findByPk(id).then(success).catch(error);
     });
 }
-
-const createTestElement = function (testDefinitionId, testId) {
-    return new Promise((success, error) => {
-
-        try {
-            let testElement = TestElement.create({test_id: testId, test_definition_id: testDefinitionId})
-            success(testElement);
-
-        } catch (exception) {
-            error(exception)
-        }
-    });
-}
-
-const findAvailableTestElementsAndTemplatesByTestId = function (testId) {
-    return new Promise((success, error) => {
-        sequelize.query("select t.id as test_id, te.id as test_element_id, td.id as test_definition_id, te.user_answer, td.question, td.answer\n" +
-            "from test t,\n" +
-            "     test_element te,\n" +
-            "     test_definition td\n" +
-            "where t.id = :testId\n" +
-            "  and te.test_definition_id = td.id\n" +
-            "  and te.is_success = false\n" +
-            "order by td.id asc",
-            {
-                type: QueryTypes.SELECT,
-                replacements: {testId: testId},
-                logging: console.log,
-                raw: false
-            }).then(success).catch(error);
-    });
-}
-
 
 const getCurrentTestIteration = (testId) => {
 
@@ -489,7 +434,6 @@ exports.findAllUsers = findAllUsers;
 exports.findUserById = findUserById;
 
 exports.findAllTestDefinitions = findAllTestDefinitions;
-exports.findAvailableTestDefinitionsByTestId = findAvailableTestDefinitionsByTestId;
 exports.findTestDefinitionById = findTestDefinitionById;
 
 exports.findTestsByUserId = findTestsByUserId;
@@ -497,11 +441,6 @@ exports.findAvailableTestsByUserId = findAvailableTestsByUserId;
 
 exports.findTestElementsByTestId = findTestElementsByTestId;
 exports.findTestElementById = findTestElementById;
-exports.createTestElement = createTestElement;
-
-exports.findAvailableTestElementsAndTemplatesByTestId = findAvailableTestElementsAndTemplatesByTestId;
-
-
 
 exports.getNextTestElement = getNextTestElement;
 
