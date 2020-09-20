@@ -459,9 +459,10 @@ const getNextTestElement = async (testId) => {
         if(returnedTestElement != undefined) {
 
             testElementsAndTemplate = await findTestElementsAndTemplateByTestElementId(returnedTestElement.id)
+            testElementsAndTemplate = testElementsAndTemplate[0];
         }
 
-        return testElementsAndTemplate[0];
+        return testElementsAndTemplate;
 
     } catch (error) {
         console.error("Failed to get user list", error);
@@ -491,4 +492,5 @@ exports.findTestElementsByTestId = findTestElementsByTestId;
 exports.findTestElementById = findTestElementById;
 
 exports.getNextTestElement = getNextTestElement;
+exports.findTestElementsAndTemplateByTestElementId = findTestElementsAndTemplateByTestElementId
 

@@ -36,8 +36,12 @@ router.post('/', function (req, res, next) {
 
                     runTest(user.id).then(test => {
                         console.info("result of run test " + test)
-                        res.render('testElement', {user: user.id, entry : test});
 
+                        if(test == undefined) {
+                            res.render('message', {message: "test is finished"});
+                        } else {
+                            res.render('testElement', {user: user.id, entry: test});
+                        }
                     }).catch(error => {
                         let msg = 'Unable to get test';
                         console.error(msg, error);
@@ -88,13 +92,17 @@ router.post('/', function (req, res, next) {
                 testElement.save().then(testElement => {
 
                     if (!testElement.is_success) {
-                        res.render('testAnswer', {user: user, entry: test});
+                        res.render('testAnswer', {user: user, entry: test, right_answer : testDefinition.answer});
                     } else {
-
 
                         runTest(user).then(test => {
                             console.info("result of run test " + test)
-                            res.render('testElement', {user: user, entry : test});
+
+                            if(test == undefined) {
+                                res.render('message', {message: "test is finished"});
+                            } else {
+                                res.render('testElement', {user: user, entry: test});
+                            }
 
                         }).catch(error => {
                             let msg = 'Unable to get test';
