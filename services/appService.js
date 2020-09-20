@@ -1,31 +1,51 @@
-const {getNextTestElement, findTestsByUserId} = require('./OrmService');
+const {getNextTestElement, createTest, findTestsByUserId} = require('./OrmService');
+
 
 /**
- *
+ * runs a test =>
  * @param userId
+ * @returns {Promise<*|undefined>}
  */
-const runTest = function (userId) {
+const getTest = async (userId) => {
 
-    return new Promise((success, error) => {
+    try {
 
-        findTestsByUserId(userId).then(tests => {
+        let test = undefined;
 
-            if (tests.length == 0) {
+        const tests = await findTestsByUserId(userId)
 
-                throw new Error("Not test found for user " + userId);
+        if (tests.length == 0) {
 
-            } else if (tests.length == 1) {
+            test = await createTest(userId);
 
-                let testId = tests[0].id;
-                getNextTestElement(testId).then(success).catch(error);
+        } else {
 
-            } else {
-                throw Error("returning more than one value: " + tests);
-            }
+            test = tests[0]
+        }
 
-        }).catch(error);
-    })
+        return test;
+
+    } catch (error) {
+        console.error("Failed to run test for user: " + userId, error);
+        throw error;
+    }
 }
 
 
+const runTest = async (userId) => {
+
+    try {
+
+        const test = await getTest(userId);
+        const testElment = await getNextTestElement(test.id);
+
+        return testElment;
+
+    } catch (error) {
+        console.error("Failed to run test for user: " + userId, error);
+        throw error;
+    }
+}
+
+exports.getTest = getTest;
 exports.runTest = runTest;

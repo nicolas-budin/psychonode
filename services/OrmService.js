@@ -224,17 +224,64 @@ const findTestDefinitionById = function (id) {
     });
 }
 
-
-const findTestsByUserId = function (userId) {
-    return new Promise((success, error) => {
-        Test.findAll({
+/**
+ * gets all tests for a user, desc order by id (i.e. last created first)
+ * @param userId
+ * @returns {Promise<*>}
+ */
+const findTestsByUserId = async (userId) => {
+    try {
+        const tests = Test.findAll({
             where: {
                 user_id: userId
             },
             order: [['id', 'DESC']]
-        }).then(success).catch(error);
-    });
+        });
+
+        return tests;
+
+    } catch (error) {
+        console.error("Failed to get tests for user: " + userId, error);
+        throw error;
+    }
 }
+
+/**
+ * creates a test for user with userId
+ * @param userId
+ * @param testType [true | false | undefined].
+ * @returns {Promise<Test>}
+ */
+const createTest = async (userId, testType = undefined) => {
+
+    try {
+        let is_first_step = testType;
+        if (testType == undefined) {
+
+            is_first_step = true;
+
+            const tests = await findTestsByUserId(userId);
+
+            if(tests.length > 0) {
+                const lastTest = tests[0];
+                is_first_step = lastTest.is_first_step ? false : true;
+            }
+        }
+
+        const test = Test.create({userId: userId, is_first_step: is_first_step});
+        return test;
+
+    } catch (error) {
+        console.error("Failed to create test for user: " + userId, error);
+        throw error;
+    }
+
+
+}
+
+
+
+
 
 const findAvailableTestsByUserId = function (userId) {
     return new Promise((success, error) => {
@@ -366,7 +413,7 @@ const getNextTestElement = async (testId) => {
 
                         let testElement = await TestElement.create({
                             test_id: testId,
-                            test_definition_id: failedElements.test_definition_id,
+                            test_definition_id: failedElement.test_definition_id,
                             iteration: newIteration
                         })
 
@@ -437,6 +484,7 @@ exports.findAllTestDefinitions = findAllTestDefinitions;
 exports.findTestDefinitionById = findTestDefinitionById;
 
 exports.findTestsByUserId = findTestsByUserId;
+exports.createTest = createTest;
 exports.findAvailableTestsByUserId = findAvailableTestsByUserId;
 
 exports.findTestElementsByTestId = findTestElementsByTestId;

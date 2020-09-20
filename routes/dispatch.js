@@ -79,6 +79,7 @@ router.post('/', function (req, res, next) {
             findTestElementById(test.test_element_id).then(testElement => {
 
                 testElement.user_answer = test.answer;
+                testElement.is_done = true;
 
                 if (testDefinition.answer === test.answer) {
                     testElement.is_success = true;
@@ -86,11 +87,21 @@ router.post('/', function (req, res, next) {
 
                 testElement.save().then(testElement => {
 
-
-                    if (testElement.is_success) {
+                    if (!testElement.is_success) {
                         res.render('testAnswer', {user: user, entry: test});
                     } else {
-                        res.render('testElement', {user: user, entry: test});
+
+
+                        runTest(user).then(test => {
+                            console.info("result of run test " + test)
+                            res.render('testElement', {user: user, entry : test});
+
+                        }).catch(error => {
+                            let msg = 'Unable to get test';
+                            res.render('error', {message: "", error: error});
+
+                        });
+
                     }
 
                 }).catch(error => {
