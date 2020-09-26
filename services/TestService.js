@@ -1,5 +1,9 @@
 const {QueryTypes, Sequelize, DataTypes, Model} = require('sequelize');
 
+const {TestElement, getAvailableTestElements, getFailedTestElements, findTestElementsAndTemplateByTestElementId} = require('./TestElementService');
+
+const {findAllTestDefinitions} = require('./TestDefinitionService');
+
 
 // creates rdbms access
 const sequelize = new Sequelize({
@@ -19,69 +23,7 @@ sequelize.authenticate().then(() => {
 // entities
 //
 
-class User extends Model {
-}
 
-User.init({
-
-    id: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        primaryKey: true
-    },
-    age: {
-        type: DataTypes.INTEGER
-    },
-    sex: {
-        type: DataTypes.STRING
-    },
-    level: {
-        type: DataTypes.STRING
-    },
-    createdAt: {
-        type: DataTypes.DATE
-    },
-    updatedAt: {
-        type: DataTypes.DATE
-    }
-}, {
-
-    sequelize, // connection instance
-    modelName: 'user', // model name,
-    freezeTableName: true
-});
-
-
-class TestDefinition extends Model {
-}
-
-TestDefinition.init({
-
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    question: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    answer: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    createdAt: {
-        type: DataTypes.DATE
-    },
-    updatedAt: {
-        type: DataTypes.DATE
-    }
-}, {
-
-    sequelize,
-    modelName: 'test_definition',
-    freezeTableName: true
-});
 
 
 class Test extends Model {
@@ -125,107 +67,8 @@ Test.init({
 });
 
 
-class TestElement extends Model {
-}
-
-TestElement.init({
-
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    test_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    test_definition_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    iteration: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    is_done: {
-        type: DataTypes.BOOLEAN
-    },
-    is_success: {
-        type: DataTypes.BOOLEAN
-    },
-    is_redo: {
-        type: DataTypes.BOOLEAN
-    },
-    is_redisplay: {
-        type: DataTypes.BOOLEAN
-    },
-    user_answer: {
-        type: DataTypes.TEXT
-    },
-    createdAt: {
-        type: DataTypes.DATE
-    },
-    updatedAt: {
-        type: DataTypes.DATE
-    }
-}, {
-
-    sequelize,
-    modelName: 'test_element',
-    freezeTableName: true
-});
 
 
-//
-// methods
-//
-
-const findAllUsers = async () => {
-
-    try {
-
-        const users = await User.findAll({
-            order: [['id', 'ASC']]
-        });
-
-        return users;
-
-    } catch (error) {
-        console.error("Failed to get user list", error);
-        throw error;
-    }
-
-}
-
-const findUserById = function (id) {
-    return new Promise((success, error) => {
-        User.findByPk(id).then(success).catch(error);
-    });
-}
-
-
-const findAllTestDefinitions = async () => {
-
-    try {
-        const testDefinitions = await TestDefinition.findAll({
-            order: [['id', 'ASC']]
-        });
-
-        return testDefinitions;
-
-    } catch (error) {
-        console.error("Failed to get test definitions", error);
-        throw error;
-    }
-
-}
-
-
-const findTestDefinitionById = function (id) {
-    return new Promise((success, error) => {
-        TestDefinition.findByPk(id).then(success).catch(error);
-    });
-}
 
 /**
  * gets all tests for a user, desc order by id (i.e. last created first)
@@ -298,36 +141,6 @@ const createTest = async (userId, testType = undefined, parentId = undefined) =>
 }
 
 
-const findAvailableTestsByUserId = function (userId) {
-    return new Promise((success, error) => {
-        Test.findAll({
-            where: {
-                user_id: userId,
-                is_aborted: false,
-                is_completed: false
-            },
-            order: [['id', 'DESC']]
-        }).then(success).catch(error);
-    });
-}
-
-const findTestElementsByTestId = function (testId) {
-    return new Promise((success, error) => {
-        TestElement.findAll({
-            where: {
-                test_id: testId
-            },
-            order: [['id', 'DESC']]
-        }).then(success).catch(error);
-    });
-}
-
-const findTestElementById = function (id) {
-    return new Promise((success, error) => {
-        TestElement.findByPk(id).then(success).catch(error);
-    });
-}
-
 const getCurrentTestIteration = (testId) => {
 
     return sequelize.query(
@@ -347,51 +160,56 @@ const getCurrentTestIteration = (testId) => {
 }
 
 
-const getFailedTestElements = (testId, iteration) => {
-    return getTestElements(testId, iteration, true, false)
+/**
+ * gets last user test. Creates a new test if user has no test.
+ * @param userId
+ * @returns {Promise<*|undefined>}
+ */
+const getTest = async (userId) => {
+
+    try {
+
+        let test = undefined;
+
+        const tests = await findTestsByUserId(userId)
+
+        if (tests.length == 0) {
+
+            test = await createTest(userId);
+
+        } else {
+
+            test = tests[0];
+
+            if(test.is_aborted) {
+                test =  await createTest(userId, test.is_first_step);
+            }
+        }
+
+        return test;
+
+    } catch (error) {
+        console.error("Failed to run test for user: " + userId, error);
+        throw error;
+    }
 }
 
-const getAvailableTestElements = (testId, iteration) => {
-    return getTestElements(testId, iteration, false, false)
-}
-const getTestElements = (testId, iteration, isDone, isSuccess) => {
 
-    return sequelize.query(
-        "select te.*\n" +
-        "from test_definition td,\n" +
-        "     test t,\n" +
-        "     test_element te\n" +
-        "where t.id = :testId\n" +
-        "  and te.test_id = t.id\n" +
-        "  and te.test_definition_id = td.id\n" +
-        "  and te.iteration = :iteration\n" +
-        "  and te.is_done = :isDone\n" +
-        "  and te.is_success = :isSuccess\n" +
-        "order by td.id asc;",
-        {
-            type: QueryTypes.SELECT,
-            replacements: {testId: testId, iteration: iteration, isDone: isDone, isSuccess: isSuccess},
-            logging: console.log,
-            raw: false
-        });
+const runTest = async (userId) => {
+
+    try {
+
+        const test = await getTest(userId);
+        const testElment = await getNextTestElement(test.id);
+
+        return testElment;
+
+    } catch (error) {
+        console.error("Failed to run test for user: " + userId, error);
+        throw error;
+    }
 }
 
-
-const findTestElementsAndTemplateByTestElementId = function (testElementId) {
-    return  sequelize.query("select t.id as test_id, te.id as test_element_id, td.id as test_definition_id, te.user_answer, td.question, td.answer\n" +
-            "from test t,\n" +
-            "     test_element te,\n" +
-            "     test_definition td\n" +
-            "where te.id = :testElementId" +
-            "  and te.test_id = t.id\n" +
-            "  and te.test_definition_id = td.id",
-            {
-                type: QueryTypes.SELECT,
-                replacements: {testElementId: testElementId},
-                logging: console.log,
-                raw: false
-    });
-}
 
 const getNextTestElement = async (testId) => {
 
@@ -498,24 +316,9 @@ const getNextTestElement = async (testId) => {
 
 
 
-//
-// export
-//
-exports.sequelize = sequelize;
-exports.findAllUsers = findAllUsers;
-exports.findUserById = findUserById;
-
-exports.findAllTestDefinitions = findAllTestDefinitions;
-exports.findTestDefinitionById = findTestDefinitionById;
-
 exports.findTestsByUserId = findTestsByUserId;
 exports.createTest = createTest;
-exports.findAvailableTestsByUserId = findAvailableTestsByUserId;
 exports.findTestById = findTestById;
+exports.getCurrentTestIteration = getCurrentTestIteration;
 
-exports.findTestElementsByTestId = findTestElementsByTestId;
-exports.findTestElementById = findTestElementById;
-
-exports.getNextTestElement = getNextTestElement;
-exports.findTestElementsAndTemplateByTestElementId = findTestElementsAndTemplateByTestElementId
-
+exports.runTest = runTest;

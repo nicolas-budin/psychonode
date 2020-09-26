@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var {findAllTestDefinitions} = require('./../services/OrmService')
+var {findAllTestDefinitions} = require('../services/TestDefinitionService')
 
 /**
  * shows entries in test definition

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var {findTestById, createTest} = require('./../services/OrmService')
+var {findTestById, createTest} = require('../services/TestService')
 
 
 /**

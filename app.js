@@ -10,7 +10,7 @@ var dispatchRouter = require('./routes/dispatch');
 var testDefinitionRouter = require('./routes/testDefinition');
 var testsRouter = require('./routes/tests');
 
-var orm = require('./services/OrmService');
+var orm = require('./services/TestElementService');
 
 var app = express();
 

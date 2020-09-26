@@ -1,8 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-var {findTestElementById, findTestDefinitionById, findUserById} = require('./../services/OrmService')
-var {runTest} = require('./../services/appService')
+var {findTestElementById} = require('../services/TestElementService')
+var {findTestDefinitionById} = require('../services/TestDefinitionService')
+var {findUserById} = require('../services/UserService')
+var {runTest} = require('./../services/TestService')
 
 /**
  * display welcome page when user is identified.

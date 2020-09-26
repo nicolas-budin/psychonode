@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var {findAllUsers} = require('./../services/OrmService')
+var {findAllUsers} = require('../services/UserService')
 
 
 /**

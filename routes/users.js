@@ -1,7 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-var {findAllUsers, findUserById, findTestsByUserId, findTestElementsByTestId} = require('./../services/OrmService')
+var {findTestElementsByTestId} = require('../services/TestElementService')
+var {findAllUsers, findUserById} = require('../services/UserService')
+var {findTestsByUserId} = require('../services/TestService')
+
 
 /**
  * - shows list of all users
