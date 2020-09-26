@@ -94,6 +94,9 @@ Test.init({
         autoIncrement: true,
         primaryKey: true
     },
+    children_id: {
+        type: DataTypes.INTEGER,
+    },
     user_id: {
         type: DataTypes.STRING,
         allowNull: false
@@ -246,20 +249,32 @@ const findTestsByUserId = async (userId) => {
     }
 }
 
+
+const findTestById = async (id) => {
+    try {
+        const test = Test.findByPk(id);
+        return test;
+
+    } catch (error) {
+        console.error("Failed to get test for id: " + id, error);
+        throw error;
+    }
+}
+
 /**
  * creates a test for user with userId
  * @param userId
  * @param testType [true | false | undefined].
  * @returns {Promise<Test>}
  */
-const createTest = async (userId, testType = undefined) => {
+const createTest = async (userId, testType = undefined, parentId = undefined) => {
 
     try {
+
         let is_first_step = testType;
         if (testType == undefined) {
 
             is_first_step = true;
-
             const tests = await findTestsByUserId(userId);
 
             if(tests.length > 0) {
@@ -268,19 +283,19 @@ const createTest = async (userId, testType = undefined) => {
             }
         }
 
-        const test = Test.create({userId: userId, is_first_step: is_first_step});
+        const test = await Test.create({user_id: userId, is_first_step: is_first_step});
+        if(parentId != undefined) {
+            let parentTest = await findTestById(parentId);
+            parentTest.children_id = test.id;
+            await parentTest.save();
+        }
         return test;
 
     } catch (error) {
         console.error("Failed to create test for user: " + userId, error);
         throw error;
     }
-
-
 }
-
-
-
 
 
 const findAvailableTestsByUserId = function (userId) {
@@ -384,6 +399,9 @@ const getNextTestElement = async (testId) => {
 
         let returnedTestElement = undefined;
 
+
+        let test = await findTestById(testId);
+
         // gets the current iteration
         const iterations = await getCurrentTestIteration(testId)
 
@@ -423,6 +441,12 @@ const getNextTestElement = async (testId) => {
                     }
 
                 } else {
+
+                    if(!test.is_completed) {
+                        test.is_completed = true;
+                        await test.save();
+                    }
+
                     console.log("end of the test " + testId + " (iteration " + iteration +  ")");
                 }
 
@@ -487,6 +511,7 @@ exports.findTestDefinitionById = findTestDefinitionById;
 exports.findTestsByUserId = findTestsByUserId;
 exports.createTest = createTest;
 exports.findAvailableTestsByUserId = findAvailableTestsByUserId;
+exports.findTestById = findTestById;
 
 exports.findTestElementsByTestId = findTestElementsByTestId;
 exports.findTestElementById = findTestElementById;

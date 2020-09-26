@@ -2,7 +2,7 @@ const {getNextTestElement, createTest, findTestsByUserId} = require('./OrmServic
 
 
 /**
- * runs a test =>
+ * gets last user test. Creates a new test if user has no test.
  * @param userId
  * @returns {Promise<*|undefined>}
  */
@@ -20,7 +20,11 @@ const getTest = async (userId) => {
 
         } else {
 
-            test = tests[0]
+            test = tests[0];
+
+            if(test.is_aborted) {
+                test =  await createTest(userId, test.is_first_step);
+            }
         }
 
         return test;

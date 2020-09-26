@@ -11,27 +11,100 @@
 <body>
 <div class="card">
     <div class="card-header">
-        Tests for: <%=userId%>
+        Tests for: <%= userId %>
     </div>
     <div class="card-body">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>id</th>
-                <th>first Step</th>
-                <th>Completed</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% tests.forEach(function(entry) { %>
+
+        <form method="post">
+
+            <input type="hidden" id="user_id" name="user_id" value="<%= userId %>">
+
+            <table class="table table-striped">
+                <thead>
                 <tr>
-                    <td><a href="/users/<%=userId%>/tests/<%= entry.id %>"><%= entry.id %></a></td>
-                    <td><%= entry.is_first_step ? 'TRUE' : 'FALSE'%></td>
-                    <td><%= entry.is_completed ? 'TRUE' : 'FALSE' %></td>
+                    <th style="text-align: center ">Test Identifier</th>
+                    <th style="text-align: center ">Step</th>
+                    <th style="text-align: center ">Status</th>
+                    <th style="text-align: center ">Action</th>
                 </tr>
-            <% }) %>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+
+                <% tests.forEach(function(entry) { %>
+
+
+                    <tr>
+                        <td style="text-align: center "><a
+                                    href="/users/<%= userId %>/tests/<%= entry.id %>"><%= entry.id %></a>
+                        </td>
+
+                        <td style="text-align: center ">
+                            <%= entry.is_first_step ? "First" : "Second" %>
+                        </td>
+
+                        <td style="text-align: center ">
+
+                            <% if (!entry.is_completed && !entry.is_aborted) { %>
+                                Ongoing
+                            <% } %>
+
+                            <% if (!entry.is_completed && entry.is_aborted) { %>
+                                Aborted
+                            <% } %>
+
+                            <% if (entry.is_completed) { %>
+                                Done
+                            <% } %>
+                        </td>
+
+                        <td style="text-align: center ">
+
+                            <% if (entry.is_completed) { %>
+
+                                <% if (entry.is_first_step && !entry.children_id) { %>
+
+                                    <button type="submit" formaction="/tests/<%= entry.id %>/next"
+                                            class="btn btn-primary">
+                                        Start Next Step
+                                    </button>
+
+                                <% } %>
+
+                                <% if (!entry.is_first_step) { %>
+
+                                    <button type="submit" formaction="/tests/<%= entry.id %>/new"
+                                            class="btn btn-primary">
+                                        Start New Test
+                                    </button>
+
+                                <% } %>
+
+                            <% } %>
+
+                            <% if (!entry.is_completed) { %>
+
+                                <% if (!entry.is_aborted ) { %>
+
+                                    <button type="submit" formaction="/tests/<%= entry.id %>/abort"
+                                            class="btn btn-danger">
+                                        Abort Test
+                                    </button>
+
+                                <% } %>
+
+                            <% } %>
+
+                        </td>
+                    </tr>
+
+                <% }) %>
+
+                </tbody>
+
+
+            </table>
+
+        </form>
     </div>
 </div>
 </body>

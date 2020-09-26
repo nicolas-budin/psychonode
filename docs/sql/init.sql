@@ -57,13 +57,15 @@ from test_definition;
 create table test
 (
     id            integer PRIMARY KEY,
+    children_id   integer,
     user_id       text not null,
     is_first_step boolean default true,
     is_completed  boolean default false,
     is_aborted  boolean default false,
     createdAt     date    DEFAULT (datetime('now', 'localtime')),
     updatedAt     date,
-    FOREIGN KEY (user_id) REFERENCES user (id)
+    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (children_id) REFERENCES test (id)
 );
 
 insert into test (user_id)
@@ -93,14 +95,3 @@ create table test_element
     FOREIGN KEY (test_definition_id) REFERENCES test_definition (id)
 );
 
-insert into test_element (test_id, test_definition_id)
-values (1, 1);
-
-insert into test_element (test_id, test_definition_id, is_done, is_success)
-values (1, 2, true, false);
-
-insert into test_element (test_id, test_definition_id, is_done, is_success)
-values (1, 3, true, true);
-
-select *
-from test_element;
