@@ -46,7 +46,7 @@ router.get('/', function (req, res, next) {
 }).get('/:userId/tests/:id', function (req, res, next) {
 
     findTestElementsAndTemplateByTestId(req.params.id).then(testElements => {
-        res.render('test', {testElements: testElements});
+        res.render('test', {testElements: testElements, userId: req.params.userId, testId: req.params.id});
     }).catch(error => {
         let msg = 'Unable to get test elements';
         console.error(msg, error);
