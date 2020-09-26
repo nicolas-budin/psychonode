@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var {findTestElementsByTestId} = require('../services/TestElementService')
+var {findTestElementsAndTemplateByTestId} = require('../services/TestElementService')
 var {findAllUsers, findUserById} = require('../services/UserService')
 var {findTestsByUserId} = require('../services/TestService')
 
@@ -45,7 +45,7 @@ router.get('/', function (req, res, next) {
 
 }).get('/:userId/tests/:id', function (req, res, next) {
 
-    findTestElementsByTestId(req.params.id).then(testElements => {
+    findTestElementsAndTemplateByTestId(req.params.id).then(testElements => {
         res.render('test', {testElements: testElements});
     }).catch(error => {
         let msg = 'Unable to get test elements';

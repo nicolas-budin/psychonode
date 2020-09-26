@@ -22,7 +22,6 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th style="text-align: center ">Test Identifier</th>
                     <th style="text-align: center ">Step</th>
                     <th style="text-align: center ">Status</th>
                     <th style="text-align: center ">Action</th>
@@ -34,12 +33,9 @@
 
 
                     <tr>
-                        <td style="text-align: center "><a
-                                    href="/users/<%= userId %>/tests/<%= entry.id %>"><%= entry.id %></a>
-                        </td>
 
                         <td style="text-align: center ">
-                            <%= entry.is_first_step ? "First" : "Second" %>
+                            <a href="/users/<%= userId %>/tests/<%= entry.id %>"><%= entry.is_first_step ? "First" : "Second" %></a>
                         </td>
 
                         <td style="text-align: center ">

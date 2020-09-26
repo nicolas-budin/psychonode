@@ -17,8 +17,12 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>id</th>
-                <th>definition id</th>
+
+                <th>Iteration</th>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>User Answer</th>
+                <th>Done</th>
                 <th>Succeeded</th>
                 <th>Redo</th>
                 <th>Show Again</th>
@@ -27,11 +31,14 @@
             <tbody>
             <% testElements.forEach(function(entry) { %>
                 <tr>
-                    <td><%= entry.id %></td>
-                    <td><%= entry.test_definition_id %></td>
-                    <td><%= entry.is_success ? 'TRUE' : 'FALSE'%></td>
-                    <td><%= entry.is_redo ? 'TRUE' : 'FALSE' %></td>
-                    <td><%= entry.is_redisplay ? 'TRUE' : 'FALSE' %></td>
+                    <td><%= entry.iteration + 1 %></td>
+                    <td><%= entry.question %></td>
+                    <td><%= entry.answer %></td>
+                    <td><%= entry.user_answer %></td>
+                    <td><%= entry.is_done ? '+' : '-'%></td>
+                    <td><%= entry.is_success ? '+' : '-'%></td>
+                    <td><%= entry.is_redo ? '+' : '-' %></td>
+                    <td><%= entry.is_redisplay ? '+' : '-' %></td>
                 </tr>
             <% }) %>
             </tbody>

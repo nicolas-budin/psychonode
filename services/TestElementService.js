@@ -20,9 +20,6 @@ sequelize.authenticate().then(() => {
 //
 
 
-
-
-
 class TestElement extends Model {
 }
 
@@ -79,7 +76,6 @@ TestElement.init({
 //
 
 
-
 const findTestElementsByTestId = function (testId) {
     return new Promise((success, error) => {
         TestElement.findAll({
@@ -128,21 +124,38 @@ const getTestElements = (testId, iteration, isDone, isSuccess) => {
 
 
 const findTestElementsAndTemplateByTestElementId = function (testElementId) {
-    return  sequelize.query("select t.id as test_id, te.id as test_element_id, td.id as test_definition_id, te.user_answer, td.question, td.answer\n" +
-            "from test t,\n" +
-            "     test_element te,\n" +
-            "     test_definition td\n" +
-            "where te.id = :testElementId" +
-            "  and te.test_id = t.id\n" +
-            "  and te.test_definition_id = td.id",
-            {
-                type: QueryTypes.SELECT,
-                replacements: {testElementId: testElementId},
-                logging: console.log,
-                raw: false
-    });
+    return sequelize.query("select t.id as test_id, te.id as test_element_id, td.id as test_definition_id, te.user_answer, td.question, td.answer\n" +
+        "from test t,\n" +
+        "     test_element te,\n" +
+        "     test_definition td\n" +
+        "where te.id = :testElementId" +
+        "  and te.test_id = t.id\n" +
+        "  and te.test_definition_id = td.id",
+        {
+            type: QueryTypes.SELECT,
+            replacements: {testElementId: testElementId},
+            logging: console.log,
+            raw: false
+        });
 }
 
+
+const findTestElementsAndTemplateByTestId = function (testId) {
+    return sequelize.query("select te.*, td.question, td.answer\n" +
+        "from test t,\n" +
+        "     test_element te,\n" +
+        "     test_definition td\n" +
+        "where t.id = :testId" +
+        "  and te.test_id = t.id\n" +
+        "  and te.test_definition_id = td.id\n" +
+        "order by te.id desc;",
+        {
+            type: QueryTypes.SELECT,
+            replacements: {testId: testId},
+            logging: console.log,
+            raw: false
+        });
+}
 
 
 //
@@ -155,5 +168,6 @@ exports.findTestElementsAndTemplateByTestElementId = findTestElementsAndTemplate
 exports.getFailedTestElements = getFailedTestElements;
 exports.getAvailableTestElements = getAvailableTestElements;
 exports.TestElement = TestElement;
+exports.findTestElementsAndTemplateByTestId = findTestElementsAndTemplateByTestId;
 
 
