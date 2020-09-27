@@ -72,7 +72,7 @@
 
                                         <% if (!entry.children_id) { %>
 
-                                            <button type="submit" formaction="/tests/<%= entry.id %>/next"
+                                            <button type="submit" formaction="/tests/admin/<%= entry.id %>/next"
                                                     class="btn btn-primary">
                                                 Start Next Step
                                             </button>
@@ -83,7 +83,7 @@
 
                                     <% if (!entry.is_first_step) { %>
 
-                                        <button type="submit" formaction="/tests/<%= entry.id %>/new"
+                                        <button type="submit" formaction="/tests/admin/<%= entry.id %>/new"
                                                 class="btn btn-primary">
                                             Start New Test
                                         </button>
@@ -96,7 +96,7 @@
 
                                     <% if (!entry.is_aborted ) { %>
 
-                                        <button type="submit" formaction="/tests/<%= entry.id %>/abort"
+                                        <button type="submit" formaction="/tests/admin/<%= entry.id %>/abort"
                                                 class="btn btn-danger">
                                             Abort Test
                                         </button>
@@ -106,7 +106,7 @@
 
                                     <% if (entry.is_aborted ) { %>
 
-                                        <button type="submit" formaction="/tests/<%= entry.id %>/new"
+                                        <button type="submit" formaction="/tests/admin/<%= entry.id %>/new"
                                                 class="btn btn-primary">
                                             Start New Test
                                         </button>
