@@ -69,16 +69,19 @@ router.post('/', function (req, res, next) {
 
     const user = req.body.user;
 
+
+    let test = {
+
+        test_id: req.body.test_id,
+        test_element_id: req.body.test_element_id,
+        test_definition_id: req.body.test_definition_id,
+        question: req.body.question,
+        answer: req.body.answer,
+        review_choice : req.body.review_choice
+    }
+
     if(req.params.action === 'submit') {
 
-        let test = {
-
-            test_id: req.body.test_id,
-            test_element_id: req.body.test_element_id,
-            test_definition_id: req.body.test_definition_id,
-            question: req.body.question,
-            answer: req.body.answer,
-        }
 
         findTestDefinitionById(test.test_definition_id).then(testDefinition => {
 
@@ -97,20 +100,7 @@ router.post('/', function (req, res, next) {
                         res.render('testAnswer', {user: user, entry: test, right_answer : testDefinition.answer});
                     } else {
 
-                        runTest(user).then(test => {
-                            console.info("result of run test " + test)
-
-                            if(test == undefined) {
-                                res.render('message', {message: "test is finished"});
-                            } else {
-                                res.render('testElement', {user: user, entry: test});
-                            }
-
-                        }).catch(error => {
-                            let msg = 'Unable to get test';
-                            res.render('error', {message: "", error: error});
-
-                        });
+                        res.render('testCorrectAnswer', {user: user, entry: test, right_answer : testDefinition.answer});
 
                     }
 
@@ -130,19 +120,50 @@ router.post('/', function (req, res, next) {
 
     } else {
 
-        runTest(user).then(test => {
-            console.info("result of run test " + test)
-            res.render('testElement', {user: user, entry : test});
+
+        findTestElementById(test.test_element_id).then(testElement => {
+
+            if (test.review_choice != undefined) {
+
+                if(test.review_choice === 'see') {
+                    testElement.is_redisplay = true;
+                } else {
+                    testElement.is_redo = true;
+                }
+            }
+
+            testElement.save().then(testElement => {
+
+                runTest(user).then(test => {
+
+                    console.info("result of run test " + test)
+
+                    if(test == undefined) {
+                        res.render('message', {message: "test is finished"});
+                    } else {
+                        res.render('testElement', {user: user, entry: test});
+                    }
+
+                }).catch(error => {
+                    let msg = 'Unable to get test';
+                    res.render('error', {message: "", error: error});
+
+                });
+
+            }).catch(error => {
+                res.render('error', {message: "", error: error});
+            })
+
 
         }).catch(error => {
-            let msg = 'Unable to get test';
             res.render('error', {message: "", error: error});
+        })
 
-        });
+
+
+
 
     }
-
-
 
 });
 
