@@ -3,66 +3,30 @@ var router = express.Router();
 
 var {findTestElementById} = require('../services/TestElementService')
 var {findTestDefinitionById} = require('../services/TestDefinitionService')
-var {findUserById} = require('../services/UserService')
 var {runTest} = require('./../services/TestService')
 
 /**
- * display welcome page when user is identified.
+ * starts test
  */
-router.post('/', function (req, res, next) {
+router.get('/:login', function (req, res, next) {
 
-    var login = req.body.login;
+    let login = req.params.login;
 
-    findUserById(login).then(user => {
+    runTest(login).then(testData => {
+        console.info("result of run test " + testData.testElement)
 
-        // login
-        if (req.body.age == undefined) {
-            res.render('user', {user: user});
-
-            // save form
+        if(testData.testElement == undefined) {
+            res.render('message', {message: "test is finished"});
         } else {
-
-            // form is not correctly filled
-            if (req.body.age == '' || req.body.level == '' || req.body.sex == '') {
-                res.render('user', {user: user});
-
-                // save form
-            } else {
-
-                user.age = req.body.age;
-                user.level = req.body.level;
-                user.sex = req.body.sex;
-                user.save().then(user => {
-
-                    console.info("user " + user.id + " updated");
-
-                    runTest(user.id).then(testData => {
-                        console.info("result of run test " + testData.testElement)
-
-                        if(testData.testElement == undefined) {
-                            res.render('message', {message: "test is finished"});
-                        } else {
-                            res.render('testElement', {user: user.id, entry: testData.testElement, test: testData.test});
-                        }
-                    }).catch(error => {
-                        let msg = 'Unable to get test';
-                        console.error(msg, error);
-                        res.render('error', {message: msg, error: error});
-
-                    });
-
-                }).catch(error => {
-                    let msg = 'Unable to update user: ' + user.id;
-                    console.error(msg, error);
-                    res.render('error', {message: msg, error: error});
-                })
-            }
+            res.render('testElement', {user: login, entry: testData.testElement, test: testData.test});
         }
     }).catch(error => {
-        let msg = 'Unable to get user data';
+        let msg = 'Unable to get test';
         console.error(msg, error);
         res.render('error', {message: msg, error: error});
+
     });
+
 
 }).post('/:action', function (req, res, next) {
 
@@ -194,10 +158,6 @@ router.post('/', function (req, res, next) {
         }).catch(error => {
             res.render('error', {message: "", error: error});
         })
-
-
-
-
 
     }
 

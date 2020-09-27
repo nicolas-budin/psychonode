@@ -68,15 +68,6 @@ create table test
     FOREIGN KEY (children_id) REFERENCES test (id)
 );
 
-insert into test (user_id)
-values ('nb');
-
-insert into test (user_id)
-values ('nc');
-
-select *
-from test;
-
 -- test element
 create table test_element
 (

@@ -11,19 +11,11 @@
 
 <body>
 
-<form action="/dispatch" method="post">
+<form action="/login" method="post">
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="input-group-text" for="inputGroupSelect01">Login</label>
-        </div>
-        <select id="login" name="login" class="custom-select" id="inputGroupSelect01">
-
-            <% users.forEach(function(entry) { %>
-                <option name="<%= entry.id %>" value="<%= entry.id %>"><%= entry.id %></option>
-            <% }) %>
-
-        </select>
+    <div class="form-group">
+        <label for="login" class="col-form-label">Login</label>
+        <input type="text" class="form-control" id="login" name="login">
     </div>
 
     <button type="submit" class="btn btn-primary">Login</button>

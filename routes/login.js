@@ -1,22 +1,28 @@
 var express = require('express');
 var router = express.Router();
 
-var {findAllUsers} = require('../services/UserService')
+var {findUserById} = require('../services/UserService')
 
 
-/**
- * login form: list of user ids.
- */
 router.get('/', function (req, res, next) {
 
-    findAllUsers().then(users => {
-        res.render('login', {users: users});
-    }).catch(error => {
+    res.render('login');
 
-        let msg = 'Unable to get user list from database';
+}).post('/login', function (req, res, next) {
+
+    var login = req.body.login;
+
+    findUserById(login).then(user => {
+
+
+        res.redirect('/users/' + user.id);
+
+     }).catch(error => {
+        let msg = 'Unable to log user ' + login;
         console.error(msg, error);
         res.render('error', {message: msg, error: error});
     });
+
 });
 
 module.exports = router;
