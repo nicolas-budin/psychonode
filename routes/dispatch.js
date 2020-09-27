@@ -36,13 +36,13 @@ router.post('/', function (req, res, next) {
 
                     console.info("user " + user.id + " updated");
 
-                    runTest(user.id).then(test => {
-                        console.info("result of run test " + test)
+                    runTest(user.id).then(testData => {
+                        console.info("result of run test " + testData.testElement)
 
-                        if(test == undefined) {
+                        if(testData.testElement == undefined) {
                             res.render('message', {message: "test is finished"});
                         } else {
-                            res.render('testElement', {user: user.id, entry: test});
+                            res.render('testElement', {user: user.id, entry: testData.testElement, test: testData.test});
                         }
                     }).catch(error => {
                         let msg = 'Unable to get test';
@@ -77,7 +77,8 @@ router.post('/', function (req, res, next) {
         test_definition_id: req.body.test_definition_id,
         question: req.body.question,
         answer: req.body.answer,
-        review_choice : req.body.review_choice
+        review_choice : req.body.review_choice,
+        is_first_step : req.body.is_first_step
     }
 
     if(req.params.action === 'submit') {
@@ -134,14 +135,14 @@ router.post('/', function (req, res, next) {
 
             testElement.save().then(testElement => {
 
-                runTest(user).then(test => {
+                runTest(user).then(testData => {
 
-                    console.info("result of run test " + test)
+                    console.info("result of run test " + testData.testElement)
 
-                    if(test == undefined) {
+                    if(testData.testElement == undefined) {
                         res.render('message', {message: "test is finished"});
                     } else {
-                        res.render('testElement', {user: user, entry: test});
+                        res.render('testElement', {user: user, entry: testData.testElement, test: testData.test});
                     }
 
                 }).catch(error => {

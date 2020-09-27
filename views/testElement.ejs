@@ -20,7 +20,8 @@
 
             <div class="form-group">
                 <label for="question" class="col-form-label">Question</label>
-                <input type="text" readonly class="form-control" id="question" name="question" value="<%= entry.question %>">
+                <input type="text" readonly class="form-control" id="question" name="question"
+                       value="<%= entry.question %>">
             </div>
 
             <div class="form-group">
@@ -29,10 +30,12 @@
             </div>
 
             <input type="hidden" class="form-control" id="test_id" name="test_id" value="<%= entry.test_id %>">
-            <input type="hidden" class="form-control" id="test_element_id" name="test_element_id" value="<%= entry.test_element_id %>">
-            <input type="hidden" class="form-control" id="test_definition_id" name="test_definition_id" value="<%= entry.test_definition_id %>">
+            <input type="hidden" class="form-control" id="test_element_id" name="test_element_id"
+                   value="<%= entry.test_element_id %>">
+            <input type="hidden" class="form-control" id="test_definition_id" name="test_definition_id"
+                   value="<%= entry.test_definition_id %>">
             <input type="hidden" class="form-control" id="user" name="user" value="<%= user %>">
-
+            <input type="hidden" class="form-control" id="is_first_step" name="is_first_step" value="<%= test.is_first_step %>">
 
 
             <button type="submit" class="btn btn-primary">Submit Answer</button>

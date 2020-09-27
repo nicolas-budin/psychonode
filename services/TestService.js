@@ -202,7 +202,7 @@ const runTest = async (userId) => {
         const test = await getTest(userId);
         const testElment = await getNextTestElement(test.id);
 
-        return testElment;
+        return {test: test, testElement: testElment};
 
     } catch (error) {
         console.error("Failed to run test for user: " + userId, error);
@@ -239,7 +239,7 @@ const getNextTestElement = async (testId) => {
                 // gets failed elements, i.e. that should be in the next iteration
                 const failedElements = await getFailedTestElements(testId, iteration)
 
-                if (failedElements.length > 0) {
+                if (failedElements.length > 0 && test.is_first_step) {
 
                     const newIteration = iteration + 1;
 
