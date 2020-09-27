@@ -54,6 +54,9 @@ TestElement.init({
     is_redisplay: {
         type: DataTypes.BOOLEAN
     },
+    usage_counter: {
+        type: DataTypes.INTEGER
+    },
     user_answer: {
         type: DataTypes.TEXT
     },
@@ -97,8 +100,31 @@ const getFailedTestElements = (testId, iteration) => {
     return getTestElements(testId, iteration, true, false)
 }
 
+const getRedoAndRedisplayTestElements = (testId, iteration) => {
+    return sequelize.query(
+        "select te.*\n" +
+        "from test_definition td,\n" +
+        "     test t,\n" +
+        "     test_element te\n" +
+        "where t.id = :testId\n" +
+        "  and te.test_id = t.id\n" +
+        "  and te.test_definition_id = td.id\n" +
+        "  and te.iteration = :iteration\n" +
+        "  and te.is_done = true\n" +
+        "  and (te.is_redisplay = true or te.is_redo = true) \n" +
+        "  and te.is_success = true\n" +
+        "order by td.id asc;",
+        {
+            type: QueryTypes.SELECT,
+            replacements: {testId: testId, iteration: iteration},
+            logging: console.log,
+            raw: false
+        });
+}
+
+
 const getAvailableTestElements = (testId, iteration) => {
-    return getTestElements(testId, iteration, false, false)
+    return getTestElements(testId, iteration, false, undefined)
 }
 const getTestElements = (testId, iteration, isDone, isSuccess) => {
 
@@ -112,7 +138,7 @@ const getTestElements = (testId, iteration, isDone, isSuccess) => {
         "  and te.test_definition_id = td.id\n" +
         "  and te.iteration = :iteration\n" +
         "  and te.is_done = :isDone\n" +
-        "  and te.is_success = :isSuccess\n" +
+        ((isSuccess != undefined) ? "  and te.is_success = :isSuccess\n" : "\n") +
         "order by td.id asc;",
         {
             type: QueryTypes.SELECT,
@@ -124,7 +150,7 @@ const getTestElements = (testId, iteration, isDone, isSuccess) => {
 
 
 const findTestElementsAndTemplateByTestElementId = function (testElementId) {
-    return sequelize.query("select t.id as test_id, te.id as test_element_id, td.id as test_definition_id, te.user_answer, td.question, td.answer\n" +
+    return sequelize.query("select te.*, td.question, td.answer\n" +
         "from test t,\n" +
         "     test_element te,\n" +
         "     test_definition td\n" +
@@ -169,5 +195,6 @@ exports.getFailedTestElements = getFailedTestElements;
 exports.getAvailableTestElements = getAvailableTestElements;
 exports.TestElement = TestElement;
 exports.findTestElementsAndTemplateByTestId = findTestElementsAndTemplateByTestId;
+exports.getRedoAndRedisplayTestElements = getRedoAndRedisplayTestElements;
 
 

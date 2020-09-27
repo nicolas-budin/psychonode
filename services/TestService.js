@@ -1,6 +1,6 @@
 const {QueryTypes, Sequelize, DataTypes, Model} = require('sequelize');
 
-const {TestElement, getAvailableTestElements, getFailedTestElements, findTestElementsAndTemplateByTestElementId} = require('./TestElementService');
+const {getRedoAndRedisplayTestElements, TestElement, getAvailableTestElements, getFailedTestElements, findTestElementsAndTemplateByTestElementId} = require('./TestElementService');
 
 const {findAllTestDefinitions} = require('./TestDefinitionService');
 
@@ -239,18 +239,39 @@ const getNextTestElement = async (testId) => {
                 // gets failed elements, i.e. that should be in the next iteration
                 const failedElements = await getFailedTestElements(testId, iteration)
 
-                if (failedElements.length > 0 && test.is_first_step) {
+                const redoAndRedisplayElements = await getRedoAndRedisplayTestElements(testId, iteration);
+
+                if ((failedElements.length > 0 || redoAndRedisplayElements.length > 0) && test.is_first_step) {
 
                     const newIteration = iteration + 1;
 
-                    console.log("creating new iteration (" + newIteration + ") with " + failedElements.length + " elements");
+                    console.log("creating new iteration (" + newIteration + ") with " + failedElements.length + " failed elements");
 
+                    // failed elements
                     for (let failedElement of failedElements) {
 
                         let testElement = await TestElement.create({
                             test_id: testId,
                             test_definition_id: failedElement.test_definition_id,
                             iteration: newIteration
+                        })
+
+                        if (returnedTestElement == undefined) {
+                            returnedTestElement = testElement;
+                        }
+                    }
+
+                    console.log("adding to iteration (" + newIteration + ") " + failedElements.length + " redo / redisplay elements");
+
+                    // redo / redisplay elements
+                    for (let redoAndRedisplayElement of redoAndRedisplayElements) {
+
+                        let testElement = await TestElement.create({
+                            test_id: testId,
+                            test_definition_id: redoAndRedisplayElement.test_definition_id,
+                            iteration: newIteration,
+                            is_success: redoAndRedisplayElement.is_redisplay ? true : false
+
                         })
 
                         if (returnedTestElement == undefined) {

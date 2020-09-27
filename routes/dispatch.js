@@ -142,7 +142,42 @@ router.post('/', function (req, res, next) {
                     if(testData.testElement == undefined) {
                         res.render('message', {message: "test is finished"});
                     } else {
-                        res.render('testElement', {user: user, entry: testData.testElement, test: testData.test});
+
+                        if(testData.testElement.is_success) {
+
+                            findTestElementById(testData.testElement.id).then(testElement => {
+
+                                testElement.is_done = true;
+                                testElement.save().then(testElement => {
+
+                                    let test = {
+
+                                        test_id: testData.testElement.test_id,
+                                        test_element_id: testData.testElement.id,
+                                        test_definition_id: testData.testElement.test_definition_id,
+                                        question: testData.testElement.question,
+                                        answer: testData.testElement.answer
+                                    }
+
+                                    res.render('testAnswer', {user: user, entry: test, right_answer : testData.testElement.answer});
+
+
+                                }).catch(error => {
+                                    let msg = 'Unable to get test';
+                                    res.render('error', {message: "", error: error});
+
+                                });
+
+
+                            }).catch(error => {
+                                let msg = 'Unable to get test';
+                                res.render('error', {message: "", error: error});
+
+                            });
+
+                        } else {
+                            res.render('testElement', {user: user, entry: testData.testElement, test: testData.test});
+                        }
                     }
 
                 }).catch(error => {
