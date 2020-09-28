@@ -4,7 +4,7 @@ var router = express.Router();
 var {runTest, findTestById, createTest} = require('../services/TestService')
 
 var {findTestElementById} = require('../services/TestElementService')
-var {findTestDefinitionById} = require('../services/TestDefinitionService')
+var {findTestDefinitionById, findAllTestDefinitions} = require('../services/TestDefinitionService')
 
 
 /**
@@ -64,7 +64,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
 
 }).post('/run/start', function (req, res, next) {
 
-    let login = req.body.login;
+    let login = req.body.login != undefined ? req.body.login : req.body.user;
 
     runTest(login).then(testData => {
         console.info("result of run test " + testData.testElement)
@@ -202,6 +202,89 @@ router.post('/admin/:id/:action', function (req, res, next) {
         res.render('error', {message: "", error: error});
     })
 
+
+}).post('/example/show', function (req, res, next) {
+
+    let login = req.body.user != undefined ? req.body.user : req.body.login;
+    let testDefinitionId = req.body.test_definition_id;
+
+    if(testDefinitionId == undefined) {
+
+        findAllTestDefinitions().then(testDefinitions => {
+
+            const testDefinition = testDefinitions[0];
+
+            res.render('example', {
+                user: login,
+                question: testDefinition.question,
+                answer: testDefinition.answer,
+                testDefinitionId: testDefinition.id
+            });
+
+        }).catch(error => {
+            res.render('error', {message: "", error: error});
+        })
+    } else {
+
+        findTestDefinitionById(testDefinitionId).then(testDefinition => {
+
+            res.render('example', {
+                user: login,
+                question: testDefinition.question,
+                answer: testDefinition.answer,
+                testDefinitionId: testDefinition.id
+            });
+
+        }).catch(error => {
+            res.render('error', {message: "", error: error});
+        })
+    }
+
+}).post('/example/test', function (req, res, next) {
+
+    let login = req.body.user;
+    let testDefinitionId = req.body.test_definition_id;
+
+    findTestDefinitionById(testDefinitionId).then(testDefinition => {
+
+        res.render('exampleTest', {user: login, question : testDefinition.question, testDefinitionId : testDefinition.id});
+
+    }).catch(error => {
+        res.render('error', {message: "", error: error});
+    })
+
+}).post('/example/check', function (req, res, next) {
+
+    let login = req.body.user;
+    let question = req.body.question;
+    let answer = req.body.answer;
+    let testDefinitionId = req.body.test_definition_id;
+
+    findTestDefinitionById(testDefinitionId).then(testDefinition => {
+
+        if(answer === testDefinition.answer) {
+
+            res.render('exampleSuccess', {
+                user: login,
+                question: question,
+                answer: testDefinition.answer,
+                testDefinitionId: testDefinition.id
+            });
+
+        } else {
+
+            res.render('exampleFailed', {
+                user: login,
+                question: question,
+                answer: testDefinition.answer,
+                testDefinitionId: testDefinition.id
+            });
+
+        }
+
+    }).catch(error => {
+        res.render('error', {message: "", error: error});
+    })
 
 });
 
