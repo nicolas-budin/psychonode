@@ -286,6 +286,65 @@ router.post('/admin/:id/:action', function (req, res, next) {
         res.render('error', {message: "", error: error});
     })
 
+}).post('/example/check', function (req, res, next) {
+
+    let login = req.body.user;
+    let question = req.body.question;
+    let answer = req.body.answer;
+    let testDefinitionId = req.body.test_definition_id;
+
+    findTestDefinitionById(testDefinitionId).then(testDefinition => {
+
+        if(answer === testDefinition.answer) {
+
+            res.render('exampleSuccess', {
+                user: login,
+                question: question,
+                answer: testDefinition.answer,
+                testDefinitionId: testDefinition.id
+            });
+
+        } else {
+
+            res.render('exampleFailed', {
+                user: login,
+                question: question,
+                answer: testDefinition.answer,
+                testDefinitionId: testDefinition.id
+            });
+
+        }
+
+    }).catch(error => {
+        res.render('error', {message: "", error: error});
+    })
+
+}).post('/memorize', function (req, res, next) {
+
+    let login = req.body.user != undefined ? req.body.user : req.body.login;
+    let testDefinitionIndex = req.body.test_definition_index != undefined ? (req.body.test_definition_index) : 0;
+    testDefinitionIndex++;
+
+    findAllTestDefinitions().then(testDefinitions => {
+
+        if(testDefinitionIndex < testDefinitions.length) {
+
+            const testDefinition = testDefinitions[testDefinitionIndex];
+
+            res.render('memorize', {
+                user: login,
+                question: testDefinition.question,
+                answer: testDefinition.answer,
+                testDefinitionIndex: testDefinitionIndex
+            });
+        } else {
+
+            res.render('startTest', {user: login});
+        }
+
+    }).catch(error => {
+        res.render('error', {message: "", error: error});
+    })
 });
 
 module.exports = router;
