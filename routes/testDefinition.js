@@ -9,7 +9,7 @@ var {findAllTestDefinitions} = require('../services/TestDefinitionService')
 router.get('/', function (req, res, next) {
 
     findAllTestDefinitions().then(testDefinitions => {
-        res.render('testDefinition', {testDefinitions: testDefinitions});
+        res.render('admin/testDefinition', {testDefinitions: testDefinitions});
     }).catch(error => {
 
             let msg = 'Unable to get tests from database';

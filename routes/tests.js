@@ -72,7 +72,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
         if(testData.testElement == undefined) {
             res.render('message', {message: "test is finished"});
         } else {
-            res.render('testElement', {user: login, entry: testData.testElement, test: testData.test});
+            res.render('test/run/testElement', {user: login, entry: testData.testElement, test: testData.test});
         }
     }).catch(error => {
         let msg = 'Unable to get test';
@@ -110,10 +110,10 @@ router.post('/admin/:id/:action', function (req, res, next) {
             testElement.save().then(testElement => {
 
                 if (!testElement.is_success) {
-                    res.render('testAnswer', {user: user, entry: test, right_answer: testDefinition.answer});
+                    res.render('test/run/testAnswer', {user: user, entry: test, right_answer: testDefinition.answer});
                 } else {
 
-                    res.render('testCorrectAnswer', {user: user, entry: test, right_answer: testDefinition.answer});
+                    res.render('test/run/testCorrectAnswer', {user: user, entry: test, right_answer: testDefinition.answer});
 
                 }
 
@@ -179,7 +179,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
                                     answer: testData.testElement.answer
                                 }
 
-                                res.render('testAnswer', {
+                                res.render('test/run/testAnswer', {
                                     user: user,
                                     entry: test,
                                     right_answer: testData.testElement.answer
@@ -190,7 +190,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
                         }).catch(error => {throw error;});
 
                     } else {
-                        res.render('testElement', {user: user, entry: testData.testElement, test: testData.test});
+                        res.render('test/run/testElement', {user: user, entry: testData.testElement, test: testData.test});
                     }
                 }
 
@@ -214,7 +214,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
 
             const testDefinition = testDefinitions[0];
 
-            res.render('example', {
+            res.render('test/example/example', {
                 user: login,
                 question: testDefinition.question,
                 answer: testDefinition.answer,
@@ -228,7 +228,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
 
         findTestDefinitionById(testDefinitionId).then(testDefinition => {
 
-            res.render('example', {
+            res.render('test/example/example', {
                 user: login,
                 question: testDefinition.question,
                 answer: testDefinition.answer,
@@ -247,7 +247,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
 
     findTestDefinitionById(testDefinitionId).then(testDefinition => {
 
-        res.render('exampleTest', {user: login, question : testDefinition.question, testDefinitionId : testDefinition.id});
+        res.render('test/example/exampleTest', {user: login, question : testDefinition.question, testDefinitionId : testDefinition.id});
 
     }).catch(error => {
         res.render('error', {message: "", error: error});
@@ -264,7 +264,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
 
         if(answer === testDefinition.answer) {
 
-            res.render('exampleSuccess', {
+            res.render('test/example/exampleSuccess', {
                 user: login,
                 question: question,
                 answer: testDefinition.answer,
@@ -273,7 +273,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
 
         } else {
 
-            res.render('exampleFailed', {
+            res.render('test/example/exampleFailed', {
                 user: login,
                 question: question,
                 answer: testDefinition.answer,
@@ -297,7 +297,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
 
         if(answer === testDefinition.answer) {
 
-            res.render('exampleSuccess', {
+            res.render('test/example/exampleSuccess', {
                 user: login,
                 question: question,
                 answer: testDefinition.answer,
@@ -306,7 +306,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
 
         } else {
 
-            res.render('exampleFailed', {
+            res.render('test/example/exampleFailed', {
                 user: login,
                 question: question,
                 answer: testDefinition.answer,
@@ -331,7 +331,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
 
             const testDefinition = testDefinitions[testDefinitionIndex];
 
-            res.render('memorize', {
+            res.render('test/memorize', {
                 user: login,
                 question: testDefinition.question,
                 answer: testDefinition.answer,
@@ -339,7 +339,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
             });
         } else {
 
-            res.render('startTest', {user: login});
+            res.render('test/startTest', {user: login});
         }
 
     }).catch(error => {
