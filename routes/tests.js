@@ -62,7 +62,26 @@ router.post('/admin/:id/:action', function (req, res, next) {
         res.render('error', {message: msg, error: error});
     })
 
-}).post('/run/:id/submit', function (req, res, next) {
+}).post('/run/start', function (req, res, next) {
+
+    let login = req.body.login;
+
+    runTest(login).then(testData => {
+        console.info("result of run test " + testData.testElement)
+
+        if(testData.testElement == undefined) {
+            res.render('message', {message: "test is finished"});
+        } else {
+            res.render('testElement', {user: login, entry: testData.testElement, test: testData.test});
+        }
+    }).catch(error => {
+        let msg = 'Unable to get test';
+        console.error(msg, error);
+        res.render('error', {message: msg, error: error});
+
+    });
+
+}).post('/run/submit', function (req, res, next) {
 
     const user = req.body.user;
 
@@ -107,7 +126,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
     })
 
 
-}).post('/run/:id/next', function (req, res, next) {
+}).post('/run/next', function (req, res, next) {
 
     const user = req.body.user;
 

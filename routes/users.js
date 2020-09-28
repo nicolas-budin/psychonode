@@ -80,7 +80,7 @@ router.get('/', function (req, res, next) {
 
                     console.info("user " + user.id + " updated");
 
-                    res.redirect('/dispatch/' + user.id);
+                    res.redirect(307, '/tests/run/start');
 
                 }).catch(error => {
                     let msg = 'Unable to update user: ' + user.id;
