@@ -11,22 +11,26 @@
 </head>
 <body>
 
+<div class="jumbotron">
+    <p class="lead">Essaye de traduire ce mot !</p>
+</div>
+
 <div class="card">
     <div class="card-header">
-        Please fill the answer
+        Ecris le mot en français
     </div>
     <div class="card-body">
 
         <form action="/tests/example/check" method="post">
 
             <div class="form-group">
-                <label for="question" class="col-form-label">Question</label>
+                <label for="question" class="col-form-label">Hongrois</label>
                 <input type="text" readonly class="form-control" id="question" name="question"
                        value="<%= question %>">
             </div>
 
             <div class="form-group">
-                <label for="answer" class="col-form-label">Answer</label>
+                <label for="answer" class="col-form-label">Francais</label>
                 <input type="text" class="form-control" id="answer" name="answer">
             </div>
 
