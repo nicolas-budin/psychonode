@@ -11,15 +11,16 @@
 </head>
 <body>
 
-<div class="jumbotron">
-    <p class="lead">Essaye de traduire ce mot !</p>
+
+<div class="alert alert-primary" role="alert">
+    <h4 class="alert-heading">Essaye de traduire ce mot !</h4>
 </div>
 
 <div class="card">
-    <div class="card-header">
-        Ecris le mot en français
-    </div>
+
     <div class="card-body">
+
+        <p>Ecris le mot en français</p>
 
         <form action="/tests/example/check" method="post">
 
@@ -38,7 +39,7 @@
             <input type="hidden" class="form-control" id="test_definition_id" name="test_definition_id"
                    value="<%= testDefinitionId %>">
 
-            <button type="submit" class="btn btn-primary">Submit Answer</button>
+            <button type="submit" class="btn btn-primary">Appuie sur cette touche pour continuer</button>
 
         </form>
     </div>

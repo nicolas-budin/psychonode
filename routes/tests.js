@@ -70,7 +70,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
         console.info("result of run test " + testData.testElement)
 
         if(testData.testElement == undefined) {
-            res.render('message', {message: "test is finished"});
+            res.render('test/run/testEnd');
         } else {
             res.render('test/run/testElement', {user: login, entry: testData.testElement, test: testData.test});
         }
@@ -160,7 +160,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
                 console.info("result of run test " + testData.testElement)
 
                 if (testData.testElement == undefined) {
-                    res.render('message', {message: "test is finished"});
+                    res.render('test/run/testEnd');
                 } else {
 
                     if (testData.testElement.is_success) {

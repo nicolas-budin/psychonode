@@ -10,25 +10,27 @@
 </head>
 <body>
 
+<div class="alert alert-warning" role="alert">
+    <h4 class="alert-heading">Ooups !</h4>
+    <p>Tu n’as pas écrit le mot correctement...</p>
+</div>
+
 <div class="card">
 
-    <div class="card-header">
-        Test Element Answer
-    </div>
     <div class="card-body">
         <form action="/tests/run/next" method="post">
 
-            <div class="form-group">
-                <label for="question" class="col-form-label">Question</label>
-                <input type="text" readonly class="form-control" id="question" name="question"
-                       value="<%= entry.question %>">
-            </div>
 
-            <div class="form-group">
-                <label for="answer" class="col-form-label">Answer</label>
-                <input type="text" readonly class="form-control" id="answer" name="answer"
-                       value="<%= right_answer %>">
-            </div>
+            <p>Tu as ecris <b><%= entry.question %></b> alors que la reponse correct est:</p>
+
+            <table>
+                <tr><td><%= entry.question %>&nbsp;&nbsp;=&nbsp;&nbsp;</td><td><%= right_answer %></td></tr>
+            </table>
+
+            <p></p>
+
+            <input type="hidden" readonly class="form-control" id="question" name="question" value="<%= entry.question %>">
+            <input type="hidden" readonly class="form-control" id="answer" name="answer" value="<%= right_answer %>">
 
             <input type="hidden" class="form-control" id="test_id" name="test_id" value="<%= entry.test_id %>">
             <input type="hidden" class="form-control" id="test_element_id" name="test_element_id"
@@ -37,7 +39,7 @@
                    value="<%= entry.test_definition_id %>">
             <input type="hidden" class="form-control" id="user" name="user" value="<%= user %>">
 
-            <button type="submit" class="btn btn-primary">Next</button>
+            <button type="submit" class="btn btn-primary">Appuie sur cette touche pour continuer</button>
         </form>
 
     </div>

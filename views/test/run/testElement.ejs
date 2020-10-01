@@ -10,25 +10,27 @@
 </head>
 <body>
 
+<div class="alert alert-primary" role="alert">
+    <h4 class="alert-heading">Essaye de traduire ce mot !</h4>
+</div>
+
+
 <div class="card">
 
-    <div class="card-header">
-        Test Element
-    </div>
     <div class="card-body">
+
+        <p>Ecris le mot en français:</p>
+
         <form action="/tests/run/submit" method="post">
 
-            <div class="form-group">
-                <label for="question" class="col-form-label">Question</label>
-                <input type="text" readonly class="form-control" id="question" name="question"
-                       value="<%= entry.question %>">
-            </div>
+            <table>
+                <tr><td><%= entry.question %>&nbsp;&nbsp;=&nbsp;&nbsp;</td><td><input type="text" class="form-control" id="answer" name="answer"></td></tr>
+            </table>
 
-            <div class="form-group">
-                <label for="answer" class="col-form-label">Answer</label>
-                <input type="text" class="form-control" id="answer" name="answer">
-            </div>
+            <p></p>
 
+            <input type="hidden" readonly class="form-control" id="question" name="question"
+                   value="<%= entry.question %>">
             <input type="hidden" class="form-control" id="test_id" name="test_id" value="<%= entry.test_id %>">
             <input type="hidden" class="form-control" id="test_element_id" name="test_element_id"
                    value="<%= entry.id %>">
@@ -37,8 +39,7 @@
             <input type="hidden" class="form-control" id="user" name="user" value="<%= user %>">
             <input type="hidden" class="form-control" id="is_first_step" name="is_first_step" value="<%= test.is_first_step %>">
 
-
-            <button type="submit" class="btn btn-primary">Submit Answer</button>
+            <button type="submit" class="btn btn-primary">Appuie sur cette touche pour valider ta reponse !</button>
         </form>
 
     </div>
