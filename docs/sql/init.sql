@@ -22,9 +22,8 @@ CREATE TABLE user
 insert into user (id, age, sex, level)
 values ('nb', 8, 'M', '8');
 insert into user (id)
-values ('nc');
-insert into user (id)
-values ('nd');
+values ('etf');
+
 
 select *
 from user;
@@ -40,15 +39,15 @@ create table test_definition
 );
 
 insert into test_definition (question, answer)
-values ('poulet', 'chicken');
+values ('csirke', 'poulet');
 insert into test_definition (question, answer)
-values ('voiture', 'car');
+values ('sajt', 'fromage');
 insert into test_definition (question, answer)
-values ('avion', 'plane');
+values ('bors', 'poivre');
 insert into test_definition (question, answer)
-values ('pizza', 'pizza');
+values ('fagyi', 'glace');
 insert into test_definition (question, answer)
-values ('banane', 'banana');
+values ('viz', 'eau');
 
 select *
 from test_definition;
