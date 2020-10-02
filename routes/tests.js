@@ -110,7 +110,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
             testElement.save().then(testElement => {
 
                 if (!testElement.is_success) {
-                    res.render('test/run/testAnswer', {user: user, entry: test, right_answer: testDefinition.answer});
+                    res.render('test/run/testWrongAnswer', {user: user, entry: test, right_answer: testDefinition.answer});
                 } else {
 
                     res.render('test/run/testCorrectAnswer', {user: user, entry: test, right_answer: testDefinition.answer});
@@ -322,8 +322,12 @@ router.post('/admin/:id/:action', function (req, res, next) {
 }).post('/memorize', function (req, res, next) {
 
     let login = req.body.user != undefined ? req.body.user : req.body.login;
-    let testDefinitionIndex = req.body.test_definition_index != undefined ? (req.body.test_definition_index) : 0;
-    testDefinitionIndex++;
+    let testDefinitionIndex = 0;
+
+    if(req.body.test_definition_index != undefined) {
+        testDefinitionIndex = req.body.test_definition_index;
+        testDefinitionIndex++;
+    }
 
     findAllTestDefinitions().then(testDefinitions => {
 

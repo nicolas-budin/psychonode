@@ -10,11 +10,18 @@
 </head>
 <body>
 
+<div class="alert alert-warning" role="alert">
+    <h4 class="alert-heading">Ooups !</h4>
+    <p>Tu n’as pas écrit le mot correctement...</p>
+</div>
 
 <div class="card">
 
     <div class="card-body">
         <form action="/tests/run/next" method="post">
+
+
+            <p>Tu as ecris <b><%= entry.answer %></b> alors que la reponse correct est:</p>
 
             <table>
                 <tr><td><%= entry.question %>&nbsp;&nbsp;=&nbsp;&nbsp;</td><td><%= right_answer %></td></tr>
