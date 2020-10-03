@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+
+const {body, validationResult} = require('express-validator');
+
 var {findTestElementsAndTemplateByTestId} = require('../services/TestElementService')
 var {findAllUsers, findUserById} = require('../services/UserService')
 var {findTestsByUserId} = require('../services/TestService')
@@ -53,49 +56,41 @@ router.get('/', function (req, res, next) {
         res.render('error', {message: msg, error: error});
     });
 
-}).post('/save', function (req, res, next) {
+}).post('/save', [body('age', 'Tu dois entrer un age entre 10 et 20 ans :)').isInt({ gt: 9, lt:21})], function (req, res, next) {
 
-    var login = req.body.login;
+    let formUser = {id: req.body.login, age: req.body.age, level: req.body.level, sex: req.body.sex}
 
-    findUserById(login).then(user => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
 
-        // login
-        if (req.body.age == undefined) {
-            res.render('user', {user: user});
+        res.render('user', {errors: errors, user: formUser});
 
-            // save form
-        } else {
+    } else {
 
-            // form is not correctly filled
-            if (req.body.age == '' || req.body.level == '' || req.body.sex == '') {
-                res.render('user', {user: user});
+        findUserById(formUser.id).then(user => {
 
-                // save form
-            } else {
+            user.age = formUser.age;
+            user.level = formUser.level;
+            user.sex = req.body.sex;
 
-                user.age = req.body.age;
-                user.level = req.body.level;
-                user.sex = req.body.sex;
-                user.save().then(user => {
+            user.save().then(user => {
 
-                    console.info("user " + user.id + " updated");
+                console.info("user " + user.id + " updated");
 
-                    res.redirect(307, '/tests/example/show');
+                res.redirect(307, '/tests/example/show');
 
-                }).catch(error => {
-                    let msg = 'Unable to update user: ' + user.id;
-                    console.error(msg, error);
-                    res.render('error', {message: msg, error: error});
-                })
-            }
-        }
-    }).catch(error => {
-        let msg = 'Unable to get user data';
-        console.error(msg, error);
-        res.render('error', {message: msg, error: error});
-    });
+            }).catch(error => {
+                let msg = 'Unable to update user: ' + user.id;
+                console.error(msg, error);
+                res.render('error', {message: msg, error: error});
+            })
 
-
+        }).catch(error => {
+            let msg = 'Unable to get user data';
+            console.error(msg, error);
+            res.render('error', {message: msg, error: error});
+        });
+    }
 });
 
 module.exports = router;
