@@ -352,6 +352,8 @@ router.post('/admin/:id/:action', function (req, res, next) {
 }).get('/download', function(req, res){
     const file = `${__dirname}/../sample.db`;
     res.download(file);
+}).get('/help', function(req, res){
+    res.render('admin/help');
 });
 
 module.exports = router;

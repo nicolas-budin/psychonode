@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+<%- include('navbar'); %>
+
+<div class="card">
+
+    <div class="card-header">
+        Help Page
+    </div>
+    <div class="card-body">
+
+        <h3>Database</h3>
+
+        All data are stored in a <a href="https://www.sqlite.org/index.html">sqlite database</a>.
+        Once downloaded, the database (a single file) can be opened and manipulated with
+        <a href="https://sqlitebrowser.org/">the sqlite browser</a> (available on OSX and Windows).
+
+        <h3>Source Code</h3>
+
+        The source code is available on <a href="https://github.com/nicolas-budin/psychonode">Github</a>
+
+    </div>
+</div>
+</body>
+</html>
