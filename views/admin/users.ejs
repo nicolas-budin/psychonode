@@ -10,6 +10,7 @@
 </head>
 <body>
 
+<%- include('navbar'); %>
 
 <div class="card">
     <div class="card-header">
@@ -28,13 +29,13 @@
             </thead>
             <tbody>
             <% users.forEach(function(entry) { %>
-                <tr>
-                    <td><a href="/users/<%=entry.id%>"><%= entry.id %></a></td>
-                    <td><%= entry.age %></td>
-                    <td><%= entry.level %></td>
-                    <td><%= entry.sex %></td>
-                    <td><a href="/users/<%=entry.id%>/tests">tests</a></td>
-                </tr>
+            <tr>
+                <td><a href="/users/<%= entry.id %>"><%= entry.id %></a></td>
+                <td><%= entry.age %></td>
+                <td><%= entry.level %></td>
+                <td><%= entry.sex %></td>
+                <td><a href="/users/<%= entry.id %>/tests">tests</a></td>
+            </tr>
             <% }) %>
             </tbody>
         </table>
