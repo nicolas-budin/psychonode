@@ -3,9 +3,10 @@
 ## Stack
 
 * mvc / router : https://expressjs.com/
+* rdbms : https://www.sqlitetutorial.net
 * ORM : https://sequelize.org/
-* rdbms : https://www.sqlitetutorial.net/sqlite-create-table/
-* css : https://getbootstrap.com/docs/4.5/getting-started/introduction/
+* authentication : http://www.passportjs.org/
+* css : https://getbootstrap.com/docs/4.5
 
 
 ## Install
