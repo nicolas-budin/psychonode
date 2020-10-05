@@ -8,15 +8,16 @@ var logger = require('morgan');
 const uuid = require('uuid/v4')
 const session = require('express-session')
 
-
-
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
 var loginRouter = require('./routes/login');
 var usersRouter = require('./routes/users');
 var testDefinitionRouter = require('./routes/testDefinition');
 var testsRouter = require('./routes/tests');
 
-var orm = require('./services/TestElementService');
+var {findUserById} = require('./services/UserService')
 
 var app = express();
 
@@ -27,8 +28,10 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json())
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 
 // add & configure middleware
@@ -42,6 +45,45 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
+
+
+const users = [
+    {id: 'nb', email: 'test@test.com', password: 'password'}
+]
+
+// configure passport.js to use the local strategy
+passport.use('local', new LocalStrategy(
+    { usernameField: 'login', passwordField: 'password'},
+    (login, password, done) => {
+
+        findUserById(login).then(user => {
+            if (!user) {
+                return done(null, false, { message: 'Invalid credentials.\n' });
+            }
+            if (password != user.id) {
+                return done(null, false, { message: 'Invalid credentials.\n' });
+            }
+            return done(null, user);
+
+        }).catch(error => done(error));
+    }
+));
+
+
+// tell passport how to serialize the user
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+    console.log(`The user id passport saved in the session file store is: ${id}`)
+    const user = users[0].id === id ? users[0] : false;
+    done(null, user);
+});
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use('/', loginRouter);
 app.use('/users', usersRouter);

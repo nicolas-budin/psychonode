@@ -6,6 +6,7 @@ var {runTest, findTestById, createTest} = require('../services/TestService')
 var {findTestElementById} = require('../services/TestElementService')
 var {findTestDefinitionById, findAllTestDefinitions} = require('../services/TestDefinitionService')
 
+var {loggedIn} = require('../services/UserService')
 
 /**
 
@@ -203,7 +204,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
     })
 
 
-}).post('/example/show', function (req, res, next) {
+}).post('/example/show', loggedIn, function (req, res, next) {
 
     let login = req.body.user != undefined ? req.body.user : req.body.login;
     let testDefinitionId = req.body.test_definition_id;
@@ -240,7 +241,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
         })
     }
 
-}).post('/example/test', function (req, res, next) {
+}).post('/example/test', loggedIn, function (req, res, next) {
 
     let login = req.body.user;
     let testDefinitionId = req.body.test_definition_id;
@@ -253,7 +254,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
         res.render('error', {message: "", error: error});
     })
 
-}).post('/example/check', function (req, res, next) {
+}).post('/example/check', loggedIn, function (req, res, next) {
 
     let login = req.body.user;
     let question = req.body.question;
@@ -286,40 +287,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
         res.render('error', {message: "", error: error});
     })
 
-}).post('/example/check', function (req, res, next) {
-
-    let login = req.body.user;
-    let question = req.body.question;
-    let answer = req.body.answer;
-    let testDefinitionId = req.body.test_definition_id;
-
-    findTestDefinitionById(testDefinitionId).then(testDefinition => {
-
-        if(answer === testDefinition.answer) {
-
-            res.render('test/example/exampleSuccess', {
-                user: login,
-                question: question,
-                answer: testDefinition.answer,
-                testDefinitionId: testDefinition.id
-            });
-
-        } else {
-
-            res.render('test/example/exampleFailed', {
-                user: login,
-                question: question,
-                answer: testDefinition.answer,
-                testDefinitionId: testDefinition.id
-            });
-
-        }
-
-    }).catch(error => {
-        res.render('error', {message: "", error: error});
-    })
-
-}).post('/memorize', function (req, res, next) {
+}).post('/memorize', loggedIn, function (req, res, next) {
 
     let login = req.body.user != undefined ? req.body.user : req.body.login;
     let testDefinitionIndex = 0;

@@ -5,7 +5,7 @@ var router = express.Router();
 const {body, validationResult} = require('express-validator');
 
 var {findTestElementsAndTemplateByTestId} = require('../services/TestElementService')
-var {findAllUsers, findUserById} = require('../services/UserService')
+var {loggedIn, findAllUsers, findUserById} = require('../services/UserService')
 var {findTestsByUserId} = require('../services/TestService')
 
 
@@ -26,7 +26,7 @@ router.get('/', function (req, res, next) {
         }
     );
 
-}).get('/:id', function (req, res, next) {
+}).get('/:id', loggedIn, function (req, res, next) {
 
     findUserById(req.params.id).then(user => {
         res.render('user', {user: user});
@@ -56,7 +56,7 @@ router.get('/', function (req, res, next) {
         res.render('error', {message: msg, error: error});
     });
 
-}).post('/save', [body('age', 'Tu dois entrer un age entre 10 et 20 ans :)').isInt({ gt: 9, lt:21})], function (req, res, next) {
+}).post('/save', loggedIn, [body('age', 'Tu dois entrer un age entre 10 et 20 ans :)').isInt({ gt: 9, lt:21})], function (req, res, next) {
 
     let formUser = {id: req.body.login, age: req.body.age, level: req.body.level, sex: req.body.sex}
 

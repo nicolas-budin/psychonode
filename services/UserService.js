@@ -75,7 +75,16 @@ const findUserById = function (id) {
     });
 }
 
+function loggedIn(req, res, next) {
+    if (req.user) {
+        next();
+    } else {
+        res.redirect('/');
+    }
+}
+
 exports.findAllUsers = findAllUsers;
 exports.findUserById = findUserById;
+exports.loggedIn = loggedIn;
 
 
