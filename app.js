@@ -4,6 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+
+const uuid = require('uuid/v4')
+const session = require('express-session')
+
+
+
+
 var loginRouter = require('./routes/login');
 var usersRouter = require('./routes/users');
 var testDefinitionRouter = require('./routes/testDefinition');
@@ -22,6 +29,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+// add & configure middleware
+app.use(session({
+  genid: (req) => {
+
+    // use UUIDs for session IDs
+    return uuid()
+  },
+  secret: 'the dude abides for all your sins',
+  resave: false,
+  saveUninitialized: true
+}))
 
 app.use('/', loginRouter);
 app.use('/users', usersRouter);
