@@ -47,10 +47,6 @@ app.use(session({
 }))
 
 
-const users = [
-    {id: 'nb', email: 'test@test.com', password: 'password'}
-]
-
 // configure passport.js to use the local strategy
 passport.use('local', new LocalStrategy(
     { usernameField: 'login', passwordField: 'password'},
@@ -76,9 +72,12 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
+
     console.log(`The user id passport saved in the session file store is: ${id}`)
-    const user = users[0].id === id ? users[0] : false;
-    done(null, user);
+
+    findUserById(id).then(user => {
+        done(null, user);
+    }).catch(error => done(error));
 });
 
 app.use(passport.initialize());

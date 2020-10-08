@@ -15,14 +15,19 @@ CREATE TABLE user
     age       integer,
     sex       text,
     level     text,
+    is_admin  boolean default false,
     createdAt date DEFAULT (datetime('now', 'localtime')),
     updatedAt date
 );
 
-insert into user (id, age, sex, level)
-values ('nb', 8, 'M', '8');
-insert into user (id)
-values ('etf');
+insert into user (id, is_admin)
+values ('nb', false);
+insert into user (id, is_admin)
+values ('etf', false);
+insert into user (id, is_admin)
+values ('fb', false);
+insert into user (id, is_admin)
+values ('admin', true);
 
 
 select *

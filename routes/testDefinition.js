@@ -3,13 +3,17 @@ var router = express.Router();
 
 var {findAllTestDefinitions} = require('../services/TestDefinitionService')
 
+var {loggedIn, isAdmin} = require('../services/UserService')
+
+
+
 /**
  * shows entries in test definition
  */
-router.get('/', function (req, res, next) {
+router.get('/', isAdmin, function (req, res, next) {
 
     findAllTestDefinitions().then(testDefinitions => {
-        res.render('admin/testDefinition', {testDefinitions: testDefinitions});
+        res.render('admin/testDefinition',   {testDefinitions: testDefinitions});
     }).catch(error => {
 
             let msg = 'Unable to get tests from database';

@@ -5,7 +5,7 @@ var router = express.Router();
 const {body, validationResult} = require('express-validator');
 
 var {findTestElementsAndTemplateByTestId} = require('../services/TestElementService')
-var {loggedIn, findAllUsers, findUserById} = require('../services/UserService')
+var {isAdmin, loggedIn, findAllUsers, findUserById} = require('../services/UserService')
 var {findTestsByUserId} = require('../services/TestService')
 
 
@@ -13,7 +13,7 @@ var {findTestsByUserId} = require('../services/TestService')
  * - shows list of all users
  * - shows data for one user
  */
-router.get('/', function (req, res, next) {
+router.get('/', isAdmin, function (req, res, next) {
 
 
     findAllUsers().then(users => {
@@ -36,7 +36,7 @@ router.get('/', function (req, res, next) {
         res.render('error', {message: msg, error: error});
     });
 
-}).get('/:id/tests', function (req, res, next) {
+}).get('/:id/tests', isAdmin, function (req, res, next) {
 
     findTestsByUserId(req.params.id).then(tests => {
         res.render('admin/tests', {userId: req.params.id, tests: tests});
@@ -46,7 +46,7 @@ router.get('/', function (req, res, next) {
         res.render('error', {message: msg, error: error});
     });
 
-}).get('/:userId/tests/:id', function (req, res, next) {
+}).get('/:userId/tests/:id', isAdmin, function (req, res, next) {
 
     findTestElementsAndTemplateByTestId(req.params.id).then(testElements => {
         res.render('admin/test', {testElements: testElements, userId: req.params.userId, testId: req.params.id});

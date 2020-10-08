@@ -29,6 +29,9 @@ User.init({
         allowNull: false,
         primaryKey: true
     },
+    is_admin: {
+        type: DataTypes.BOOLEAN
+    },
     age: {
         type: DataTypes.INTEGER
     },
@@ -83,8 +86,17 @@ function loggedIn(req, res, next) {
     }
 }
 
+function isAdmin(req, res, next) {
+    if (req.user && req.user.is_admin) {
+        next();
+    } else {
+        res.redirect('/');
+    }
+}
+
 exports.findAllUsers = findAllUsers;
 exports.findUserById = findUserById;
 exports.loggedIn = loggedIn;
+exports.isAdmin = isAdmin;
 
 

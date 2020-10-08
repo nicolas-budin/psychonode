@@ -26,11 +26,19 @@ router.get('/', function (req, res, next) {
                 console.log(err);
                 return res.redirect('/');
             } else {
-                return res.redirect('/users/' + user.id)
+
+                if(user.is_admin) {
+                    return res.redirect('/users/')
+                } else {
+                    return res.redirect('/users/' + user.id)
+                }
             }
         })
     })(req, res, next);
-})
+}).get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+});
 
 
 module.exports = router;

@@ -6,12 +6,12 @@ var {runTest, findTestById, createTest} = require('../services/TestService')
 var {findTestElementById} = require('../services/TestElementService')
 var {findTestDefinitionById, findAllTestDefinitions} = require('../services/TestDefinitionService')
 
-var {loggedIn} = require('../services/UserService')
+var {loggedIn, isAdmin} = require('../services/UserService')
 
 /**
 
  */
-router.post('/admin/:id/:action', function (req, res, next) {
+router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
 
     const id = req.params.id
@@ -63,7 +63,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
         res.render('error', {message: msg, error: error});
     })
 
-}).post('/run/start', function (req, res, next) {
+}).post('/run/start', loggedIn, function (req, res, next) {
 
     let login = req.body.login != undefined ? req.body.login : req.body.user;
 
@@ -82,7 +82,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
 
     });
 
-}).post('/run/submit', function (req, res, next) {
+}).post('/run/submit', loggedIn, function (req, res, next) {
 
     const user = req.body.user;
 
@@ -127,7 +127,7 @@ router.post('/admin/:id/:action', function (req, res, next) {
     })
 
 
-}).post('/run/next', function (req, res, next) {
+}).post('/run/next', loggedIn, function (req, res, next) {
 
     const user = req.body.user;
 
@@ -317,10 +317,10 @@ router.post('/admin/:id/:action', function (req, res, next) {
     }).catch(error => {
         res.render('error', {message: "", error: error});
     })
-}).get('/download', function(req, res){
+}).get('/download', isAdmin, function(req, res){
     const file = `${__dirname}/../sample.db`;
     res.download(file);
-}).get('/help', function(req, res){
+}).get('/help', isAdmin, function(req, res){
     res.render('admin/help');
 });
 
