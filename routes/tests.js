@@ -148,7 +148,7 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
             if (test.review_choice === 'see') {
                 testElement.is_redisplay = true;
-            } else {
+            } else if (test.review_choice === 'test')  {
                 testElement.is_redo = true;
             }
         }

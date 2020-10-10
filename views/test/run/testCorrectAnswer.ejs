@@ -22,7 +22,7 @@
 <div class="card">
 
     <div class="card-body">
-        <form action="/tests/run/next" method="post">
+        <form action="/tests/run/next" method="post"  autocomplete="off">
 
             <% if (entry.is_first_step === 'true') { %>
                 <fieldset class="form-group">
@@ -45,7 +45,7 @@
 
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="review_choice" id="test"
-                                       value="nothing">
+                                       value="nothing" checked>
                                 <label class="form-check-label" for="test">
                                     Je ne veux pas revoir la paire ni me re-tester
                                 </label>
