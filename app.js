@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 
-const uuid = require('uuid/v4')
+const {uuid} = require('uuidv4')
 const session = require('express-session')
 
 const bodyParser = require('body-parser');
