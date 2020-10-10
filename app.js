@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 
+var bcrypt  = require('bcrypt');
+
 const {uuid} = require('uuidv4')
 const session = require('express-session')
 
@@ -56,7 +58,7 @@ passport.use('local', new LocalStrategy(
             if (!user) {
                 return done(null, false, { message: 'Invalid credentials.\n' });
             }
-            if (password != user.id) {
+            if (! bcrypt.compareSync(password, user.password)) {
                 return done(null, false, { message: 'Invalid credentials.\n' });
             }
             return done(null, user);

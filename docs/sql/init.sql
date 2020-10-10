@@ -12,6 +12,7 @@ drop table if exists user;
 CREATE TABLE user
 (
     id        text PRIMARY KEY,
+    password  text,
     age       integer,
     sex       text,
     level     text,
@@ -20,14 +21,14 @@ CREATE TABLE user
     updatedAt date
 );
 
-insert into user (id, is_admin)
-values ('nb', false);
-insert into user (id, is_admin)
-values ('etf', false);
-insert into user (id, is_admin)
-values ('fb', false);
-insert into user (id, is_admin)
-values ('admin', true);
+insert into user (id, is_admin, password)
+values ('nb', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
+insert into user (id, is_admin, password)
+values ('etf', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
+insert into user (id, is_admin, password)
+values ('fb', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
+insert into user (id, is_admin, password)
+values ('admin', true, '$2b$08$ByH5GZ9TDf0Qnk7RWGXO2efhD5YiQqNt4vFOq.gGPrRsDbRxGJuSC');
 
 
 select *

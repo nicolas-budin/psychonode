@@ -29,6 +29,9 @@ User.init({
         allowNull: false,
         primaryKey: true
     },
+    password: {
+        type: DataTypes.STRING
+    },
     is_admin: {
         type: DataTypes.BOOLEAN
     },
