@@ -39,6 +39,7 @@
                 <th>Succeeded</th>
                 <th>Redo</th>
                 <th>Show Again</th>
+                <th>Is a Repeat</th>
             </tr>
             </thead>
             <tbody>
@@ -52,6 +53,7 @@
                     <td><%= entry.is_success ? '+' : '-'%></td>
                     <td><%= entry.is_redo ? '+' : '-' %></td>
                     <td><%= entry.is_redisplay ? '+' : '-' %></td>
+                    <td><%= entry.is_a_repeat ? '+' : '-' %></td>
                 </tr>
             <% }) %>
             </tbody>

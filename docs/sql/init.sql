@@ -84,6 +84,7 @@ create table test_element
     is_redo            boolean default false,
     is_done            boolean default false,
     is_redisplay       boolean default false,
+    is_a_repeat        boolean default false,
     usage_counter      integer default 0,
     user_answer        text,
     createdAt          date    DEFAULT (datetime('now', 'localtime')),

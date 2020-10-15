@@ -77,7 +77,21 @@ router.get('/', isAdmin, function (req, res, next) {
 
                 console.info("user " + user.id + " updated");
 
-                res.redirect(307, '/tests/example/show');
+
+                findTestsByUserId(formUser.id).then(tests => {
+
+                    if(tests.length > 0 && !tests[0].is_first_step) {
+                        res.redirect(307, '/tests/run/start');
+                    } else {
+                        res.redirect(307, '/tests/example/show');
+                    }
+                }).catch(error => {
+                    let msg = 'Unable to get user tests';
+                    console.error(msg, error);
+                    res.render('error', {message: msg, error: error});
+                });
+
+
 
             }).catch(error => {
                 let msg = 'Unable to update user: ' + user.id;

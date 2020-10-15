@@ -51,6 +51,9 @@ TestElement.init({
     is_redo: {
         type: DataTypes.BOOLEAN
     },
+    is_a_repeat: {
+        type: DataTypes.BOOLEAN
+    },
     is_redisplay: {
         type: DataTypes.BOOLEAN
     },
@@ -97,26 +100,26 @@ const findTestElementById = function (id) {
 }
 
 const getFailedTestElements = (testId, iteration) => {
-    return getTestElements(testId, iteration, true, false)
+    return getTestElements(testId, iteration, true, false, false)
 }
 
 const getRedoAndRedisplayTestElements = (testId, iteration) => {
     return sequelize.query(
-        "select te.*\n" +
+        "select distinct te.*\n" +
         "from test_definition td,\n" +
         "     test t,\n" +
         "     test_element te\n" +
         "where t.id = :testId\n" +
         "  and te.test_id = t.id\n" +
         "  and te.test_definition_id = td.id\n" +
-        "  and te.iteration = :iteration\n" +
+        "  and (te.iteration = :iteration or te.iteration = :previousIteration) \n" +
         "  and te.is_done = true\n" +
         "  and (te.is_redisplay = true or te.is_redo = true) \n" +
         "  and te.is_success = true\n" +
         "order by td.id asc;",
         {
             type: QueryTypes.SELECT,
-            replacements: {testId: testId, iteration: iteration},
+            replacements: {testId: testId, iteration: iteration, previousIteration: (iteration - 1)},
             logging: console.log,
             raw: false
         });
@@ -124,9 +127,9 @@ const getRedoAndRedisplayTestElements = (testId, iteration) => {
 
 
 const getAvailableTestElements = (testId, iteration) => {
-    return getTestElements(testId, iteration, false, undefined)
+    return getTestElements(testId, iteration, false, undefined, undefined)
 }
-const getTestElements = (testId, iteration, isDone, isSuccess) => {
+const getTestElements = (testId, iteration, isDone, isSuccess, isARepeat) => {
 
     return sequelize.query(
         "select te.*\n" +
@@ -139,10 +142,11 @@ const getTestElements = (testId, iteration, isDone, isSuccess) => {
         "  and te.iteration = :iteration\n" +
         "  and te.is_done = :isDone\n" +
         ((isSuccess != undefined) ? "  and te.is_success = :isSuccess\n" : "\n") +
+        ((isARepeat != undefined) ? "  and te.is_a_repeat = :isARepeat\n" : "\n") +
         "order by td.id asc;",
         {
             type: QueryTypes.SELECT,
-            replacements: {testId: testId, iteration: iteration, isDone: isDone, isSuccess: isSuccess},
+            replacements: {testId: testId, iteration: iteration, isDone: isDone, isSuccess: isSuccess, isARepeat: isARepeat},
             logging: console.log,
             raw: false
         });

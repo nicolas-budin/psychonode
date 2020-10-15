@@ -110,11 +110,18 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
             testElement.save().then(testElement => {
 
                 if (!testElement.is_success) {
-                    res.render('test/run/testWrongAnswer', {entry: test, right_answer: testDefinition.answer});
+                    if (!testElement.is_a_repeat) {
+                        res.render('test/run/testWrongAnswer', {entry: test, right_answer: testDefinition.answer});
+                    } else {
+                        res.render('test/run/testWrongAnswerNoCorrection', {entry: test, right_answer: testDefinition.answer});
+                    }
                 } else {
 
-                    res.render('test/run/testCorrectAnswer', {entry: test, right_answer: testDefinition.answer});
-
+                    if (!testElement.is_a_repeat) {
+                        res.render('test/run/testCorrectAnswer', {entry: test, right_answer: testDefinition.answer});
+                    } else {
+                        res.render('test/run/testCorrectAnswerNoChoice', {entry: test, right_answer: testDefinition.answer});
+                    }
                 }
 
             }).catch(error => {throw error;})

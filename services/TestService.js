@@ -270,7 +270,8 @@ const getNextTestElement = async (testId) => {
                             test_id: testId,
                             test_definition_id: redoAndRedisplayElement.test_definition_id,
                             iteration: newIteration,
-                            is_success: redoAndRedisplayElement.is_redisplay ? true : false
+                            is_success: redoAndRedisplayElement.is_redisplay ? true : false,
+                            is_a_repeat: true
 
                         })
 
@@ -294,7 +295,7 @@ const getNextTestElement = async (testId) => {
                 console.log("there are " + availableElements.length +
                     " remaining elements to be tested in  iteration " + iteration);
 
-                returnedTestElement = availableElements[0];
+                returnedTestElement = availableElements[between(0, availableElements.length)];
             }
 
         } else {
@@ -304,7 +305,9 @@ const getNextTestElement = async (testId) => {
 
             console.log("creating first test iteration for " + testDefinitions.length +" definitions");
 
-            for (let testDefinition of testDefinitions) {
+            for (let i = 1; testDefinitions.length > 0 && i < testDefinitions.length; i++) {
+
+                let testDefinition = testDefinitions[i];
 
                 let testElement = await TestElement.create({
                     test_id: testId,
@@ -334,7 +337,11 @@ const getNextTestElement = async (testId) => {
 
 }
 
-
+function between(min, max) {
+    return Math.floor(
+        Math.random() * (max - min) + min
+    )
+}
 
 
 exports.findTestsByUserId = findTestsByUserId;
