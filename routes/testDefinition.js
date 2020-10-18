@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var {findAllTestDefinitions} = require('../services/TestDefinitionService')
+var {findAllActiveTestDefinitions} = require('../services/TestDefinitionService')
 
 var {loggedIn, isAdmin} = require('../services/UserService')
 
@@ -12,7 +12,7 @@ var {loggedIn, isAdmin} = require('../services/UserService')
  */
 router.get('/', isAdmin, function (req, res, next) {
 
-    findAllTestDefinitions().then(testDefinitions => {
+    findAllActiveTestDefinitions().then(testDefinitions => {
         res.render('admin/testDefinition',   {testDefinitions: testDefinitions});
     }).catch(error => {
 

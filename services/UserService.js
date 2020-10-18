@@ -107,5 +107,6 @@ exports.findAllUsers = findAllUsers;
 exports.findUserById = findUserById;
 exports.loggedIn = loggedIn;
 exports.isAdmin = isAdmin;
+exports.User = User;
 
 

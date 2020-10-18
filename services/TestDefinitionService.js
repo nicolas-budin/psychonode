@@ -71,9 +71,7 @@ const findAllTestDefinitions = async () => {
         console.error("Failed to get test definitions", error);
         throw error;
     }
-
 }
-
 
 const findTestDefinitionById = function (id) {
     return new Promise((success, error) => {
@@ -82,6 +80,24 @@ const findTestDefinitionById = function (id) {
 }
 
 
+const findAllActiveTestDefinitions = () => {
+
+    return sequelize.query(
+        "select td.*\n" +
+        "from test_definition td,\n" +
+        "     test_definition_set tds\n" +
+        "where td.setId = tds.id\n" +
+        "  and tds.is_active = TRUE\n" +
+        "order by td.id asc;",
+        {
+            type: QueryTypes.SELECT,
+            logging: console.log,
+            raw: false
+        });
+}
+
+
 exports.findAllTestDefinitions = findAllTestDefinitions;
 exports.findTestDefinitionById = findTestDefinitionById;
+exports.findAllActiveTestDefinitions = findAllActiveTestDefinitions;
 

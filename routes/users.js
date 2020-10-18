@@ -5,7 +5,7 @@ var router = express.Router();
 const {body, validationResult} = require('express-validator');
 
 var {findTestElementsByTestId} = require('../services/TestElementService')
-var {isAdmin, loggedIn, findAllUsers, findUserById} = require('../services/UserService')
+var {User, isAdmin, loggedIn, findAllUsers, findUserById} = require('../services/UserService')
 var {findTestsByUserId} = require('../services/TestService')
 
 
@@ -26,10 +26,26 @@ router.get('/', isAdmin, function (req, res, next) {
         }
     );
 
+}).get('/new', isAdmin, function (req, res, next) {
+
+    let user = {id: '', age : '', level : '', language : '', sex : ''}
+    res.render('admin/user', {user: user});
+
 }).get('/:id', loggedIn, function (req, res, next) {
 
+
+    if(req.params.id === "admin") {
+        res.render('error', {message: "admin cannot be viewed / modified"});
+    }
+
     findUserById(req.params.id).then(user => {
-        res.render('user', {user: user});
+
+        if(req.user.is_admin) {
+            res.render('admin/user', {user: user});
+        } else {
+            res.render('user', {user: user});
+        }
+
     }).catch(error => {
         let msg = 'Unable to get user data';
         console.error(msg, error);
@@ -78,18 +94,18 @@ router.get('/', isAdmin, function (req, res, next) {
                 console.info("user " + user.id + " updated");
 
 
-                findTestsByUserId(formUser.id).then(tests => {
+                    findTestsByUserId(formUser.id).then(tests => {
 
-                    if(tests.length > 0 && !tests[0].is_first_step) {
-                        res.redirect(307, '/tests/run/start');
-                    } else {
-                        res.redirect(307, '/tests/example/show');
-                    }
-                }).catch(error => {
-                    let msg = 'Unable to get user tests';
-                    console.error(msg, error);
-                    res.render('error', {message: msg, error: error});
-                });
+                        if (tests.length > 0 && !tests[0].is_first_step) {
+                            res.redirect(307, '/tests/run/start');
+                        } else {
+                            res.redirect(307, '/tests/example/show');
+                        }
+                    }).catch(error => {
+                        let msg = 'Unable to get user tests';
+                        console.error(msg, error);
+                        res.render('error', {message: msg, error: error});
+                    });
 
 
 
@@ -105,6 +121,50 @@ router.get('/', isAdmin, function (req, res, next) {
             res.render('error', {message: msg, error: error});
         });
     }
+}).post('/admin/save', isAdmin, function (req, res, next) {
+
+    let formUser = {
+        id: req.body.login,
+        age: req.body.age,
+        level: req.body.level,
+        sex: req.body.sex,
+        language: req.body.language
+    }
+
+    findUserById(formUser.id).then(user => {
+
+        user.age = formUser.age;
+        user.level = formUser.level;
+        user.sex = formUser.sex;
+        user.language = formUser.language;
+
+        user.save().then(user => {
+
+            console.info("user " + user.id + " updated");
+            res.redirect('/users/');
+
+        }).catch(error => {
+            let msg = 'Unable to update user: ' + user.id;
+            console.error(msg, error);
+            res.render('error', {message: msg, error: error});
+        })
+
+    }).catch(error => {
+
+        console.info("user " + formUser.id + " does not exists -> will create it");
+
+        User.create(formUser).
+        then(user => {
+            console.info("user " + user.id + " created");
+            res.redirect('/users/');
+
+        }).catch(error => {
+            let msg = 'Unable to create user: ' + formUser.id;
+            console.error(msg, error);
+            res.render('error', {message: msg, error: error});
+        })
+    });
+
 });
 
 module.exports = router;

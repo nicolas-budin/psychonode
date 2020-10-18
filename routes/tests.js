@@ -4,7 +4,7 @@ var router = express.Router();
 var {runTest, findTestById, createTest} = require('../services/TestService')
 
 var {findTestElementById} = require('../services/TestElementService')
-var {findTestDefinitionById, findAllTestDefinitions} = require('../services/TestDefinitionService')
+var {findTestDefinitionById, findAllActiveTestDefinitions} = require('../services/TestDefinitionService')
 
 var {loggedIn, isAdmin} = require('../services/UserService')
 
@@ -215,7 +215,7 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
     if(testDefinitionId == undefined) {
 
-        findAllTestDefinitions().then(testDefinitions => {
+        findAllActiveTestDefinitions().then(testDefinitions => {
 
             const testDefinition = testDefinitions[0];
 
@@ -287,14 +287,14 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
 }).post('/memorize', loggedIn, function (req, res, next) {
 
-    let testDefinitionIndex = 0;
+    let testDefinitionIndex = 1;
 
     if(req.body.test_definition_index != undefined) {
         testDefinitionIndex = req.body.test_definition_index;
         testDefinitionIndex++;
     }
 
-    findAllTestDefinitions().then(testDefinitions => {
+    findAllActiveTestDefinitions().then(testDefinitions => {
 
         if(testDefinitionIndex < testDefinitions.length) {
 

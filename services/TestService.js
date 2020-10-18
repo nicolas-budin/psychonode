@@ -2,7 +2,7 @@ const {QueryTypes, Sequelize, DataTypes, Model} = require('sequelize');
 
 const {getRedoAndRedisplayTestElements, TestElement, getAvailableTestElements, getFailedTestElements} = require('./TestElementService');
 
-const {findAllTestDefinitions} = require('./TestDefinitionService');
+const {findAllActiveTestDefinitions} = require('./TestDefinitionService');
 
 
 // creates rdbms access
@@ -308,7 +308,7 @@ const getNextTestElement = async (testId) => {
         } else {
 
             const iteration = 0;
-            const testDefinitions = await findAllTestDefinitions();
+            const testDefinitions = await findAllActiveTestDefinitions();
 
             console.log("creating first test iteration for " + testDefinitions.length +" definitions");
 

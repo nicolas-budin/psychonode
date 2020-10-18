@@ -30,8 +30,10 @@ TestDefinitionSet.init({
         autoIncrement: true
     },
     description: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING
+    },
+    is_active: {
+        type: DataTypes.BOOLEAN
     },
     language: {
         type: DataTypes.STRING,
