@@ -1,0 +1,59 @@
+
+
+
+
+
+
+
+Bienvenue!
+Remplis ton numéro d'identification
+Remplis ton mot de passe
+Appuie sur une touche pour continuer
+
+Avant de commencer, tu vas remplir ce formulaire.
+Ton âge
+Ton sexe
+Fille
+Garçon
+Ton degré scolaire
+Tu dois entrer un age entre 10 et 20 ans :)
+
+Dans cet exercice, tu vas apprendre des mots en Hongrois !
+Essaye de retenir cet exemple:
+Hongrois
+Francais
+
+Essaye de traduire ce mot !
+Ecris le mot en français
+Appuie sur cette touche pour continuer
+
+
+Tu n’as pas écrit le mot correctement...
+Question
+Réponse
+Appuie sur cette touche pour réessayer !
+
+Bravo ! Tu as réussi !
+On va maintenant te présenter 15 paires de mots à la suite.
+Essaye de retenir la traduction de tous les mots !
+Plus tard, on te donnera le mot Hongrois et tu devras écrire la traduction en français.
+Appuie sur cette touche pour commencer !
+
+
+Essaye de retenir le mot numero
+
+
+Appuie sur cette touche pour valider ta reponse !
+
+
+Je veux revoir la paire de mots plus tard
+Je veux me re-tester avec la paire plus tard
+Je ne veux pas revoir la paire ni me re-tester
+
+
+
+Tu as ecris
+alors que la reponse correct est:
+
+
+Bravo ! C'est terminé !

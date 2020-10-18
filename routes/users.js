@@ -4,7 +4,7 @@ var router = express.Router();
 
 const {body, validationResult} = require('express-validator');
 
-var {findTestElementsAndTemplateByTestId} = require('../services/TestElementService')
+var {findTestElementsByTestId} = require('../services/TestElementService')
 var {isAdmin, loggedIn, findAllUsers, findUserById} = require('../services/UserService')
 var {findTestsByUserId} = require('../services/TestService')
 
@@ -48,7 +48,7 @@ router.get('/', isAdmin, function (req, res, next) {
 
 }).get('/:userId/tests/:id', isAdmin, function (req, res, next) {
 
-    findTestElementsAndTemplateByTestId(req.params.id).then(testElements => {
+    findTestElementsByTestId(req.params.id).then(testElements => {
         res.render('admin/test', {testElements: testElements, userId: req.params.userId, testId: req.params.id});
     }).catch(error => {
         let msg = 'Unable to get test elements';

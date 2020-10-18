@@ -15,29 +15,25 @@ sequelize.authenticate().then(() => {
 });
 
 
-//
-// entities
-//
+/**
+ * a set of test definitions, i.e. groups a list of test definitions
+ */
 
-
-
-class TestDefinition extends Model {
+class TestDefinitionSet extends Model {
 }
 
-TestDefinition.init({
+TestDefinitionSet.init({
 
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
-    },setId: {
-        type: DataTypes.INTEGER,
     },
-    question: {
+    description: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    answer: {
+    language: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -50,38 +46,33 @@ TestDefinition.init({
 }, {
 
     sequelize,
-    modelName: 'test_definition',
+    modelName: 'test_definition_set',
     freezeTableName: true
 });
 
-
-
-
-
-const findAllTestDefinitions = async () => {
+const findAllTestDefinitionSet = async () => {
 
     try {
-        const testDefinitions = await TestDefinition.findAll({
+        const testDefinitionsSet = await TestDefinitionSet.findAll({
             order: [['id', 'ASC']]
         });
 
-        return testDefinitions;
+        return testDefinitionsSet;
 
     } catch (error) {
-        console.error("Failed to get test definitions", error);
+        console.error("Failed to get test definition sets", error);
         throw error;
     }
 
 }
 
-
-const findTestDefinitionById = function (id) {
+const findTestDefinitionSetById = function (id) {
     return new Promise((success, error) => {
-        TestDefinition.findByPk(id).then(success).catch(error);
+        TestDefinitionSet.findByPk(id).then(success).catch(error);
     });
 }
 
 
-exports.findAllTestDefinitions = findAllTestDefinitions;
-exports.findTestDefinitionById = findTestDefinitionById;
+exports.findAllTestDefinitionSet = findAllTestDefinitionSet;
+exports.findTestDefinitionSetById = findTestDefinitionSetById;
 

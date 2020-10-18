@@ -1,6 +1,6 @@
 const {QueryTypes, Sequelize, DataTypes, Model} = require('sequelize');
 
-const {getRedoAndRedisplayTestElements, TestElement, getAvailableTestElements, getFailedTestElements, findTestElementsAndTemplateByTestElementId} = require('./TestElementService');
+const {getRedoAndRedisplayTestElements, TestElement, getAvailableTestElements, getFailedTestElements} = require('./TestElementService');
 
 const {findAllTestDefinitions} = require('./TestDefinitionService');
 
@@ -35,6 +35,9 @@ Test.init({
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
+    },
+    setId: {
+        type: DataTypes.INTEGER,
     },
     children_id: {
         type: DataTypes.INTEGER,
@@ -253,6 +256,8 @@ const getNextTestElement = async (testId) => {
                         let testElement = await TestElement.create({
                             test_id: testId,
                             test_definition_id: failedElement.test_definition_id,
+                            question : failedElement.question,
+                            answer : failedElement.answer,
                             iteration: newIteration
                         })
 
@@ -269,6 +274,8 @@ const getNextTestElement = async (testId) => {
                         let testElement = await TestElement.create({
                             test_id: testId,
                             test_definition_id: redoAndRedisplayElement.test_definition_id,
+                            question : redoAndRedisplayElement.question,
+                            answer : redoAndRedisplayElement.answer,
                             iteration: newIteration,
                             is_success: redoAndRedisplayElement.is_redisplay ? true : false,
                             is_a_repeat: true
@@ -312,6 +319,8 @@ const getNextTestElement = async (testId) => {
                 let testElement = await TestElement.create({
                     test_id: testId,
                     test_definition_id: testDefinition.id,
+                    question : testDefinition.question,
+                    answer : testDefinition.answer,
                     iteration: iteration
                 })
 
@@ -322,10 +331,10 @@ const getNextTestElement = async (testId) => {
         }
 
         let testElementsAndTemplate = undefined;
+
         if(returnedTestElement != undefined) {
 
-            testElementsAndTemplate = await findTestElementsAndTemplateByTestElementId(returnedTestElement.id)
-            testElementsAndTemplate = testElementsAndTemplate[0];
+            testElementsAndTemplate = returnedTestElement;
         }
 
         return testElementsAndTemplate;

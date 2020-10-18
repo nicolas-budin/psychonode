@@ -60,6 +60,12 @@ TestElement.init({
     usage_counter: {
         type: DataTypes.INTEGER
     },
+    question: {
+        type: DataTypes.TEXT
+    },
+    answer: {
+        type: DataTypes.TEXT
+    },
     user_answer: {
         type: DataTypes.TEXT
     },
@@ -152,53 +158,15 @@ const getTestElements = (testId, iteration, isDone, isSuccess, isARepeat) => {
         });
 }
 
-
-const findTestElementsAndTemplateByTestElementId = function (testElementId) {
-    return sequelize.query("select te.*, td.question, td.answer\n" +
-        "from test t,\n" +
-        "     test_element te,\n" +
-        "     test_definition td\n" +
-        "where te.id = :testElementId" +
-        "  and te.test_id = t.id\n" +
-        "  and te.test_definition_id = td.id",
-        {
-            type: QueryTypes.SELECT,
-            replacements: {testElementId: testElementId},
-            logging: console.log,
-            raw: false
-        });
-}
-
-
-const findTestElementsAndTemplateByTestId = function (testId) {
-    return sequelize.query("select te.*, td.question, td.answer\n" +
-        "from test t,\n" +
-        "     test_element te,\n" +
-        "     test_definition td\n" +
-        "where t.id = :testId" +
-        "  and te.test_id = t.id\n" +
-        "  and te.test_definition_id = td.id\n" +
-        "order by te.id desc;",
-        {
-            type: QueryTypes.SELECT,
-            replacements: {testId: testId},
-            logging: console.log,
-            raw: false
-        });
-}
-
-
 //
 // export
 //
 
 exports.findTestElementsByTestId = findTestElementsByTestId;
 exports.findTestElementById = findTestElementById;
-exports.findTestElementsAndTemplateByTestElementId = findTestElementsAndTemplateByTestElementId;
 exports.getFailedTestElements = getFailedTestElements;
 exports.getAvailableTestElements = getAvailableTestElements;
 exports.TestElement = TestElement;
-exports.findTestElementsAndTemplateByTestId = findTestElementsAndTemplateByTestId;
 exports.getRedoAndRedisplayTestElements = getRedoAndRedisplayTestElements;
 
 

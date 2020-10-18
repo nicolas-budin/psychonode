@@ -32,6 +32,12 @@ User.init({
     password: {
         type: DataTypes.STRING
     },
+    setId: {
+        type: DataTypes.INTEGER,
+    },
+    language: {
+        type: DataTypes.STRING
+    },
     is_admin: {
         type: DataTypes.BOOLEAN
     },
