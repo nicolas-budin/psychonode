@@ -2,33 +2,32 @@
 <html>
 <head>
 
+
     <%- include('../header'); %>
+
 </head>
 
 <%- include('navbar'); %>
 
 <body>
 <div class="card">
-
-    <div class="card-header">
-        test definitions for set <%= testDefinitions.length > 0 ? testDefinitions[0].setId : '' %>
-    </div>
-
     <div class="card-body">
         <table class="table table-striped">
             <thead>
             <tr>
                 <th>id</th>
-                <th>question</th>
-                <th>answer</th>
+                <th>description</th>
+                <th>Active</th>
+                <th>language</th>
             </tr>
             </thead>
             <tbody>
-            <% testDefinitions.forEach(function(entry) { %>
+            <% testDefinitionSets.forEach(function(entry) { %>
                 <tr>
-                    <td><%= entry.id %></td>
-                    <td><%= entry.question %></td>
-                    <td><%= entry.answer %></td>
+                    <td><a href="<%= '/test_definition/' + entry.id %>"><%= entry.id %></a></td>
+                    <td><%= entry.description %></td>
+                    <td><%= entry.is_active ? '+' : '' %></td>
+                    <td><%= entry.language %></td>
                 </tr>
             <% }) %>
             </tbody>

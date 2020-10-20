@@ -97,7 +97,26 @@ const findAllActiveTestDefinitions = () => {
 }
 
 
+const findTestDefinitionBySetId = async (id) => {
+    try {
+        const testDefinitions = TestDefinition.findAll({
+            where: {
+                setId: id
+            },
+            order: [['id', 'DESC']]
+        });
+
+        return testDefinitions;
+
+    } catch (error) {
+        console.error("Failed to get testDefinitions for set id: " + id, error);
+        throw error;
+    }
+}
+
+
 exports.findAllTestDefinitions = findAllTestDefinitions;
 exports.findTestDefinitionById = findTestDefinitionById;
 exports.findAllActiveTestDefinitions = findAllActiveTestDefinitions;
+exports.findTestDefinitionBySetId = findTestDefinitionBySetId;
 
