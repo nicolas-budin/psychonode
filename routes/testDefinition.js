@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-var {findAllActiveTestDefinitions, findTestDefinitionBySetId} = require('../services/TestDefinitionService')
-var {findAllTestDefinitionSet} = require('../services/TestDefinitionSetService')
+var {findAllActiveTestDefinitions} = require('../services/TestDefinitionService')
+var {TestDefinitionSet, findAllTestDefinitionSet, findTestDefinitionSetById, findTestDefinitionSetAnDefinitionsById} = require('../services/TestDefinitionSetService')
 
 var {loggedIn, isAdmin} = require('../services/UserService')
 
@@ -35,10 +35,37 @@ router.get('/', isAdmin, function (req, res, next) {
         }
     );
 
+}).post('/save', isAdmin, function (req, res, next) {
+
+
+    findTestDefinitionSetById(req.body.id).then(testDefinition => {
+
+        testDefinition.is_active = req.body.is_active != undefined ? true : false;
+
+        testDefinition.save().then(testDefinition => {
+
+                console.info("testDefinition " + testDefinition.id + " updated");
+
+                res.redirect('/test_definition/');
+
+            }).catch(error => {
+                let msg = 'Unable to update definition set: ' + user.id;
+                console.error(msg, error);
+                res.render('error', {message: msg, error: error});
+            })
+
+        }).catch(error => {
+            let msg = 'Unable to get definition set';
+            console.error(msg, error);
+            res.render('error', {message: msg, error: error});
+        });
+
+
+
 }).get('/:id', isAdmin, function (req, res, next) {
 
-    findTestDefinitionBySetId(req.params.id).then(testDefinitions => {
-        res.render('admin/testDefinition',   {testDefinitions: testDefinitions});
+    findTestDefinitionSetAnDefinitionsById(req.params.id).then(data => {
+        res.render('admin/testDefinition',   {testDefinitions: data.testDefinitions, testDefinitionsSet: data.testDefinitionsSet});
     }).catch(error => {
 
             let msg = 'Unable to get test definitions from database';

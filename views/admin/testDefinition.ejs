@@ -5,13 +5,63 @@
     <%- include('../header'); %>
 </head>
 
+<body>
+
 <%- include('navbar'); %>
 
-<body>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/test_definition/">Data sets</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><%= testDefinitions.length > 0 ? testDefinitions[0].setId : '' %></li>
+    </ol>
+</nav>
+
+
+<div class="card">
+
+
+    <div class="card-header">
+        Set Data
+    </div>
+
+    <div class="card-body">
+
+        <form action="/test_definition/save" method="post" autocomplete="off">
+
+            <table class="table">
+                <tr>
+                    <th width="10%">language</th>
+                    <td><%= testDefinitionsSet.language %></td>
+                </tr>
+
+                <tr>
+                    <th width="10%">is selected</th>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                                    <%= testDefinitionsSet.is_active ? 'checked' : '' %>
+                                   id="is_active" name="is_active">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <input type="hidden"  id="id" name="id" value="<%= testDefinitionsSet.id %>">
+
+            <button type="submit" class="btn btn-primary">Update</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<p></p>
+
 <div class="card">
 
     <div class="card-header">
-        test definitions for set <%= testDefinitions.length > 0 ? testDefinitions[0].setId : '' %>
+        Definitions
     </div>
 
     <div class="card-body">

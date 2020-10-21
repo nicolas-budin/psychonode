@@ -1,6 +1,9 @@
 const {QueryTypes, Sequelize, DataTypes, Model} = require('sequelize');
 
 
+var {findTestDefinitionBySetId} = require('./TestDefinitionService')
+
+
 // creates rdbms access
 const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -74,7 +77,26 @@ const findTestDefinitionSetById = function (id) {
     });
 }
 
+const findTestDefinitionSetAnDefinitionsById = async (id) => {
+
+    try {
+
+        const testDefinitionsSet = await findTestDefinitionSetById(id);
+
+        const testDefinitions  = await findTestDefinitionBySetId(id);
+
+        return {testDefinitionsSet : testDefinitionsSet, testDefinitions : testDefinitions};
+
+    } catch (error) {
+        console.error("Failed to get test definition sets", error);
+        throw error;
+    }
+
+}
+
 
 exports.findAllTestDefinitionSet = findAllTestDefinitionSet;
 exports.findTestDefinitionSetById = findTestDefinitionSetById;
+exports.findTestDefinitionSetAnDefinitionsById = findTestDefinitionSetAnDefinitionsById;
+exports.TestDefinitionSet = TestDefinitionSet;
 
