@@ -20,16 +20,23 @@
     <div class="card-body">
         <form action="/tests/run/next" method="post">
 
+            <% if (entry.is_first_step === 'true') { %>
 
-            <p>Tu as ecris <b><%= entry.answer %></b> alors que la reponse correct est:</p>
+                <p>Tu as ecris <b><%= entry.answer %></b> alors que la reponse correct est:</p>
 
-            <table>
-                <tr><td><%= entry.question %>&nbsp;&nbsp;=&nbsp;&nbsp;</td><td><%= right_answer %></td></tr>
-            </table>
+                <table>
+                    <tr>
+                        <td><%= entry.question %>&nbsp;&nbsp;=&nbsp;&nbsp;</td>
+                        <td><%= right_answer %></td>
+                    </tr>
+                </table>
 
-            <p></p>
+                <p></p>
 
-            <input type="hidden" readonly class="form-control" id="question" name="question" value="<%= entry.question %>">
+            <% } %>
+
+            <input type="hidden" readonly class="form-control" id="question" name="question"
+                   value="<%= entry.question %>">
             <input type="hidden" readonly class="form-control" id="answer" name="answer" value="<%= right_answer %>">
 
             <input type="hidden" class="form-control" id="test_id" name="test_id" value="<%= entry.test_id %>">
