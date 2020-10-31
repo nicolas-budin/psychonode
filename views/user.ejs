@@ -11,7 +11,7 @@
 <body>
 
 <div class="alert alert-primary" role="alert">
-    <h2>Hello <%= user.id %>!</h2>
+    <h2>Hello <%= user.login %>!</h2>
     <p>Avant de commencer, tu vas remplir ce formulaire.</p>
 </div>
 
@@ -51,7 +51,7 @@
             </div>
 
 
-            <input type="hidden" id="login" name="login" value="<%= user.id %>">
+            <input type="hidden" id="id" name="id" value="<%= user.id %>">
             <button type="submit" class="btn btn-primary">Appuie sur cette touche pour continuer</button>
         </form>
 

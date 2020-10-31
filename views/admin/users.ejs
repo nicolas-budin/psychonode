@@ -17,7 +17,9 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>id</th>
+                <th>login</th>
+                <th>Enabled</th>
+                <th>Language</th>
                 <th>age</th>
                 <th>level</th>
                 <th>sex</th>
@@ -27,7 +29,9 @@
             <tbody>
             <% users.forEach(function(entry) { %>
             <tr>
-                <td><a href="/users/<%= entry.id %>"><%= entry.id %></a></td>
+                <td><a href="/users/<%= entry.id %>"><%= entry.login %></a></td>
+                <td><%= entry.is_active ? '+' : '' %></td>
+                <td><%= entry.language %></td>
                 <td><%= entry.age %></td>
                 <td><%= entry.level %></td>
                 <td><%= entry.sex %></td>

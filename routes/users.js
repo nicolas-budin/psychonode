@@ -74,7 +74,7 @@ router.get('/', isAdmin, function (req, res, next) {
 
 }).post('/save', loggedIn, [body('age', 'Tu dois entrer un age entre 10 et 20 ans :)').isInt({ gt: 9, lt:21})], function (req, res, next) {
 
-    let formUser = {id: req.body.login, age: req.body.age, level: req.body.level, sex: req.body.sex}
+    let formUser = {id: req.body.id, age: req.body.age, level: req.body.level, sex: req.body.sex}
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -92,7 +92,6 @@ router.get('/', isAdmin, function (req, res, next) {
             user.save().then(user => {
 
                 console.info("user " + user.id + " updated");
-
 
                     findTestsByUserId(formUser.id).then(tests => {
 
@@ -124,19 +123,23 @@ router.get('/', isAdmin, function (req, res, next) {
 }).post('/admin/save', isAdmin, function (req, res, next) {
 
     let formUser = {
-        id: req.body.login,
+        id: req.body.id,
+        login: req.body.login,
         age: req.body.age,
         level: req.body.level,
         sex: req.body.sex,
-        language: req.body.language
+        language: req.body.language,
+        is_active: req.body.is_active != undefined ? true : false
     }
 
     findUserById(formUser.id).then(user => {
 
+        user.login = formUser.login;
         user.age = formUser.age;
         user.level = formUser.level;
         user.sex = formUser.sex;
         user.language = formUser.language;
+        user.is_active = formUser.is_active
 
         user.save().then(user => {
 

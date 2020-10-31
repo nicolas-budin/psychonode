@@ -19,7 +19,7 @@ var usersRouter = require('./routes/users');
 var testDefinitionRouter = require('./routes/testDefinition');
 var testsRouter = require('./routes/tests');
 
-var {findUserById} = require('./services/UserService')
+var {findUserById, findUserByLogin} = require('./services/UserService')
 
 var app = express();
 
@@ -54,8 +54,8 @@ passport.use('local', new LocalStrategy(
     { usernameField: 'login', passwordField: 'password'},
     (login, password, done) => {
 
-        findUserById(login).then(user => {
-            if (!user) {
+        findUserByLogin(login).then(user => {
+            if (!user || !user.is_active) {
                 return done(null, false, { message: 'Invalid credentials.\n' });
             }
             if (! bcrypt.compareSync(password, user.password)) {
@@ -70,14 +70,14 @@ passport.use('local', new LocalStrategy(
 
 // tell passport how to serialize the user
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user.login);
 });
 
-passport.deserializeUser((id, done) => {
+passport.deserializeUser((login, done) => {
 
-    console.log(`The user id passport saved in the session file store is: ${id}`)
+    console.log(`The user id passport saved in the session file store is: ${login}`)
 
-    findUserById(id).then(user => {
+    findUserByLogin(login).then(user => {
         done(null, user);
     }).catch(error => done(error));
 });

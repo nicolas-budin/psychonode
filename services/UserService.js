@@ -25,9 +25,12 @@ class User extends Model {
 User.init({
 
     id: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true
+    },
+    login: {
+        type: DataTypes.STRING
     },
     password: {
         type: DataTypes.STRING
@@ -39,6 +42,9 @@ User.init({
         type: DataTypes.STRING
     },
     is_admin: {
+        type: DataTypes.BOOLEAN
+    },
+    is_active: {
         type: DataTypes.BOOLEAN
     },
     age: {
@@ -87,6 +93,24 @@ const findUserById = function (id) {
     });
 }
 
+
+const findUserByLogin = async (login) => {
+    try {
+        const users = await User.findAll({
+            where: {
+                login: login
+            },
+            order: [['id', 'DESC']]
+        });
+
+        return users[0];
+
+    } catch (error) {
+        console.error("Failed to get tests for user: " + login, error);
+        throw error;
+    }
+}
+
 function loggedIn(req, res, next) {
     if (req.user) {
         next();
@@ -108,5 +132,6 @@ exports.findUserById = findUserById;
 exports.loggedIn = loggedIn;
 exports.isAdmin = isAdmin;
 exports.User = User;
+exports.findUserByLogin = findUserByLogin
 
 

@@ -64,7 +64,8 @@ values ('welcome', 'german', 'Willkommen !');
 
 CREATE TABLE user
 (
-    id        text PRIMARY KEY,
+    id        integer PRIMARY KEY,
+    login     text not null UNIQUE,
     password  text default '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q',
     setId     integer default 1,
     age       integer,
@@ -72,25 +73,26 @@ CREATE TABLE user
     level     text,
     language  text    default 'french',
     is_admin  boolean default false,
+    is_active  boolean default true,
     createdAt date    DEFAULT (datetime('now', 'localtime')),
     updatedAt date,
     FOREIGN KEY (language) REFERENCES language_cv (language)
 );
 
-insert into user (id, is_admin, password)
-values ('nb', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
-insert into user (id, is_admin, password)
-values ('etf', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
-insert into user (id, is_admin, password)
-values ('fb', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
-insert into user (id, is_admin, password)
-values ('admin', true, '$2b$08$ByH5GZ9TDf0Qnk7RWGXO2efhD5YiQqNt4vFOq.gGPrRsDbRxGJuSC');
-insert into user (id, is_admin, password, language)
-values ('mm', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q', 'german');
-insert into user (id, is_admin, password)
-values ('lv', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
-insert into user (id, is_admin, password)
-values ('ej', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
+insert into user (id, login, is_admin, password)
+values (1, 'nb', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
+insert into user (id, login, is_admin, password)
+values (2, 'etf', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
+insert into user (id, login, is_admin, password)
+values (3, 'fb', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
+insert into user (id, login, is_admin, password)
+values (4, 'admin', true, '$2b$08$ByH5GZ9TDf0Qnk7RWGXO2efhD5YiQqNt4vFOq.gGPrRsDbRxGJuSC');
+insert into user (id, login, is_admin, password, language)
+values (5, 'mm', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q', 'german');
+insert into user (id, login, is_admin, password)
+values (6, 'lv', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
+insert into user (id, login, is_admin, password)
+values (7, 'ej', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
 
 
 select *
@@ -215,7 +217,7 @@ create table test
 (
     id            integer PRIMARY KEY,
     children_id   integer,
-    user_id       text not null,
+    user_id       integer not null,
     setId         integer default 1,
     is_first_step boolean default true,
     is_completed  boolean default false,
