@@ -19,7 +19,8 @@ var usersRouter = require('./routes/users');
 var testDefinitionRouter = require('./routes/testDefinition');
 var testsRouter = require('./routes/tests');
 
-var {findUserById, findUserByLogin} = require('./services/UserService')
+var {findUserById, findUserByLogin} = require('./services/UserService');
+var {getUITextElementsMap} = require('./services/LanguageService');
 
 var app = express();
 
@@ -78,7 +79,12 @@ passport.deserializeUser((login, done) => {
     console.log(`The user id passport saved in the session file store is: ${login}`)
 
     findUserByLogin(login).then(user => {
-        done(null, user);
+
+        getUITextElementsMap(user.language).then(uITextElementsMap => {
+            user.uITextElementsMap = uITextElementsMap;
+            done(null, user);
+
+        }).catch(error => done(error))
     }).catch(error => done(error));
 });
 

@@ -28,29 +28,26 @@ router.get('/', isAdmin, function (req, res, next) {
 
 }).get('/new', isAdmin, function (req, res, next) {
 
-    let user = {id: '', age : '', level : '', language : '', sex : ''}
+    let user = {id: '', age: '', level: '', language: '', sex: ''}
     res.render('admin/user', {user: user});
 
 }).get('/:id', loggedIn, function (req, res, next) {
 
+    let user = req.user;
 
-    findUserById(req.params.id).then(user => {
+    /*
+    if (user.login === "admin") {
+        res.render('error', {message: "admin cannot be viewed / modified"});
+    }
+    */
 
-        if(user.login === "admin") {
-            res.render('error', {message: "admin cannot be viewed / modified"});
-        }
 
-        if(req.user.is_admin) {
-            res.render('admin/user', {user: user});
-        } else {
-            res.render('user', {user: user});
-        }
+    if (req.user.is_admin) {
+        res.render('admin/user', {user: user});
+    } else {
+        res.render('user', {user: user});
+    }
 
-    }).catch(error => {
-        let msg = 'Unable to get user data';
-        console.error(msg, error);
-        res.render('error', {message: msg, error: error});
-    });
 
 }).get('/:id/tests', isAdmin, function (req, res, next) {
 
@@ -72,53 +69,59 @@ router.get('/', isAdmin, function (req, res, next) {
         res.render('error', {message: msg, error: error});
     });
 
-}).post('/save', loggedIn, [body('age', 'Tu dois entrer un age entre 10 et 20 ans :)').isInt({ gt: 9, lt:21})], function (req, res, next) {
+}).post('/save', loggedIn, [body('age', '').isInt({
+    gt: 9,
+    lt: 21
+})], function (req, res, next) {
 
-    let formUser = {id: req.body.id, age: req.body.age, level: req.body.level, sex: req.body.sex}
+    let user = req.user;
+    let formUser = {age: req.body.age, level: req.body.level, sex: req.body.sex}
 
     const errors = validationResult(req);
+
+
     if (!errors.isEmpty()) {
 
-        res.render('user', {errors: errors, user: formUser});
+        let userCopy = JSON.parse(JSON.stringify(user));
+
+        userCopy.age = formUser.age;
+        userCopy.age = formUser.age;
+        userCopy.age = formUser.age;
+        userCopy.uITextElementsMap = user.uITextElementsMap;
+
+        res.render('user', {errors: errors, user: userCopy});
 
     } else {
 
-        findUserById(formUser.id).then(user => {
+        user.age = formUser.age;
+        user.level = formUser.level;
+        user.sex = req.body.sex;
 
-            user.age = formUser.age;
-            user.level = formUser.level;
-            user.sex = req.body.sex;
+        user.save().then(user => {
 
-            user.save().then(user => {
+            console.info("user " + user.id + " updated");
 
-                console.info("user " + user.id + " updated");
+            findTestsByUserId(user.id).then(tests => {
 
-                    findTestsByUserId(formUser.id).then(tests => {
-
-                        if (tests.length > 0 && !tests[0].is_first_step) {
-                            res.redirect(307, '/tests/run/start');
-                        } else {
-                            res.redirect(307, '/tests/example/show');
-                        }
-                    }).catch(error => {
-                        let msg = 'Unable to get user tests';
-                        console.error(msg, error);
-                        res.render('error', {message: msg, error: error});
-                    });
-
-
-
+                if (tests.length > 0 && !tests[0].is_first_step) {
+                    res.redirect(307, '/tests/run/start');
+                } else {
+                    res.redirect(307, '/tests/example/show');
+                }
             }).catch(error => {
-                let msg = 'Unable to update user: ' + user.id;
+                let msg = 'Unable to get user tests';
                 console.error(msg, error);
                 res.render('error', {message: msg, error: error});
-            })
+            });
+
 
         }).catch(error => {
-            let msg = 'Unable to get user data';
+            let msg = 'Unable to update user: ' + user.id;
             console.error(msg, error);
             res.render('error', {message: msg, error: error});
-        });
+        })
+
+
     }
 }).post('/admin/save', isAdmin, function (req, res, next) {
 
@@ -156,8 +159,7 @@ router.get('/', isAdmin, function (req, res, next) {
 
         console.info("user " + formUser.id + " does not exists -> will create it");
 
-        User.create(formUser).
-        then(user => {
+        User.create(formUser).then(user => {
             console.info("user " + user.id + " created");
             res.redirect('/users/');
 

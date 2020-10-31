@@ -51,6 +51,60 @@ const findAllLanguages = async () => {
 
 }
 
+/**
+ * Stores list of available languages
+ */
+
+class UITextElements extends Model {
+}
+
+UITextElements.init({
+
+    key: {
+        type: DataTypes.STRING,
+        primaryKey: true
+    },
+    language: {
+        type: DataTypes.STRING
+    },
+    value: {
+        type: DataTypes.STRING
+    }
+}, {
+
+    sequelize,
+    modelName: 'ui_text_elements',
+    freezeTableName: true,
+    timestamps: false,
+});
+
+
+
+const getUITextElementsMap = async (language) => {
+    try {
+        const uITextElements = await UITextElements.findAll({
+            where: {
+                language: language
+            },
+            order: [['key', 'DESC']]
+        });
+
+        let uITextElementsMap = {};
+
+        uITextElements.forEach(uITextElement => {uITextElementsMap[uITextElement.key] = uITextElement.value;})
+
+        return uITextElementsMap;
+
+    } catch (error) {
+        console.error("Failed to get UI text elements for language: " + language, error);
+        throw error;
+    }
+}
+
 exports.findAllLanguages = findAllLanguages;
+exports.getUITextElementsMap = getUITextElementsMap;
+
+
+
 
 

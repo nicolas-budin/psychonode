@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel='stylesheet' href='/stylesheets/style.css'/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-            crossorigin="anonymous"></script>
+    <%- include('./header'); %>
 </head>
 <body>
 
 <div class="alert alert-primary" role="alert">
     <h2>Hello <%= user.login %>!</h2>
-    <p>Avant de commencer, tu vas remplir ce formulaire.</p>
+    <p><%= user.uITextElementsMap.fill_form%></p>
 </div>
 
 <div class="card">
@@ -21,38 +16,35 @@
         <form action="/users/save" method="post"  autocomplete="off">
 
             <div class="form-group">
-                <label for="age" class="col-form-label">Ton âge</label>
+                <label for="age" class="col-form-label"><%= user.uITextElementsMap.age%></label>
                 <input type="text" class="form-control" id="age" name="age" value="<%= user.age %>">
-                <label id="age"
-                       class="form-text text-muted"><%- ((locals.errors != undefined) && (!errors.isEmpty()) && errors.array().filter(error => error.param === 'age').length > 0) ? errors.array().filter(error => error.param === 'age')[0].msg : '' %></label>
+                <label id="age" class="form-text text-muted"><%= user.uITextElementsMap.age_constraints%></label>
             </div>
 
             <div class="form-group">
-                <label for="sex" class="col-form-label">Ton sexe</label>
+                <label for="sex" class="col-form-label"><%= user.uITextElementsMap.sex%></label>
 
                 <br>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="sex" id="inlineSexRadio2"
                            value="F" <%- user.sex == 'F' ? 'checked' : '' %>>
-                    <label class="form-check-label" for="inlineRadio2">Fille</label>
+                    <label class="form-check-label" for="inlineRadio2"><%= user.uITextElementsMap.female%></label>
                 </div>
 
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="sex" id="inlineSexRadio1"
                            value="G" <%- user.sex == 'G' ? 'checked' : '' %>>
-                    <label class="form-check-label" for="inlineRadio1">Garçon</label>
+                    <label class="form-check-label" for="inlineRadio1"><%= user.uITextElementsMap.male%></label>
                 </div>
 
             </div>
 
             <div class="form-group">
-                <label for="level" class="col-form-label">Ton degré scolaire</label>
+                <label for="level" class="col-form-label"><%= user.uITextElementsMap.level%></label>
                 <input type="text" class="form-control" id="level" name="level" value="<%= user.level %>">
             </div>
 
-
-            <input type="hidden" id="id" name="id" value="<%= user.id %>">
-            <button type="submit" class="btn btn-primary">Appuie sur cette touche pour continuer</button>
+            <button type="submit" class="btn btn-primary"><%= user.uITextElementsMap.press_key_to_continue%></button>
         </form>
 
     </div>

@@ -213,6 +213,8 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
     let testDefinitionId = req.body.test_definition_id;
 
+    let user = req.user;
+
     if(testDefinitionId == undefined) {
 
         findAllActiveTestDefinitions().then(testDefinitions => {
@@ -222,7 +224,8 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
             res.render('test/example/example', {
                 question: testDefinition.question,
                 answer: testDefinition.answer,
-                testDefinitionId: testDefinition.id
+                testDefinitionId: testDefinition.id,
+                user: user
             });
 
         }).catch(error => {
@@ -235,7 +238,8 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
             res.render('test/example/example', {
                 question: testDefinition.question,
                 answer: testDefinition.answer,
-                testDefinitionId: testDefinition.id
+                testDefinitionId: testDefinition.id,
+                user: user
             });
 
         }).catch(error => {
