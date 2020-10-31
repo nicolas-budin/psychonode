@@ -34,11 +34,11 @@ router.get('/', isAdmin, function (req, res, next) {
 }).get('/:id', loggedIn, function (req, res, next) {
 
 
-    if(req.params.id === "admin") {
-        res.render('error', {message: "admin cannot be viewed / modified"});
-    }
-
     findUserById(req.params.id).then(user => {
+
+        if(user.login === "admin") {
+            res.render('error', {message: "admin cannot be viewed / modified"});
+        }
 
         if(req.user.is_admin) {
             res.render('admin/user', {user: user});
