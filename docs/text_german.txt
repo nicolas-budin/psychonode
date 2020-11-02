@@ -1,0 +1,59 @@
+
+
+
+
+
+
+
+Bienvenue! - Wilkommen!
+Remplis ton numéro d'identification - Bitte gib deine Schülernummer ein.
+Remplis ton mot de passe - Bitte gib dein Passwort ein.
+Appuie sur une touche pour continuer - Eine Taste drücken, um weiterzumachen.
+
+Avant de commencer, tu vas remplir ce formulaire. - Bevor du beginnst, bitte gib diese Informationen ein.
+Ton âge - Dein Alter
+Ton sexe - Dein Geschlecht
+Fille - Mädchen
+Garçon - Junge
+Ton degré scolaire - Deine Schulklasse
+Tu dois entrer un age entre 10 et 20 ans :) - Bitte gib ein Alter zwischen 10 und 20 ein :)
+
+Dans cet exercice, tu vas apprendre des mots en Hongrois ! - In dieser Übung wirst du ein paar Wörter auf ungarisch lernen!
+Essaye de retenir cet exemple: - Probier mal dir dieses Beispiel zu merken:
+Hongrois - Ungarisch
+Francais - Deutsch
+
+Essaye de traduire ce mot ! - Probier mal dieses Wort zu übersetzen:
+Ecris le mot en français - Schreib das Wort auf Deutsch
+
+
+Tu n’as pas écrit le mot correctement... - Du hast das Wort nicht korrect geschrieben...
+Question - Frage
+Réponse - Antwort
+Appuie sur cette touche pour réessayer ! - Diese Taste drücken, um weiterzumachen.
+
+Bravo ! Tu as réussi ! - Gut gemacht! Du hast es geschaffen!
+
+On va maintenant te présenter des paires de mots à la suite. - Jetzt werden dir 15 Wortpaare hintereinander gezeigt.
+Essaye de retenir la traduction de tous les mots ! - Probier mal dir die Übersetzung aller Wörter zu merken.
+Plus tard, on te donnera le mot Hongrois et tu devras écrire la traduction en français. - Später wird dir das Wort auf ungarisch gegeben und du musst die Übersetzung auf Deutsch notieren.
+Appuie sur cette touche pour commencer ! - Diese Taste drücken, um weiterzumachen.
+
+
+Essaye de retenir le mot numero - Probier mal dir das Wort ... zu merken.
+
+
+Appuie sur cette touche pour valider ta reponse ! - Diese Taste drücken, um deine Antwort zu bestätigen.
+
+
+Je veux revoir la paire de mots plus tard - Ich möchte das Wortpaar später nochmal sehen.
+Je veux me re-tester avec la paire plus tard - Ich möchte das Wortpaar später nochmal üben.
+Je ne veux pas revoir la paire ni me re-tester - Ich möchte das Wortpaar nicht mehr sehen oder nochmal üben.
+
+
+
+Tu as ecris - Du hast ... schrieben.
+alors que la reponse correct est: - Leider ist die korrekte Antwort:
+
+
+Bravo ! C'est terminé ! - Gut gemacht! Du bist fertig!
