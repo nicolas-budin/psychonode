@@ -249,11 +249,15 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
 }).post('/example/test', loggedIn, function (req, res, next) {
 
+    let user = req.user;
+
     let testDefinitionId = req.body.test_definition_id;
 
     findTestDefinitionById(testDefinitionId).then(testDefinition => {
 
-        res.render('test/example/exampleTest', {question : testDefinition.question, testDefinitionId : testDefinition.id});
+        res.render('test/example/exampleTest', {question : testDefinition.question,
+            testDefinitionId : testDefinition.id,
+            user: user});
 
     }).catch(error => {
         res.render('error', {message: "", error: error});
@@ -265,6 +269,8 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
     let answer = req.body.answer;
     let testDefinitionId = req.body.test_definition_id;
 
+    let user = req.user;
+
     findTestDefinitionById(testDefinitionId).then(testDefinition => {
 
         if(answer === testDefinition.answer) {
@@ -272,7 +278,8 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
             res.render('test/example/exampleSuccess', {
                 question: question,
                 answer: testDefinition.answer,
-                testDefinitionId: testDefinition.id
+                testDefinitionId: testDefinition.id,
+                user: user
             });
 
         } else {
@@ -280,7 +287,8 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
             res.render('test/example/exampleFailed', {
                 question: question,
                 answer: testDefinition.answer,
-                testDefinitionId: testDefinition.id
+                testDefinitionId: testDefinition.id,
+                user: user
             });
 
         }
@@ -290,6 +298,8 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
     })
 
 }).post('/memorize', loggedIn, function (req, res, next) {
+
+    let user = req.user;
 
     let testDefinitionIndex = 1;
 
@@ -307,21 +317,27 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
             res.render('test/memorize', {
                 question: testDefinition.question,
                 answer: testDefinition.answer,
-                testDefinitionIndex: testDefinitionIndex
+                testDefinitionIndex: testDefinitionIndex,
+                user: user
             });
         } else {
 
-            res.render('test/startTest');
+            res.render('test/startTest', {user: user});
         }
 
     }).catch(error => {
         res.render('error', {message: "", error: error});
     })
+
 }).get('/download', isAdmin, function(req, res){
+
     const file = `${__dirname}/../sample.db`;
     res.download(file);
+
 }).get('/help', isAdmin, function(req, res){
+
     res.render('admin/help');
+
 });
 
 module.exports = router;

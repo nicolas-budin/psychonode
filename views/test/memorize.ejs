@@ -1,14 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel='stylesheet' href='/stylesheets/style.css'/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-          crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-            crossorigin="anonymous"></script>
 
+    <%- include('../header'); %>
 
     <script type="text/javascript">
         window.onload = function () {
@@ -23,7 +17,7 @@
 
 
 <div class="alert alert-primary" role="alert">
-    <h4 class="alert-heading">Essaye de retenir le mot numero <%= testDefinitionIndex %></h4>
+    <h4 class="alert-heading"><%= user.uITextElementsMap.try_to_remember%> <%= testDefinitionIndex %></h4>
 </div>
 
 <div class="card">
@@ -32,13 +26,13 @@
         <form name="memorizeForm" id="memorizeForm" action="/tests/memorize" method="post">
 
             <div class="form-group">
-                <label for="question" class="col-form-label">Hongrois</label>
+                <label for="question" class="col-form-label"><%= user.uITextElementsMap.source_language%></label>
                 <input type="text" readonly class="form-control" id="question" name="question"
                        value="<%= question %>">
             </div>
 
             <div class="form-group">
-                <label for="answer" class="col-form-label">Francais</label>
+                <label for="answer" class="col-form-label"><%= user.uITextElementsMap.target_language%></label>
                 <input type="text" readonly class="form-control" id="answer" name="answer"
                        value="<%= answer %>">
             </div>

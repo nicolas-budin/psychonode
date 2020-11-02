@@ -1,38 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel='stylesheet' href='/stylesheets/style.css'/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-          crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-            crossorigin="anonymous"></script>
+
+    <%- include('../../header'); %>
+
 </head>
 <body>
 
 <div class="alert alert-warning" role="alert">
     <h4 class="alert-heading">Ooups !</h4>
-    <p>Tu n’as pas écrit le mot correctement...</p>
+    <p><%= user.uITextElementsMap.wrong_answer%></p>
 </div>
 
 <div class="card">
 
     <div class="card-body">
 
-        <p>Essaye de retenir cet exemple:</p>
+        <p><%= user.uITextElementsMap.example%></p>
 
         <form action="/tests/example/test" method="post">
 
             <div class="form-group">
-                <label for="question" class="col-form-label">Question</label>
+                <label for="question" class="col-form-label"><%= user.uITextElementsMap.question%></label>
                 <input type="text" readonly class="form-control" id="question" name="question"
                        value="<%= question %>">
             </div>
 
-
             <div class="form-group">
-                <label for="answer" class="col-form-label">Réponse</label>
+                <label for="answer" class="col-form-label"><%= user.uITextElementsMap.answer%></label>
                 <input type="text" readonly class="form-control" id="answer" name="answer"
                        value="<%= answer %>">
             </div>
@@ -40,7 +35,7 @@
             <input type="hidden" class="form-control" id="test_definition_id" name="test_definition_id"
                    value="<%= testDefinitionId %>">
 
-            <button type="submit" class="btn btn-primary">Appuie sur cette touche pour réessayer !
+            <button type="submit" class="btn btn-primary"><%= user.uITextElementsMap.press_key_to_try_again%>
             </button>
 
         </form>

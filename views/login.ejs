@@ -9,25 +9,23 @@
 <body>
 
 <div class="alert alert-primary" role="alert">
-    <h2><%= uITextElementsMap.welcome%></h2>
-    <hr>
-    <p><a href="/?language=german">Deutsch</a> / <a href="/?language=french">Francais</a></p>
+    <h2>Bienvenue / Wilkommen</h2>
 
 </div>
 
 <form action="/login" method="post"  autocomplete="off">
 
     <div class="form-group">
-        <label for="login" class="col-form-label "><%= uITextElementsMap.enter_login%></label>
+        <label for="login" class="col-form-label ">Ton numéro d'identification / Deine Schülernummer</label>
         <input type="text" class="form-control" id="login" name="login">
     </div>
 
     <div class="form-group">
-        <label for="password" class="col-form-label "><%= uITextElementsMap.enter_password%></label>
+        <label for="password" class="col-form-label ">Ton Mot de passe / Dein Passwort</label>
         <input type="password" class="form-control" id="password" name="password">
     </div>
 
-    <button type="submit" class="btn btn-primary"><%= uITextElementsMap.press_key_to_continue%></button>
+    <button type="submit" class="btn btn-primary">Appuie ! / Drücken !</button>
 </form>
 
 </body>

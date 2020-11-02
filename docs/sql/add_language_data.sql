@@ -95,6 +95,10 @@ insert into ui_text_elements_cv(key)
 values ("try_to_remember");
 
 insert into ui_text_elements_cv(key)
+values ("ready_to_start");
+
+
+insert into ui_text_elements_cv(key)
 values ("press_key_to_validate");
 
 insert into ui_text_elements_cv(key)
@@ -209,6 +213,9 @@ values ("press_key_to_start", "french", "Appuie sur cette touche pour commencer 
 
 insert into ui_text_elements(key, language, value)
 values ("try_to_remember", "french", "Essaye de retenir le mot numero");
+
+insert into ui_text_elements(key, language, value)
+values ("ready_to_start", "french", "Es-tu prêt à commencer le test ?");
 
 insert into ui_text_elements(key, language, value)
 values ("press_key_to_validate", "french", "Appuie sur cette touche pour valider ta reponse !");
@@ -330,6 +337,10 @@ values ("press_key_to_start", "german", "Diese Taste drücken, um weiterzumachen
 
 insert into ui_text_elements(key, language, value)
 values ("try_to_remember", "german", "Probier mal dir das Wort zu merken.");
+
+insert into ui_text_elements(key, language, value)
+values ("ready_to_start", "german", "Bist to bereit ?");
+
 
 insert into ui_text_elements(key, language, value)
 values ("press_key_to_validate", "german", "Diese Taste drücken, um deine Antwort zu bestätigen.");

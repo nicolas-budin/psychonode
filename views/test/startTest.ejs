@@ -1,13 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel='stylesheet' href='/stylesheets/style.css'/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-          crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-            crossorigin="anonymous"></script>
+
+    <%- include('../header'); %>
 
     <script type="text/javascript">
         window.onload = function () {
@@ -19,27 +14,21 @@
         };
     </script>
 
-
 </head>
 <body>
 
 <div style="display: none;" name="header" id="header" class="alert alert-primary" role="alert">
-    <h4 class="alert-heading">Es-tu prêt à commencer le test ?</h4>
+    <h4 class="alert-heading"><%= user.uITextElementsMap.ready_to_start%></h4>
 </div>
 
-
 <div>
-
     <div id="video" name="video" class="embed-responsive embed-responsive-16by9">
         <iframe width="480" height="390" class="embed-responsive-item" src="https://www.youtube.com/embed/63MU9MdX5DQ?autoplay=1&mute=1" frameborder=”0″ allowfullscreen></iframe>
     </div>
-
 </div>
 
-
-
 <form action="/tests/run/start" method="post">
-    <button name="start_test" id="start_test" type="submit" style="display: none;" class="btn btn-primary">Appuie sur cette touche pour commencer !</button>
+    <button name="start_test" id="start_test" type="submit" style="display: none;" class="btn btn-primary"><%= user.uITextElementsMap.press_key_to_start%></button>
 </form>
 
 </body>

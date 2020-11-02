@@ -7,23 +7,7 @@ var {getUITextElementsMap} = require('../services/LanguageService');
 
 router.get('/', function (req, res, next) {
 
-    let language = 'french';
-
-    if (req.query.language != undefined) {
-        language = req.query.language;
-    }
-
-    getUITextElementsMap(language).then(uITextElementsMap => {
-
-        res.render('login', {uITextElementsMap: uITextElementsMap});
-
-    }).catch(error => {
-            msg = 'Failed to get user language';
-            console.error(msg, error);
-            res.render('error', {message: msg, error: error});
-        }
-    )
-
+    res.render('login', {});
 
 }).post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
