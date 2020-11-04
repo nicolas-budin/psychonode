@@ -119,6 +119,15 @@ values ("right_answer_is");
 insert into ui_text_elements_cv(key)
 values ("test_end");
 
+insert into ui_text_elements_cv(key)
+values ("reminder");
+
+insert into ui_text_elements_cv(key)
+values ("options");
+
+insert into ui_text_elements_cv(key)
+values ("choose_an_option");
+
 --
 -- french
 --
@@ -238,6 +247,16 @@ values ("right_answer_is", "french", "alors que la reponse correct est");
 insert into ui_text_elements(key, language, value)
 values ("test_end", "french", "Bravo ! C'est terminé !");
 
+
+insert into ui_text_elements(key, language, value)
+values ("reminder", "french", "Rappel");
+
+insert into ui_text_elements(key, language, value)
+values ("options", "french", "Options");
+
+insert into ui_text_elements(key, language, value)
+values ("choose_an_option", "french", "Choisis une des options suivantes: ");
+
 -- misc
 
 insert into ui_text_elements(key, language, value)
@@ -288,7 +307,7 @@ insert into ui_text_elements(key, language, value)
 values ("explanation", "german", "In dieser Übung wirst du ein paar Wörter auf ungarisch lernen!");
 
 insert into ui_text_elements(key, language, value)
-values ("example", "german", "Probier mal dir dieses Beispiel zu merken:");
+values ("example", "german", "Probier mal dir dieses Beispiel zu merken ");
 
 insert into ui_text_elements(key, language, value)
 values ("source_language", "german", "Ungarisch");
@@ -364,6 +383,14 @@ insert into ui_text_elements(key, language, value)
 values ("test_end", "german", "Gut gemacht! Du bist fertig!");
 
 
+insert into ui_text_elements(key, language, value)
+values ("reminder", "german", "Erinnerung");
+
+insert into ui_text_elements(key, language, value)
+values ("options", "german", "Optionen");
+
+insert into ui_text_elements(key, language, value)
+values ("choose_an_option", "german", "Wählen Sie eine der folgenden Optionen:");
 
 
 -- misc

@@ -65,15 +65,18 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
 }).post('/run/start', loggedIn, function (req, res, next) {
 
-    let id = req.user.id;
+    let user = req.user;
 
-    runTest(id).then(testData => {
+    runTest(user.id).then(testData => {
         console.info("result of run test " + testData.testElement)
 
         if(testData.testElement == undefined) {
-            res.render('test/run/testEnd');
+            res.render('test/run/testEnd', {user: user});
         } else {
-            res.render('test/run/testElement', {entry: testData.testElement, test: testData.test});
+            res.render('test/run/testElement', {
+                entry: testData.testElement,
+                test: testData.test,
+                user: user});
         }
     }).catch(error => {
         let msg = 'Unable to get test';
@@ -84,6 +87,9 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
 }).post('/run/submit', loggedIn, function (req, res, next) {
 
+
+
+    let user = req.user;
 
     let test = {
 
@@ -111,16 +117,24 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
                 if (!testElement.is_success) {
                     if (!testElement.is_a_repeat) {
-                        res.render('test/run/testWrongAnswer', {entry: test, right_answer: testDefinition.answer});
+                        res.render('test/run/testWrongAnswer', {entry: test,
+                            right_answer: testDefinition.answer,
+                            user: user});
                     } else {
-                        res.render('test/run/testWrongAnswerNoCorrection', {entry: test, right_answer: testDefinition.answer});
+                        res.render('test/run/testWrongAnswerNoCorrection', {entry: test,
+                            right_answer: testDefinition.answer,
+                            user: user});
                     }
                 } else {
 
                     if (!testElement.is_a_repeat) {
-                        res.render('test/run/testCorrectAnswer', {entry: test, right_answer: testDefinition.answer});
+                        res.render('test/run/testCorrectAnswer', {entry: test,
+                            right_answer: testDefinition.answer,
+                            user: user});
                     } else {
-                        res.render('test/run/testCorrectAnswerNoChoice', {entry: test, right_answer: testDefinition.answer});
+                        res.render('test/run/testCorrectAnswerNoChoice', {entry: test,
+                            right_answer: testDefinition.answer,
+                            user: user});
                     }
                 }
 
@@ -135,7 +149,7 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
 }).post('/run/next', loggedIn, function (req, res, next) {
 
-    let id = req.user.id;
+    let user = req.user;
 
     let test = {
 
@@ -162,12 +176,12 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
         testElement.save().then(testElement => {
 
-            runTest(id).then(testData => {
+            runTest(user.id).then(testData => {
 
                 console.info("result of run test " + testData.testElement)
 
                 if (testData.testElement == undefined) {
-                    res.render('test/run/testEnd');
+                    res.render('test/run/testEnd', {user : user});
                 } else {
 
                     if (testData.testElement.is_success) {
@@ -188,7 +202,8 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
                                 res.render('test/run/testAnswer', {
                                     entry: test,
-                                    right_answer: testData.testElement.answer
+                                    right_answer: testData.testElement.answer,
+                                    user : user
                                 });
 
                             }).catch(error => {throw error;});
@@ -196,7 +211,9 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
                         }).catch(error => {throw error;});
 
                     } else {
-                        res.render('test/run/testElement', {entry: testData.testElement, test: testData.test});
+                        res.render('test/run/testElement', {entry: testData.testElement,
+                            test: testData.test,
+                            user : user});
                     }
                 }
 

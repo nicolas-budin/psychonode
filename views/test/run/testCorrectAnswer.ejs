@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel='stylesheet' href='/stylesheets/style.css'/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-            crossorigin="anonymous"></script>
+
+    <%- include('../../header'); %>
+
 </head>
 <body>
 
 <div class="alert alert-success" role="alert">
 
-    <h4 class="alert-heading">Bravo ! Tu as réussi !</h4>
+    <h4 class="alert-heading"><%= user.uITextElementsMap.right_answer %></h4>
 
     <% if (entry.is_first_step === 'true') { %>
         <hr>
         <p class="lead"><%= entry.question %>&nbsp;&nbsp;=&nbsp;&nbsp;<%= right_answer %></p>
-        <p>Choisis une des options suivantes: </p>
+        <p><%= user.uITextElementsMap.choose_an_option %></p>
     <% } %>
 
 </div>
@@ -31,19 +28,19 @@
             <% if (entry.is_first_step === 'true') { %>
                 <fieldset class="form-group">
                     <div class="row">
-                        <legend class="col-form-label col-sm-2 pt-0">Options</legend>
+                        <legend class="col-form-label col-sm-2 pt-0"><%= user.uITextElementsMap.options %></legend>
                         <div class="col-sm-10">
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="review_choice" id="see" value="see">
                                 <label class="form-check-label" for="see">
-                                    Je veux revoir la paire de mots plus tard
+                                    <%= user.uITextElementsMap.see_again_choice %>
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="review_choice" id="test"
                                        value="test">
                                 <label class="form-check-label" for="test">
-                                    Je veux me re-tester avec la paire plus tard
+                                    <%= user.uITextElementsMap.retest_choice %>
                                 </label>
                             </div>
 
@@ -51,7 +48,7 @@
                                 <input class="form-check-input" type="radio" name="review_choice" id="test"
                                        value="nothing">
                                 <label class="form-check-label" for="test">
-                                    Je ne veux pas revoir la paire ni me re-tester
+                                    <%= user.uITextElementsMap.no_retest_no_see_again_choice %>
                                 </label>
                             </div>
 
@@ -67,7 +64,7 @@
                    value="<%= entry.test_definition_id %>">
 
 
-            <button type="submit" class="btn btn-primary">Appuie sur cette touche pour continuer</button>
+            <button type="submit" class="btn btn-primary"><%= user.uITextElementsMap.press_key_to_continue %></button>
         </form>
 
     </div>

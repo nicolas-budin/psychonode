@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel='stylesheet' href='/stylesheets/style.css'/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-            crossorigin="anonymous"></script>
+
+
+    <%- include('../../header'); %>
+
 </head>
 <body>
 
 <div class="alert alert-warning" role="alert">
     <h4 class="alert-heading">Ooups !</h4>
-    <p>Tu n’as pas écrit le mot correctement...</p>
+    <p><%= user.uITextElementsMap.wrong_answer %></p>
 </div>
 
 <div class="card">
@@ -22,7 +20,7 @@
 
             <% if (entry.is_first_step === 'true') { %>
 
-                <p>Tu as ecris <b><%= entry.answer %></b> alors que la reponse correct est:</p>
+                <p><%= user.uITextElementsMap.your_answer_is %> <b>:&nbsp;<%= entry.answer %>.&nbsp;</b> <%= user.uITextElementsMap.right_answer_is %></p>
 
                 <table>
                     <tr>
@@ -45,7 +43,7 @@
             <input type="hidden" class="form-control" id="test_definition_id" name="test_definition_id"
                    value="<%= entry.test_definition_id %>">
 
-            <button type="submit" class="btn btn-primary">Appuie sur cette touche pour continuer</button>
+            <button type="submit" class="btn btn-primary"><%= user.uITextElementsMap.press_key_to_continue %></button>
         </form>
 
     </div>
