@@ -234,7 +234,7 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
     if(testDefinitionId == undefined) {
 
-        findAllActiveTestDefinitions().then(testDefinitions => {
+        findAllActiveTestDefinitions(user.language).then(testDefinitions => {
 
             const testDefinition = testDefinitions[0];
 
@@ -325,7 +325,7 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
         testDefinitionIndex++;
     }
 
-    findAllActiveTestDefinitions().then(testDefinitions => {
+    findAllActiveTestDefinitions(user.language).then(testDefinitions => {
 
         if(testDefinitionIndex < testDefinitions.length) {
 

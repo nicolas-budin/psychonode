@@ -4,6 +4,8 @@ const {getRedoAndRedisplayTestElements, TestElement, getAvailableTestElements, g
 
 const {findAllActiveTestDefinitions} = require('./TestDefinitionService');
 
+const {findUserById} = require('./UserService')
+
 
 // creates rdbms access
 const sequelize = new Sequelize({
@@ -203,9 +205,11 @@ const runTest = async (userId) => {
     try {
 
         const test = await getTest(userId);
-        const testElment = await getNextTestElement(test.id);
+        const user = await findUserById(userId);
 
-        return {test: test, testElement: testElment};
+        const testElement = await getNextTestElement(test.id, user.language);
+
+        return {test: test, testElement: testElement};
 
     } catch (error) {
         console.error("Failed to run test for user: " + userId, error);
@@ -214,7 +218,7 @@ const runTest = async (userId) => {
 }
 
 
-const getNextTestElement = async (testId) => {
+const getNextTestElement = async (testId, language) => {
 
     try {
 
@@ -308,7 +312,7 @@ const getNextTestElement = async (testId) => {
         } else {
 
             const iteration = 0;
-            const testDefinitions = await findAllActiveTestDefinitions();
+            const testDefinitions = await findAllActiveTestDefinitions(language);
 
             console.log("creating first test iteration for " + testDefinitions.length +" definitions");
 

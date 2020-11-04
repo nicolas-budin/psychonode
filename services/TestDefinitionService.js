@@ -80,7 +80,7 @@ const findTestDefinitionById = function (id) {
 }
 
 
-const findAllActiveTestDefinitions = () => {
+const findAllActiveTestDefinitions = (language) => {
 
     return sequelize.query(
         "select td.*\n" +
@@ -88,6 +88,7 @@ const findAllActiveTestDefinitions = () => {
         "     test_definition_set tds\n" +
         "where td.setId = tds.id\n" +
         "  and tds.is_active = TRUE\n" +
+        (language != undefined ?  "  and tds.language = " + language + "\n"  : "\n") +
         "order by td.id asc;",
         {
             type: QueryTypes.SELECT,
