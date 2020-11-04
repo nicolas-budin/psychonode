@@ -110,18 +110,6 @@ create table test_definition_set
 );
 
 
-insert into test_definition_set(id)
-values (1);
-
-insert into test_definition_set(id, is_active)
-values (2, true);
-
-insert into test_definition_set(id, is_active, language)
-values (3, false, 'german');
-
-insert into test_definition_set(id, is_active, language)
-values (4, true, 'german');
-
 -- test definition
 create table test_definition
 (
