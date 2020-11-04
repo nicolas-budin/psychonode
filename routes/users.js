@@ -74,7 +74,8 @@ router.get('/', isAdmin, function (req, res, next) {
 }).post('/save', loggedIn, [body('age', '').isInt({
     gt: 9,
     lt: 21
-})], function (req, res, next) {
+}), body('level').notEmpty().isAlphanumeric(),
+    body('sex').notEmpty().isIn(['m', 'f'])], function (req, res, next) {
 
     let user = req.user;
     let formUser = {age: req.body.age, level: req.body.level, sex: req.body.sex}
