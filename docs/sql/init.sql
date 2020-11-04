@@ -64,38 +64,36 @@ CREATE TABLE user
     age       integer,
     sex       text,
     level     text,
+    parent    integer,
     language  text    default 'french',
     is_admin  boolean default false,
     is_active  boolean default true,
     createdAt date    DEFAULT (datetime('now', 'localtime')),
     updatedAt date,
-    FOREIGN KEY (language) REFERENCES language_cv (language)
+    FOREIGN KEY (language) REFERENCES language_cv (language),
+    FOREIGN KEY (parent) REFERENCES user (id)
 );
 
 insert into user (id, login, is_admin, password)
-values (1, 'nb', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
+values (1, 'admin', true, '$2b$08$ByH5GZ9TDf0Qnk7RWGXO2efhD5YiQqNt4vFOq.gGPrRsDbRxGJuSC');
+
+insert into user (id, login, is_admin, parent, password)
+values (2, 'nb', false, 1, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
+insert into user (id, login, is_admin, parent, password)
+values (3, 'etf', false, 1, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
+
 insert into user (id, login, is_admin, password)
-values (2, 'etf', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
-insert into user (id, login, is_admin, password)
-values (3, 'fb', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
-insert into user (id, login, is_admin, password)
-values (4, 'admin', true, '$2b$08$ByH5GZ9TDf0Qnk7RWGXO2efhD5YiQqNt4vFOq.gGPrRsDbRxGJuSC');
+values (4, 'fb', true, '$2b$08$ByH5GZ9TDf0Qnk7RWGXO2efhD5YiQqNt4vFOq.gGPrRsDbRxGJuSC');
 insert into user (id, login, is_admin, password, language)
-values (5, 'mm', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q', 'german');
+values (5, 'mm', true, '$2b$08$ByH5GZ9TDf0Qnk7RWGXO2efhD5YiQqNt4vFOq.gGPrRsDbRxGJuSC', 'german');
 insert into user (id, login, is_admin, password)
-values (6, 'lv', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
+values (6, 'lv', true, '$2b$08$ByH5GZ9TDf0Qnk7RWGXO2efhD5YiQqNt4vFOq.gGPrRsDbRxGJuSC');
 insert into user (id, login, is_admin, password)
-values (7, 'ej', false, '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q');
-
-
-select *
-from user;
-
+values (7, 'ej', true, '$2b$08$ByH5GZ9TDf0Qnk7RWGXO2efhD5YiQqNt4vFOq.gGPrRsDbRxGJuSC');
 
 --
 -- test definitions
 --
-
 
 -- a group of test definition
 create table test_definition_set

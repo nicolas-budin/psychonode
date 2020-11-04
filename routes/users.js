@@ -31,23 +31,25 @@ router.get('/', isAdmin, function (req, res, next) {
     let user = {id: '', age: '', level: '', language: '', sex: ''}
     res.render('admin/user', {user: user});
 
-}).get('/:id', loggedIn, function (req, res, next) {
+}).get('/user', loggedIn, function (req, res, next) {
 
     let user = req.user;
+    res.render('user', {user: user});
 
-    /*
-    if (user.login === "admin") {
-        res.render('error', {message: "admin cannot be viewed / modified"});
-    }
-    */
+}).get('/:id', isAdmin, function (req, res, next) {
 
+    findUserById(req.params.id).then(user => {
 
-    if (req.user.is_admin) {
-        res.render('admin/user', {user: user});
-    } else {
-        res.render('user', {user: user});
-    }
-
+        if (user.is_admin) {
+            res.render('error',     {message: "admin cannot be viewed / modified"});
+        } else {
+            res.render('admin/user', {user: user});
+        }
+    }).catch(error => {
+        let msg = 'Unable to get user data';
+        console.error(msg, error);
+        res.render('error', {message: msg, error: error});
+    });
 
 }).get('/:id/tests', isAdmin, function (req, res, next) {
 
@@ -79,14 +81,13 @@ router.get('/', isAdmin, function (req, res, next) {
 
     const errors = validationResult(req);
 
-
     if (!errors.isEmpty()) {
 
         let userCopy = JSON.parse(JSON.stringify(user));
 
         userCopy.age = formUser.age;
-        userCopy.age = formUser.age;
-        userCopy.age = formUser.age;
+        userCopy.level = formUser.level;
+        userCopy.sex = formUser.sex;
         userCopy.uITextElementsMap = user.uITextElementsMap;
 
         res.render('user', {errors: errors, user: userCopy});
@@ -130,8 +131,9 @@ router.get('/', isAdmin, function (req, res, next) {
         login: req.body.login,
         age: req.body.age,
         level: req.body.level,
+        parent : req.user.id,
         sex: req.body.sex,
-        language: req.body.language,
+        language: req.user.language,
         is_active: req.body.is_active != undefined ? true : false
     }
 
@@ -140,6 +142,7 @@ router.get('/', isAdmin, function (req, res, next) {
         user.login = formUser.login;
         user.age = formUser.age;
         user.level = formUser.level;
+        user.parent = formUser.parent;
         user.sex = formUser.sex;
         user.language = formUser.language;
         user.is_active = formUser.is_active

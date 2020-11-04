@@ -20,6 +20,8 @@
                 <th>login</th>
                 <th>Enabled</th>
                 <th>Language</th>
+                <th>is admin</th>
+                <th>admin group</th>
                 <th>age</th>
                 <th>level</th>
                 <th>sex</th>
@@ -28,15 +30,21 @@
             </thead>
             <tbody>
             <% users.forEach(function(entry) { %>
-            <tr>
-                <td><a href="/users/<%= entry.id %>"><%= entry.login %></a></td>
-                <td><%= entry.is_active ? '+' : '' %></td>
-                <td><%= entry.language %></td>
-                <td><%= entry.age %></td>
-                <td><%= entry.level %></td>
-                <td><%= entry.sex %></td>
-                <td><a href="/users/<%= entry.id %>/tests">tests</a></td>
-            </tr>
+                <tr>
+                    <td><a href="/users/<%= entry.id %>"><%= entry.login %></a></td>
+                    <td><%= entry.is_active ? '+' : '' %></td>
+                    <td><%= entry.language %></td>
+                    <td><%= entry.is_admin ? '+' : '' %></td>
+                    <td><%= !entry.is_admin ? (users.filter(user => user.id == entry.parent).length == 1 ? users.filter(user => user.id == entry.parent)[0].login : '') : '' %></td>
+                    <td><%= entry.age %></td>
+                    <td><%= entry.level %></td>
+                    <td><%= entry.sex %></td>
+                    <td>
+                        <% if (!entry.is_admin) { %>
+                            <a href="/users/<%= entry.id %>/tests">tests</a>
+                        <% } %>
+                    </td>
+                </tr>
             <% }) %>
             </tbody>
         </table>

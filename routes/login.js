@@ -33,7 +33,7 @@ router.get('/', function (req, res, next) {
                     return res.redirect('/users/')
                 } else {
 
-                    return res.redirect('/users/' + user.id)
+                    return res.redirect('/users/user')
                 }
             }
         })

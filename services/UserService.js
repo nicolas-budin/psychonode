@@ -38,6 +38,9 @@ User.init({
     setId: {
         type: DataTypes.INTEGER,
     },
+    parent: {
+        type: DataTypes.INTEGER,
+    },
     language: {
         type: DataTypes.STRING
     },
