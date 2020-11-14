@@ -91,6 +91,9 @@ values (6, 'lv', true, '$2b$08$ByH5GZ9TDf0Qnk7RWGXO2efhD5YiQqNt4vFOq.gGPrRsDbRxG
 insert into user (id, login, is_admin, password)
 values (7, 'ej', true, '$2b$08$ByH5GZ9TDf0Qnk7RWGXO2efhD5YiQqNt4vFOq.gGPrRsDbRxGJuSC');
 
+insert into user (id, login, is_admin, password, language)
+values (0, 'admin_german', true, '$2b$08$ByH5GZ9TDf0Qnk7RWGXO2efhD5YiQqNt4vFOq.gGPrRsDbRxGJuSC', 'german');
+
 --
 -- test definitions
 --

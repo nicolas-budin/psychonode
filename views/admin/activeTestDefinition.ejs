@@ -18,6 +18,27 @@
 </nav>
 
 
+<div class="card">
+
+    <div class="card-body">
+        <table class="table">
+
+            <tr>
+                <th width="10%">size</th>
+                <td><%= testDefinitions.length %></td>
+            </tr>
+
+            <tr>
+                <th width="10%">language</th>
+                <td><%= user.language %></td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+<p></p>
+
 
 <div class="card">
 
@@ -29,7 +50,6 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>id</th>
                 <th>set id</th>
                 <th>question</th>
                 <th>answer</th>
@@ -38,7 +58,6 @@
             <tbody>
             <% testDefinitions.forEach(function(entry) { %>
                 <tr>
-                    <td><%= entry.id %></td>
                     <td><%= entry.setId %></td>
                     <td><%= entry.question %></td>
                     <td><%= entry.answer %></td>

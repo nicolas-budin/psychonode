@@ -55,10 +55,33 @@ TestDefinitionSet.init({
     freezeTableName: true
 });
 
-const findAllTestDefinitionSet = async () => {
+const findAllTestDefinitionSetAndDefinitions = async (language) => {
+
+    try {
+        const testDefinitionsSets = await findAllTestDefinitionSet(language);
+        for(let i = 0; i < testDefinitionsSets.length; i++) {
+            const currTestDefinitionsSet = testDefinitionsSets[i];
+            const TestDefinitionSetAnDefinitions = await findTestDefinitionSetAnDefinitionsById(currTestDefinitionsSet.id);
+            currTestDefinitionsSet.testDefinitions = TestDefinitionSetAnDefinitions.testDefinitions;
+        }
+
+        return testDefinitionsSets;
+
+    } catch (error) {
+        console.error("Failed to get test definition sets", error);
+        throw error;
+    }
+
+}
+
+
+const findAllTestDefinitionSet = async (language) => {
 
     try {
         const testDefinitionsSet = await TestDefinitionSet.findAll({
+            where: {
+                language: language
+            },
             order: [['id', 'ASC']]
         });
 
@@ -83,9 +106,9 @@ const findTestDefinitionSetAnDefinitionsById = async (id) => {
 
         const testDefinitionsSet = await findTestDefinitionSetById(id);
 
-        const testDefinitions  = await findTestDefinitionBySetId(id);
+        const testDefinitions = await findTestDefinitionBySetId(id);
 
-        return {testDefinitionsSet : testDefinitionsSet, testDefinitions : testDefinitions};
+        return {testDefinitionsSet: testDefinitionsSet, testDefinitions: testDefinitions};
 
     } catch (error) {
         console.error("Failed to get test definition sets", error);
@@ -99,4 +122,5 @@ exports.findAllTestDefinitionSet = findAllTestDefinitionSet;
 exports.findTestDefinitionSetById = findTestDefinitionSetById;
 exports.findTestDefinitionSetAnDefinitionsById = findTestDefinitionSetAnDefinitionsById;
 exports.TestDefinitionSet = TestDefinitionSet;
+exports.findAllTestDefinitionSetAndDefinitions = findAllTestDefinitionSetAndDefinitions;
 

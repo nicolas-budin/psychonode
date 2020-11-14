@@ -23,6 +23,8 @@ dico = {'Poulet': 'Csirke',
  'Tisch': 'Asztal',
  'Küche': 'Konyha',
  'Schlafen': 'Aludni',
+
+
  'Artz': 'Orvos',
  'Soldat': 'Katona',
  'Koch': 'Kukta',

@@ -29,6 +29,12 @@
         <form action="/test_definition/save" method="post" autocomplete="off">
 
             <table class="table">
+
+                <tr>
+                    <th width="10%">size</th>
+                    <td><%= testDefinitions.length %></td>
+                </tr>
+
                 <tr>
                     <th width="10%">language</th>
                     <td><%= testDefinitionsSet.language %></td>
@@ -68,7 +74,6 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>id</th>
                 <th>question</th>
                 <th>answer</th>
             </tr>
@@ -76,7 +81,6 @@
             <tbody>
             <% testDefinitions.forEach(function(entry) { %>
                 <tr>
-                    <td><%= entry.id %></td>
                     <td><%= entry.question %></td>
                     <td><%= entry.answer %></td>
                 </tr>

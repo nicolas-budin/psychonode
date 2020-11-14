@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var {findAllActiveTestDefinitions} = require('../services/TestDefinitionService')
-var {TestDefinitionSet, findAllTestDefinitionSet, findTestDefinitionSetById, findTestDefinitionSetAnDefinitionsById} = require('../services/TestDefinitionSetService')
+var {TestDefinitionSet, findAllTestDefinitionSet, findTestDefinitionSetById, findTestDefinitionSetAnDefinitionsById, findAllTestDefinitionSetAndDefinitions} = require('../services/TestDefinitionSetService')
 
 var {loggedIn, isAdmin} = require('../services/UserService')
 
@@ -13,7 +13,9 @@ var {loggedIn, isAdmin} = require('../services/UserService')
  */
 router.get('/', isAdmin, function (req, res, next) {
 
-    findAllTestDefinitionSet().then(testDefinitionSets => {
+    let user = req.user;
+
+    findAllTestDefinitionSetAndDefinitions(user.language).then(testDefinitionSets => {
         res.render('admin/testDefinitionSets',   {testDefinitionSets: testDefinitionSets});
     }).catch(error => {
 
@@ -25,8 +27,11 @@ router.get('/', isAdmin, function (req, res, next) {
 
 }).get('/active', isAdmin, function (req, res, next) {
 
-    findAllActiveTestDefinitions().then(testDefinitions => {
-        res.render('admin/activeTestDefinition',   {testDefinitions: testDefinitions});
+
+    let user = req.user;
+
+    findAllActiveTestDefinitions(user.language).then(testDefinitions => {
+        res.render('admin/activeTestDefinition',   {testDefinitions: testDefinitions, user : user});
     }).catch(error => {
 
             let msg = 'Unable to get test definitions from database';
