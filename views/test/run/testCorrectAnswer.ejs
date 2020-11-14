@@ -4,6 +4,20 @@
 
     <%- include('../../header'); %>
 
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("button[type='submit']")[0].disabled = true;
+
+            $("input[type='radio']").change(function () {
+
+                $("button[type='submit']")[0].disabled = false;
+            });
+        });
+
+    </script>
+
 </head>
 <body>
 
