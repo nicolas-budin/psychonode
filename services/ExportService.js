@@ -30,22 +30,6 @@ class ExportDataEntry {
     }
 }
 
-class ExportEntry {
-
-
-    login;
-    age;
-    sex;
-    level;
-    group;
-    language;
-    numberOfElements;
-    numbOfSuccess;
-    numberOfRedo;
-    numberOfRedisplay;
-
-}
-
 const exportTestCsv = async () => {
 
     const fields = [
@@ -128,7 +112,7 @@ const exportTests = async () => {
 
             if (iterationElements.length > 0) {
 
-                let exportEntry = new ExportEntry();
+                let exportEntry = {};
 
                 exportEntry.login = user.login;
                 exportEntry.age = user.age;
