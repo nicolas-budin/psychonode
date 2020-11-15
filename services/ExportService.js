@@ -1,10 +1,10 @@
 const {Sequelize} = require('sequelize');
 
-const {findAllUsers} = require('./UserService');
+const {findAllUsers, findUserById} = require('./UserService');
 const {findTestsByUserId} = require('./TestService');
 const {findTestElementsByTestId} = require('./TestElementService');
 
-const { Parser } = require('json2csv');
+const {Parser} = require('json2csv');
 
 // creates rdbms access
 const sequelize = new Sequelize({
@@ -20,9 +20,6 @@ sequelize.authenticate().then(() => {
 });
 
 
-
-
-
 class ExportDataEntry {
 
     constructor(user, test, testElements) {
@@ -35,13 +32,19 @@ class ExportDataEntry {
 
 class ExportEntry {
 
+
     login;
     age;
     sex;
+    level;
+    group;
+    language;
     numberOfElements;
+    numbOfSuccess;
+    numberOfRedo;
+    numberOfRedisplay;
 
 }
-
 
 const exportTestCsv = async () => {
 
@@ -55,18 +58,50 @@ const exportTestCsv = async () => {
             value: 'age'
         },
         {
-            label: 'sex',
-            value: 'gender'
+            label: 'gender',
+            value: 'sex'
+        },
+        {
+            label: 'level',
+            value: 'level'
+        },
+        {
+            label: 'group',
+            value: 'group'
+        },
+        {
+            label: 'language',
+            value: 'language'
+        },
+        {
+            label: 'iteration',
+            value: 'iteration'
         },
         {
             label: 'number of words',
             value: 'numberOfElements'
+        },
+        {
+            label: 'numbOfSuccess',
+            value: 'numbOfSuccess'
+        },
+        {
+            label: 'numberOfRedo',
+            value: 'numberOfRedo'
+        },
+        {
+            label: 'numberOfRedisplay',
+            value: 'numberOfRedisplay'
+        },
+        {
+            label: 'numberOfDrop',
+            value: 'numberOfDrop'
         }
     ];
 
     const data = await exportTests();
 
-    const json2csv = new Parser({ fields });
+    const json2csv = new Parser({fields});
     const csv = json2csv.parse(data);
 
     return csv;
@@ -81,18 +116,56 @@ const exportTests = async () => {
 
     data.forEach(element => {
 
-        let exportEntry = new ExportEntry();
-
         const user = element.user;
-
-        exportEntry.login = user.login;
-        exportEntry.age = user.age;
-        exportEntry.sex = user.sex;
-
         const testElements = element.testElements;
-        exportEntry.numberOfElements = testElements.length;
 
-        entries.push(exportEntry);
+        let iteration = 0;
+        let stopLoop = false;
+
+        while (!stopLoop) {
+
+            const iterationElements = testElements.filter(testElement => testElement.iteration == iteration);
+
+            if (iterationElements.length > 0) {
+
+                let exportEntry = new ExportEntry();
+
+                exportEntry.login = user.login;
+                exportEntry.age = user.age;
+                exportEntry.sex = user.sex;
+                exportEntry.level = user.level;
+                exportEntry.language = user.language;
+
+                exportEntry.numberOfElements = iterationElements.length;
+
+                exportEntry.iteration = (iteration + 1);
+
+                exportEntry.numbOfSuccess = iterationElements.filter(iterationElement => {
+                    return iterationElement.is_success && !iterationElement.is_a_repeat
+                }).length;
+
+                exportEntry.numberOfRedo = iterationElements.filter(iterationElement => {
+                    return iterationElement.is_success && iterationElement.is_redo && !iterationElement.is_a_repeat
+                }).length;
+
+                exportEntry.numberOfRedisplay = iterationElements.filter(iterationElement => {
+                    return iterationElement.is_success && iterationElement.is_redisplay && !iterationElement.is_a_repeat
+                }).length;
+
+                exportEntry.numberOfDrop = iterationElements.filter(iterationElement => {
+                    return iterationElement.is_success && !iterationElement.is_redisplay && !iterationElement.is_redo && !iterationElement.is_a_repeat
+                }).length;
+
+                entries.push(exportEntry);
+
+            } else {
+                stopLoop = true;
+            }
+
+            iteration++;
+        }
+
+
     })
 
     return entries;

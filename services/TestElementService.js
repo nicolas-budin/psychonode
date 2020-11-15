@@ -48,7 +48,7 @@ TestElement.init({
     is_success: {
         type: DataTypes.BOOLEAN
     },
-    is_redo: {
+        is_redo: {
         type: DataTypes.BOOLEAN
     },
     is_a_repeat: {
