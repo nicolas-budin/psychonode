@@ -18,6 +18,7 @@ var loginRouter = require('./routes/login');
 var usersRouter = require('./routes/users');
 var testDefinitionRouter = require('./routes/testDefinition');
 var testsRouter = require('./routes/tests');
+var exportRouter = require('./routes/export');
 
 var {findUserById, findUserByLogin} = require('./services/UserService');
 var {getUITextElementsMap} = require('./services/LanguageService');
@@ -96,6 +97,7 @@ app.use('/', loginRouter);
 app.use('/users', usersRouter);
 app.use('/test_definition', testDefinitionRouter);
 app.use('/tests', testsRouter);
+app.use('/export', exportRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
