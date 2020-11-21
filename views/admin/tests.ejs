@@ -12,7 +12,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/users">Users</a></li>
-        <li class="breadcrumb-item"><a href="/users/<%= userId %>"><%= userId %></a></li>
+        <li class="breadcrumb-item"><a href="/users/<%= user.id %>"><%= user.login %></a></li>
         <li class="breadcrumb-item active" aria-current="page">tests</li>
     </ol>
 </nav>
@@ -25,7 +25,7 @@
 
         <form method="post">
 
-            <input type="hidden" id="user_id" name="user_id" value="<%= userId %>">
+            <input type="hidden" id="user_id" name="user_id" value="<%= user.id %>">
 
             <table class="table table-striped">
                 <thead>
@@ -43,7 +43,7 @@
                     <tr>
 
                         <td>
-                            <a href="/users/<%= userId %>/tests/<%= entry.id %>"><%= entry.is_first_step ? "First" : "Second" %></a>
+                            <a href="/users/<%= user.id %>/tests/<%= entry.id %>"><%= entry.is_first_step ? "First" : "Second" %></a>
                         </td>
 
                         <td>

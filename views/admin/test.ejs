@@ -12,11 +12,40 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/users">Users</a></li>
-        <li class="breadcrumb-item"><a href="/users/<%= userId %>"><%= userId %></a></li>
-        <li class="breadcrumb-item"><a href="/users/<%= userId %>/tests">tests</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><%= testId %></li>
+        <li class="breadcrumb-item"><a href="/users/<%= user.id %>"><%= user.login %></a></li>
+        <li class="breadcrumb-item"><a href="/users/<%= user.id %>/tests">tests</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><%= test.id %></li>
     </ol>
 </nav>
+
+
+<div class="card">
+
+    <div class="card-header">
+        Test Metadata
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>name</th>
+                <th>value</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <% test.metadata.forEach(function(entry) { %>
+                <tr>
+                    <td><%= entry.metadata%></td>
+                    <td><%= entry.value %></td>
+                </tr>
+            <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<BR>
 
 <div class="card">
 
@@ -40,7 +69,7 @@
             </tr>
             </thead>
             <tbody>
-            <% testElements.forEach(function(entry) { %>
+            <% test.testElements.forEach(function(entry) { %>
                 <tr>
                     <td><%= entry.iteration + 1 %></td>
                     <td><%= entry.question %></td>

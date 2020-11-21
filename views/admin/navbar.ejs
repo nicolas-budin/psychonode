@@ -13,6 +13,9 @@
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
 
+
+            <!-- test definitions -->
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="definitionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Test datasets
@@ -23,9 +26,22 @@
                 </div>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="/users">Users / Tests</a>
+
+            <!-- users -->
+
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="usersDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Users / Tests
+                </a>
+                <div class="dropdown-menu" aria-labelledby="usersDropdown">
+                    <a class="dropdown-item" href="/users">My Users</a>
+                    <a class="dropdown-item" href="/users/all_users">All Users</a>
+                </div>
             </li>
+
+
+            <!-- export -->
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#"  id="exportDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Exports
@@ -46,6 +62,8 @@
 
         </ul>
 
+        <!-- help -->
+
         <ul class="navbar-nav mr-right">
             <li class="nav-item">
                 <a class="nav-link" href="/tests/help">Help
@@ -59,6 +77,8 @@
                 </a>
             </li>
         </ul>
+
+        <!-- logout -->
 
         <ul class="navbar-nav mr-right">
             <li class="nav-item">

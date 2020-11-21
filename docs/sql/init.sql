@@ -13,6 +13,10 @@ drop table if exists ui_text_elements;
 drop table if exists ui_text_elements_cv;
 drop table if exists language_cv;
 
+
+drop table if exists test_metadata;
+drop table if exists metadata_cv;
+
 --
 -- support for multi language
 --
@@ -38,7 +42,6 @@ create table ui_text_elements_cv
 );
 
 
-
 -- text for a given text element (one entry per supported language)
 create table ui_text_elements
 (
@@ -47,7 +50,7 @@ create table ui_text_elements
     value    text,
     FOREIGN KEY (language) REFERENCES language_cv (language),
     FOREIGN KEY (key) REFERENCES ui_text_elements_cv (key),
-    unique(key, language)
+    unique (key, language)
 );
 
 
@@ -59,7 +62,7 @@ CREATE TABLE user
 (
     id        integer PRIMARY KEY,
     login     text not null UNIQUE,
-    password  text default '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q',
+    password  text    default '$2b$08$LY7duGKhwm79yvvzXAI26.1rGEd4HFl4sBIDhT3FvIV46aggP0E9q',
     setId     integer default 1,
     age       integer,
     sex       text,
@@ -67,7 +70,7 @@ CREATE TABLE user
     parent    integer,
     language  text    default 'french',
     is_admin  boolean default false,
-    is_active  boolean default true,
+    is_active boolean default true,
     createdAt date    DEFAULT (datetime('now', 'localtime')),
     updatedAt date,
     FOREIGN KEY (language) REFERENCES language_cv (language),
@@ -104,8 +107,8 @@ create table test_definition_set
     id          integer PRIMARY KEY,
     description text,
     is_active   boolean default false,
-    language    text default 'french',
-    createdAt   date DEFAULT (datetime('now', 'localtime')),
+    language    text    default 'french',
+    createdAt   date    DEFAULT (datetime('now', 'localtime')),
     updatedAt   date,
     FOREIGN KEY (language) REFERENCES language_cv (language)
 );
@@ -146,6 +149,7 @@ create table test
     FOREIGN KEY (setId) REFERENCES test_definition_set (id)
 );
 
+
 -- a test element
 
 create table test_element
@@ -168,4 +172,34 @@ create table test_element
     FOREIGN KEY (test_id) REFERENCES test (id),
     FOREIGN KEY (test_definition_id) REFERENCES test_definition (id)
 );
+
+
+-- metadata cv
+create table metadata_cv
+(
+    identifier text PRIMARY KEY
+);
+
+insert into metadata_cv(identifier)
+values ('confidence');
+
+
+-- test metadata
+
+create table test_metadata
+(
+    id         integer PRIMARY KEY,
+    test_id    integer not null,
+    value      text,
+    identifier text,
+    createdAt  date DEFAULT (datetime('now', 'localtime')),
+    updatedAt  date,
+    FOREIGN KEY (test_id) REFERENCES test (id),
+    FOREIGN KEY (identifier) REFERENCES metadata_cv (identifier),
+    unique (test_id, identifier)
+);
+
+
+
+
 

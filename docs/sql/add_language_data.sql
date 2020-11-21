@@ -130,6 +130,13 @@ values ('options');
 insert into ui_text_elements_cv(key)
 values ('choose_an_option');
 
+insert into ui_text_elements_cv(key)
+values ('confidence');
+
+
+insert into ui_text_elements_cv(key)
+values ('confidence_constraints');
+
 --
 -- french
 --
@@ -172,13 +179,13 @@ values ('level', 'french', 'Ton degré scolaire');
 -- explanation
 
 insert into ui_text_elements(key, language, value)
-values ('explanation', 'french', 'Dans cet exercice, tu vas apprendre des mots en Hongrois !');
+values ('explanation', 'french', 'Dans cet exercice, tu vas apprendre des mots dans une langue étrangère !');
 
 insert into ui_text_elements(key, language, value)
 values ('example', 'french', 'Essaye de retenir cet exemple');
 
 insert into ui_text_elements(key, language, value)
-values ('source_language', 'french', 'Hongrois');
+values ('source_language', 'french', 'langue étrangère');
 
 insert into ui_text_elements(key, language, value)
 values ('target_language', 'french', 'Francais');
@@ -215,7 +222,7 @@ values ('test_intro_2', 'french', 'Essaye de retenir la traduction de tous les m
 
 
 insert into ui_text_elements(key, language, value)
-values ('test_intro_3', 'french', 'Plus tard, on te donnera le mot Hongrois et tu devras écrire la traduction en français.');
+values ('test_intro_3', 'french', 'Plus tard, on te donnera le mot en langue étrangère et tu devras écrire la traduction en français.');
 
 
 insert into ui_text_elements(key, language, value)
@@ -241,10 +248,10 @@ insert into ui_text_elements(key, language, value)
 values ('no_retest_no_see_again_choice', 'french', 'Je ne veux pas revoir la paire ni me re-tester');
 
 insert into ui_text_elements(key, language, value)
-values ('your_answer_is', 'french', 'Tu as ecris');
+values ('your_answer_is', 'french', 'Tu as écrit');
 
 insert into ui_text_elements(key, language, value)
-values ('right_answer_is', 'french', 'alors que la reponse correct est');
+values ('right_answer_is', 'french', 'alors que la reponse correcte est');
 
 insert into ui_text_elements(key, language, value)
 values ('test_end', 'french', 'Bravo ! C''est terminé !');
@@ -258,6 +265,13 @@ values ('options', 'french', 'Options');
 
 insert into ui_text_elements(key, language, value)
 values ('choose_an_option', 'french', 'Choisis une des options suivantes: ');
+
+
+insert into ui_text_elements(key, language, value)
+values ('confidence', 'french', 'A quel point tu es confiant de te rappeler de ces mots dans 1 semaine ?  (0 % = pas du tout confiant; 100% très confiant).');
+
+insert into ui_text_elements(key, language, value)
+values ('confidence_constraints', 'french', 'Entre un chiffre entre 0 et 100');
 
 -- misc
 
@@ -306,13 +320,13 @@ values ('level', 'german', 'Deine Schulklasse');
 -- explanation
 
 insert into ui_text_elements(key, language, value)
-values ('explanation', 'german', 'In dieser Übung wirst du ein paar Wörter auf ungarisch lernen!');
+values ('explanation', 'german', 'In dieser Übung wirst du ein paar Wörter auf eine Fremdsprache lernen!');
 
 insert into ui_text_elements(key, language, value)
 values ('example', 'german', 'Probier mal dir dieses Beispiel zu merken ');
 
 insert into ui_text_elements(key, language, value)
-values ('source_language', 'german', 'Ungarisch');
+values ('source_language', 'german', 'Fremdsprache');
 
 insert into ui_text_elements(key, language, value)
 values ('target_language', 'german', 'Deutsch');
@@ -349,7 +363,7 @@ values ('test_intro_2', 'german', 'Probier mal dir die Übersetzung aller Wörte
 
 
 insert into ui_text_elements(key, language, value)
-values ('test_intro_3', 'german', 'Später wird dir das Wort auf ungarisch gegeben und du musst die Übersetzung auf Deutsch notieren.');
+values ('test_intro_3', 'german', 'Später wird dir das Wort auf eine Fremdsprache gegeben und du musst die Übersetzung auf Deutsch notieren.');
 
 
 insert into ui_text_elements(key, language, value)
@@ -393,6 +407,14 @@ values ('options', 'german', 'Optionen');
 
 insert into ui_text_elements(key, language, value)
 values ('choose_an_option', 'german', 'Wählen Sie eine der folgenden Optionen:');
+
+
+insert into ui_text_elements(key, language, value)
+values ('confidence', 'german', 'Wie sicher bist du, dass du  dich in einer Woche an diese Worte erinnern werden? (0% = überhaupt nicht zuversichtlich; 100% sehr zuversichtlich).
+');
+
+insert into ui_text_elements(key, language, value)
+values ('confidence_constraints', 'german', 'Gib eine Zahl zwischen 0 und 100 ein');
 
 
 -- misc

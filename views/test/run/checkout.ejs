@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <%- include('../../header'); %>
+
+</head>
+<body>
+
+<div class="alert alert-success" role="alert">
+    <h4 class="alert-heading"><%= user.uITextElementsMap.test_end%></h4>
+</div>
+
+<div class="card">
+
+    <div class="card-body">
+        <form action="/tests/run/checkout" method="post"  autocomplete="off">
+
+            <div class="form-group">
+                <label for="confidence" class="col-form-label"><%= user.uITextElementsMap.confidence%></label>
+                <input type="text" class="form-control" id="confidence" name="confidence">
+                <label id="confidence" class="form-text text-muted"><%= user.uITextElementsMap.confidence_constraints%></label>
+            </div>
+
+            <input type="hidden" class="form-control" id="test_id" name="test_id" value="<%= test_id %>">
+
+            <button type="submit" class="btn btn-primary"><%= user.uITextElementsMap.press_key_to_continue%></button>
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

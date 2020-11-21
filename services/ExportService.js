@@ -4,6 +4,8 @@ const {findAllUsers, findUserById} = require('./UserService');
 const {findTestsByUserId} = require('./TestService');
 const {findTestElementsByTestId} = require('./TestElementService');
 
+const {findByTestId, getMetadataFromList} = require('./TestMetadataService')
+
 const {Parser} = require('json2csv');
 
 // creates rdbms access
@@ -22,11 +24,12 @@ sequelize.authenticate().then(() => {
 
 class ExportDataEntry {
 
-    constructor(user, test, testElements) {
+    constructor(user, test, testElements, metadata) {
 
         this.test = test;
         this.user = user;
         this.testElements = testElements;
+        this.metadata = metadata;
     }
 }
 
@@ -80,6 +83,10 @@ const exportTestCsv = async () => {
         {
             label: 'numberOfDrop',
             value: 'numberOfDrop'
+        },
+        {
+            label: 'confidence',
+            value: 'confidence'
         }
     ];
 
@@ -98,10 +105,13 @@ const exportTests = async () => {
 
     const data = await getTestData();
 
-    data.forEach(element => {
+    for(let i = 0; data != undefined && data != null && i < data.length; i++) {
+
+        let element = data[i];
 
         const user = element.user;
         const testElements = element.testElements;
+        const metadata = element.metadata;
 
         let iteration = 0;
         let stopLoop = false;
@@ -114,11 +124,20 @@ const exportTests = async () => {
 
                 let exportEntry = {};
 
+                //
+                // user
+                //
+
+
                 exportEntry.login = user.login;
                 exportEntry.age = user.age;
                 exportEntry.sex = user.sex;
                 exportEntry.level = user.level;
                 exportEntry.language = user.language;
+
+                //
+                // tests
+                //
 
                 exportEntry.numberOfElements = iterationElements.length;
 
@@ -140,6 +159,14 @@ const exportTests = async () => {
                     return iterationElement.is_success && !iterationElement.is_redisplay && !iterationElement.is_redo && !iterationElement.is_a_repeat
                 }).length;
 
+                //
+                // metadata
+                //
+
+                // confidence
+                const confidenceMetadata = await getMetadataFromList('confidence',metadata);
+                exportEntry.confidence = confidenceMetadata != undefined ? confidenceMetadata.value : '';
+
                 entries.push(exportEntry);
 
             } else {
@@ -148,9 +175,7 @@ const exportTests = async () => {
 
             iteration++;
         }
-
-
-    })
+    }
 
     return entries;
 
@@ -186,8 +211,11 @@ const getTestData = async () => {
 
                 const testElements = await findTestElementsByTestId(currTest.id);
 
+
+                const metadata = await findByTestId(currTest.id)
+
                 if (testElements != null && testElements.length > 0) {
-                    entries.push(new ExportDataEntry(currUser, currTest, testElements));
+                    entries.push(new ExportDataEntry(currUser, currTest, testElements, metadata));
                 }
             }
         }

@@ -4,20 +4,33 @@ var router = express.Router();
 
 const {body, validationResult} = require('express-validator');
 
-var {findTestElementsByTestId} = require('../services/TestElementService')
 var {User, isAdmin, loggedIn, findAllUsers, findUserById} = require('../services/UserService')
-var {findTestsByUserId} = require('../services/TestService')
+var {findTestsByUserId, getTestData} = require('../services/TestService')
 
 
 /**
  * - shows list of all users
  * - shows data for one user
  */
-router.get('/', isAdmin, function (req, res, next) {
-
+router.get('/all_users', isAdmin, function (req, res, next) {
 
     findAllUsers().then(users => {
         res.render('admin/users', {users: users});
+    }).catch(error => {
+
+            let msg = 'Unable to get user list from database';
+            console.error(msg, error);
+            res.render('error', {message: msg, error: error});
+        }
+    );
+
+}).get('/', isAdmin, function (req, res, next) {
+
+
+    let user = req.user;
+
+    findAllUsers().then(users => {
+        res.render('admin/users', {users: users.filter(listUser => listUser.login === user.login || listUser.parent == user.id)});
     }).catch(error => {
 
             let msg = 'Unable to get user list from database';
@@ -41,7 +54,7 @@ router.get('/', isAdmin, function (req, res, next) {
     findUserById(req.params.id).then(user => {
 
         if (user.is_admin) {
-            res.render('error',     {message: "admin cannot be viewed / modified"});
+            res.render('error', {message: "admin cannot be viewed / modified"});
         } else {
             res.render('admin/user', {user: user});
         }
@@ -52,21 +65,43 @@ router.get('/', isAdmin, function (req, res, next) {
     });
 
 }).get('/:id/tests', isAdmin, function (req, res, next) {
+    
+    findUserById(req.params.id).then(user => {
 
-    findTestsByUserId(req.params.id).then(tests => {
-        res.render('admin/tests', {userId: req.params.id, tests: tests});
+        findTestsByUserId(user.id).then(tests => {
+            res.render('admin/tests', {user: user, tests: tests});
+        }).catch(error => {
+            let msg = 'Unable to get user tests';
+            console.error(msg, error);
+            res.render('error', {message: msg, error: error});
+        })
+
     }).catch(error => {
-        let msg = 'Unable to get user tests';
+        let msg = 'Unable to get user data';
         console.error(msg, error);
         res.render('error', {message: msg, error: error});
     });
 
 }).get('/:userId/tests/:id', isAdmin, function (req, res, next) {
 
-    findTestElementsByTestId(req.params.id).then(testElements => {
-        res.render('admin/test', {testElements: testElements, userId: req.params.userId, testId: req.params.id});
+
+    findUserById(req.params.userId).then(user => {
+
+        getTestData(req.params.id).then(test => {
+
+            res.render('admin/test', {
+                test: test,
+                user: user
+            });
+
+        }).catch(error => {
+            let msg = 'Unable to get test elements';
+            console.error(msg, error);
+            res.render('error', {message: msg, error: error});
+        })
+
     }).catch(error => {
-        let msg = 'Unable to get test elements';
+        let msg = 'Unable to get user data';
         console.error(msg, error);
         res.render('error', {message: msg, error: error});
     });
@@ -132,7 +167,7 @@ router.get('/', isAdmin, function (req, res, next) {
         login: req.body.login,
         age: req.body.age,
         level: req.body.level,
-        parent : req.user.id,
+        parent: req.user.id,
         sex: req.body.sex,
         language: req.user.language,
         is_active: req.body.is_active != undefined ? true : false

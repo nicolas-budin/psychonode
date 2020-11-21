@@ -8,6 +8,8 @@ var {findTestDefinitionById, findAllActiveTestDefinitions} = require('../service
 
 var {loggedIn, isAdmin} = require('../services/UserService')
 
+var {createTestMetaData} = require('../services/TestMetadataService')
+
 /**
 
  */
@@ -109,7 +111,7 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
             testElement.user_answer = test.answer;
             testElement.is_done = true;
 
-            if (testDefinition.answer === test.answer) {
+            if (testDefinition.answer.toLowerCase() === test.answer.toLowerCase()) {
                 testElement.is_success = true;
             }
 
@@ -181,7 +183,7 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
                 console.info("result of run test " + testData.testElement)
 
                 if (testData.testElement == undefined) {
-                    res.render('test/run/testEnd', {user : user});
+                    res.render('test/run/checkout', {user : user, test_id : test.test_id});
                 } else {
 
                     if (testData.testElement.is_success) {
@@ -225,6 +227,32 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
         res.render('error', {message: "", error: error});
     })
 
+
+}).post('/run/checkout', loggedIn, function (req, res, next) {
+
+    let user = req.user;
+
+    if(req.body.confidence != undefined && req.body.confidence >=0 && req.body.confidence <= 100) {
+
+        let confidence = req.body.confidence;
+        let testId = req.body.test_id;
+
+        createTestMetaData(testId, 'confidence', confidence).
+        then(metadata => {
+            res.render('test/run/testEnd', {
+                user: user
+            });
+        }).catch(error => {
+            res.render('error', {message: "", error: error});
+        })
+
+    } else {
+
+        res.render('test/run/checkout', {
+            user: user,
+            test_id : req.body.test_id
+        });
+    }
 
 }).post('/example/show', loggedIn, function (req, res, next) {
 
@@ -290,7 +318,7 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
     findTestDefinitionById(testDefinitionId).then(testDefinition => {
 
-        if(answer === testDefinition.answer) {
+        if(answer.toLowerCase() === testDefinition.answer.toLowerCase()) {
 
             res.render('test/example/exampleSuccess', {
                 question: question,

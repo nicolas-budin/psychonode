@@ -1,11 +1,13 @@
 const {QueryTypes, Sequelize, DataTypes, Model} = require('sequelize');
 
-const {getRedoAndRedisplayTestElements, TestElement, getAvailableTestElements, getFailedTestElements} = require('./TestElementService');
+const {findTestElementsByTestId, getRedoAndRedisplayTestElements, TestElement, getAvailableTestElements, getFailedTestElements} = require('./TestElementService');
 
 const {findAllActiveTestDefinitions} = require('./TestDefinitionService');
 
 const {findUserById} = require('./UserService')
 
+
+const {findByTestId} = require('./TestMetadataService')
 
 // creates rdbms access
 const sequelize = new Sequelize({
@@ -109,6 +111,28 @@ const findTestById = async (id) => {
     }
 }
 
+
+const getTestData = async (id) => {
+
+    try {
+        const test =  await findTestById(id);
+
+        const testElements = await findTestElementsByTestId(id);
+        test.testElements = testElements;
+
+        const metadata = await findByTestId(id);
+        test.metadata = metadata;
+
+        return test;
+
+    } catch (error) {
+        console.error("Failed to get test for id: " + id, error);
+        throw error;
+    }
+}
+
+
+
 /**
  * creates a test for user with userId
  * @param userId
@@ -163,6 +187,7 @@ const getCurrentTestIteration = (testId) => {
             raw: false
         });
 }
+
 
 
 /**
@@ -363,3 +388,4 @@ exports.findTestById = findTestById;
 exports.getCurrentTestIteration = getCurrentTestIteration;
 
 exports.runTest = runTest;
+exports.getTestData = getTestData;
