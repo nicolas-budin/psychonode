@@ -30,13 +30,7 @@ values (6, false, 'german');
 insert into test_definition (question, answer)
 values ('Farkas', 'Loup');
 insert into test_definition (question, answer)
-values ('Cet', 'Baleine');
-insert into test_definition (question, answer)
 values ('Menni', 'Marcher');
-insert into test_definition (question, answer)
-values ('Rohan', 'Courir');
-insert into test_definition (question, answer)
-values ('Ugat', 'Aboyer');
 insert into test_definition (question, answer)
 values ('Oldal', 'Page');
 insert into test_definition (question, answer)
@@ -46,41 +40,49 @@ values ('Tanulni', 'Apprendre');
 insert into test_definition (question, answer)
 values ('Szem', 'Oeil');
 insert into test_definition (question, answer)
-values ('Haj', 'Cheveux');
-insert into test_definition (question, answer)
-values ('Orr', 'Nez');
-insert into test_definition (question, answer)
-values ('Penz', 'Argent');
-insert into test_definition (question, answer)
-values ('Nyer', 'Gagner');
-insert into test_definition (question, answer)
-values ('Veszt', 'Perdre');
-insert into test_definition (question, answer)
-values ('Ember', 'Homme');
-insert into test_definition (question, answer)
-values ('Gyerek', 'Enfant');
-insert into test_definition (question, answer)
 values ('Szoba', 'Chambre');
 insert into test_definition (question, answer)
 values ('Asztal', 'Table');
 insert into test_definition (question, answer)
-values ('Konyha', 'Cuisine');
+values ('Orvos', 'Médecin');
 insert into test_definition (question, answer)
 values ('Aludni', 'Dormir');
+insert into test_definition (question, answer)
+values ('Sajt', 'Fromage');
+insert into test_definition (question, answer)
+values ('Bors', 'Poivre');
+insert into test_definition (question, answer)
+values ('Fagyi', 'Glace');
+insert into test_definition (question, answer)
+values ('Tenger', 'Océan');
+insert into test_definition (question, answer)
+values ('Jegy', 'Billet');
+insert into test_definition (question, answer)
+values ('Vonat', 'Train');
+insert into test_definition (question, answer)
+values ('Ing', 'Chemise');
+insert into test_definition (question, answer)
+values ('Vihar', 'Tempête');
+insert into test_definition (question, answer)
+values ('Nagy', 'Gros');
+insert into test_definition (question, answer)
+values ('Hold', 'Lune');
+insert into test_definition (question, answer)
+values ('Bolt', 'Magasin');
 
 
 -- developer set (testing)
 
 insert into test_definition (question, answer, setId)
-values ('csirke', 'poulet', 2);
+values ('Sajt', 'Fromage', 2);
 insert into test_definition (question, answer, setId)
-values ('sajt', 'fromage', 2);
+values ('Bors', 'Poivre', 2);
 insert into test_definition (question, answer, setId)
-values ('bors', 'poivre', 2);
+values ('Farkas', 'Loup', 2);
 insert into test_definition (question, answer, setId)
-values ('fagyi', 'glace', 2);
+values ('Oldal', 'Page', 2);
 insert into test_definition (question, answer, setId)
-values ('viz', 'eau', 2);
+values ('Hold', 'Lune', 2);
 
 -- additional set
 
@@ -136,59 +138,61 @@ values ('Lehel', 'Respirer', 5);
 -- pre-test set
 
 insert into test_definition (question, answer, setId)
+values ('Sajt', 'Käse', 3);
+insert into test_definition (question, answer, setId)
+values ('Bors', 'Pfeffer', 3);
+insert into test_definition (question, answer, setId)
 values ('Farkas', 'Wolf', 3);
 insert into test_definition (question, answer, setId)
-values ('Cet', 'Wal', 3);
-insert into test_definition (question, answer, setId)
-values ('Menni', 'Laufen', 3);
-insert into test_definition (question, answer, setId)
-values ('Rohan', 'Rennen', 3);
-insert into test_definition (question, answer, setId)
-values ('Ugat', 'Bellen', 3);
+values ('Menni', 'laufen', 3);
 insert into test_definition (question, answer, setId)
 values ('Oldal', 'Seite', 3);
 insert into test_definition (question, answer, setId)
 values ('Toll', 'Stift', 3);
 insert into test_definition (question, answer, setId)
-values ('Tanulni', 'Lernen', 3);
+values ('Tanulni', 'lernen', 3);
 insert into test_definition (question, answer, setId)
 values ('Szem', 'Auge', 3);
-insert into test_definition (question, answer, setId)
-values ('Haj', 'Haare', 3);
-insert into test_definition (question, answer, setId)
-values ('Orr', 'Nase', 3);
-insert into test_definition (question, answer, setId)
-values ('Penz', 'Geld', 3);
-insert into test_definition (question, answer, setId)
-values ('Nyer', 'Gewinnen', 3);
-insert into test_definition (question, answer, setId)
-values ('Veszt', 'Verloren', 3);
-insert into test_definition (question, answer, setId)
-values ('Ember', 'Mann', 3);
-insert into test_definition (question, answer, setId)
-values ('Gyerek', 'Kind', 3);
 insert into test_definition (question, answer, setId)
 values ('Szoba', 'Zimmer', 3);
 insert into test_definition (question, answer, setId)
 values ('Asztal', 'Tisch', 3);
 insert into test_definition (question, answer, setId)
-values ('Konyha', 'Küche', 3);
+values ('Aludni', 'schlafen', 3);
 insert into test_definition (question, answer, setId)
-values ('Aludni', 'Schlafen', 3);
+values ('Orvos', 'Arzt', 3);
+insert into test_definition (question, answer, setId)
+values ('Jegy', 'Ticket', 3);
+insert into test_definition (question, answer, setId)
+values ('Vonat', 'Zug', 3);
+insert into test_definition (question, answer, setId)
+values ('Ing', 'Hemd', 3);
+insert into test_definition (question, answer, setId)
+values ('Bolt', 'Laden', 3);
+insert into test_definition (question, answer, setId)
+values ('Tenger', 'Ozean', 3);
+insert into test_definition (question, answer, setId)
+values ('Vihar', 'Sturm', 3);
+insert into test_definition (question, answer, setId)
+values ('Nagy', 'dick', 3);
+insert into test_definition (question, answer, setId)
+values ('Hold', 'Mond', 3);
+insert into test_definition (question, answer, setId)
+values ('fagyi', 'Eis', 3);
 
 
 -- developer set (testing)
 
 insert into test_definition (question, answer, setId)
-values ('csirke', 'Poulet', 4);
+values ('Sajt', 'Käse', 4);
 insert into test_definition (question, answer, setId)
-values ('sajt', 'Käse', 4);
+values ('Bors', 'Pfeffer', 4);
 insert into test_definition (question, answer, setId)
-values ('bors', 'Pfeffer', 4);
+values ('Farkas', 'Wolf', 4);
 insert into test_definition (question, answer, setId)
-values ('fagyi', 'Eis', 4);
+values ('Oldal', 'Seite', 4);
 insert into test_definition (question, answer, setId)
-values ('viz', 'Wasser', 4);
+values ('Hold', 'Mond', 4);
 
 
 -- additional set
@@ -203,7 +207,7 @@ insert into test_definition (question, answer, setId)
 values ('Kukta', 'Koch', 6);
 
 insert into test_definition (question, answer, setId)
-values ('Yegy', 'Fahrkarte', 6);
+values ('Jegy', 'Ticket', 6);
 
 insert into test_definition (question, answer, setId)
 values ('Vonat', 'Zug', 6);
@@ -212,7 +216,7 @@ insert into test_definition (question, answer, setId)
 values ('Ing', 'Hemd', 6);
 
 insert into test_definition (question, answer, setId)
-values ('Tesz', 'Stellen', 6);
+values ('Tesz', 'stellen', 6);
 
 insert into test_definition (question, answer, setId)
 values ('Dzseki', 'Jacke', 6);
@@ -224,7 +228,7 @@ insert into test_definition (question, answer, setId)
 values ('Piac', 'Markt', 6);
 
 insert into test_definition (question, answer, setId)
-values ('Vezet', 'Fahren', 6);
+values ('Vezet', 'fahren', 6);
 
 insert into test_definition (question, answer, setId)
 values ('Tenger', 'Ozean', 6);
@@ -233,7 +237,7 @@ insert into test_definition (question, answer, setId)
 values ('Vihar', 'Sturm', 6);
 
 insert into test_definition (question, answer, setId)
-values ('Nyom', 'Drücken', 6);
+values ('Nyom', 'drücken', 6);
 
 insert into test_definition (question, answer, setId)
-values ('Lehel', 'Atmen', 6);
+values ('Lehel', 'atmen', 6);

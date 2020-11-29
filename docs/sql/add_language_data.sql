@@ -288,21 +288,21 @@ insert into ui_text_elements(key, language, value)
 values ('welcome', 'german', 'Willkommen !');
 
 insert into ui_text_elements(key, language, value)
-values ('enter_login', 'german', 'Bitte gib deine Schülernummer ein');
+values ('enter_login', 'german', 'Bitte gebe deine Schülernummer ein');
 
 insert into ui_text_elements(key, language, value)
-values ('enter_password', 'german', 'Bitte gib dein Passwort ein');
+values ('enter_password', 'german', 'Bitte gebe dein Passwort ein');
 
 -- user form
 
 insert into ui_text_elements(key, language, value)
-values ('fill_form', 'german', 'Bevor du beginnst, bitte gib diese Informationen ein');
+values ('fill_form', 'german', 'Bevor du beginnst, bitte gebe diese Informationen ein');
 
 insert into ui_text_elements(key, language, value)
 values ('age', 'german', 'Dein Alter');
 
 insert into ui_text_elements(key, language, value)
-values ('age_constraints', 'german', 'Bitte gib ein Alter zwischen 10 und 20 ein :)');
+values ('age_constraints', 'german', 'Bitte gebe ein Alter zwischen 10 und 20 ein :)');
 
 insert into ui_text_elements(key, language, value)
 values ('sex', 'german', 'Dein Geschlecht');
@@ -323,7 +323,7 @@ insert into ui_text_elements(key, language, value)
 values ('explanation', 'german', 'In dieser Übung wirst du ein paar Wörter auf eine Fremdsprache lernen!');
 
 insert into ui_text_elements(key, language, value)
-values ('example', 'german', 'Probier mal dir dieses Beispiel zu merken ');
+values ('example', 'german', 'Probiere mal dir dieses Beispiel zu merken ');
 
 insert into ui_text_elements(key, language, value)
 values ('source_language', 'german', 'Fremdsprache');
@@ -334,10 +334,10 @@ values ('target_language', 'german', 'Deutsch');
 -- test
 
 insert into ui_text_elements(key, language, value)
-values ('try_to_translate', 'german', 'Probier mal dieses Wort zu übersetzen:');
+values ('try_to_translate', 'german', 'Probiere mal dieses Wort zu übersetzen:');
 
 insert into ui_text_elements(key, language, value)
-values ('write_answer', 'german', 'Schreib das Wort auf Deutsch');
+values ('write_answer', 'german', 'Schreibe das Wort auf Deutsch');
 
 insert into ui_text_elements(key, language, value)
 values ('wrong_answer', 'german', 'Du hast das Wort nicht korrect geschrieben...');
@@ -352,18 +352,18 @@ insert into ui_text_elements(key, language, value)
 values ('press_key_to_try_again', 'german', 'Diese Taste drücken um weiterzumachen');
 
 insert into ui_text_elements(key, language, value)
-values ('right_answer', 'german', 'Gut gemacht! Du hast es geschaffen!');
+values ('right_answer', 'german', 'Gut gemacht! Du hast es geschafft!');
 
 insert into ui_text_elements(key, language, value)
 values ('test_intro_1', 'german', 'Jetzt werden dir 15 Wortpaare hintereinander gezeigt.');
 
 
 insert into ui_text_elements(key, language, value)
-values ('test_intro_2', 'german', 'Probier mal dir die Übersetzung aller Wörter zu merken');
+values ('test_intro_2', 'german', 'Probiere mal dir die Übersetzungen aller Wörter zu merken');
 
 
 insert into ui_text_elements(key, language, value)
-values ('test_intro_3', 'german', 'Später wird dir das Wort auf eine Fremdsprache gegeben und du musst die Übersetzung auf Deutsch notieren.');
+values ('test_intro_3', 'german', 'Später wird dir das Wort auf eine Fremdsprache gezeigt und du musst die Übersetzung auf Deutsch aufschreiben.');
 
 
 insert into ui_text_elements(key, language, value)
@@ -371,7 +371,7 @@ values ('press_key_to_start', 'german', 'Diese Taste drücken, um weiterzumachen
 
 
 insert into ui_text_elements(key, language, value)
-values ('try_to_remember', 'german', 'Probier mal dir das Wort zu merken.');
+values ('try_to_remember', 'german', 'Probiere mal dir das Wort zu merken.');
 
 insert into ui_text_elements(key, language, value)
 values ('ready_to_start', 'german', 'Bist to bereit ?');
@@ -381,13 +381,13 @@ insert into ui_text_elements(key, language, value)
 values ('press_key_to_validate', 'german', 'Diese Taste drücken, um deine Antwort zu bestätigen.');
 
 insert into ui_text_elements(key, language, value)
-values ('see_again_choice', 'german', 'Ich möchte das Wortpaar später nochmal sehen.');
+values ('see_again_choice', 'german', 'Ich möchte das Wort später nochmal sehen.');
 
 insert into ui_text_elements(key, language, value)
-values ('retest_choice', 'german', 'Ich möchte das Wortpaar später nochmal üben.');
+values ('retest_choice', 'german', 'Ich möchte das Wort später nochmal üben.');
 
 insert into ui_text_elements(key, language, value)
-values ('no_retest_no_see_again_choice', 'german', 'Ich möchte das Wortpaar nicht mehr sehen oder nochmal üben.');
+values ('no_retest_no_see_again_choice', 'german', 'Ich möchte das Wort nicht mehr sehen oder nochmal üben.');
 
 insert into ui_text_elements(key, language, value)
 values ('your_answer_is', 'german', 'Du hast schrieben');
@@ -406,20 +406,20 @@ insert into ui_text_elements(key, language, value)
 values ('options', 'german', 'Optionen');
 
 insert into ui_text_elements(key, language, value)
-values ('choose_an_option', 'german', 'Wählen Sie eine der folgenden Optionen:');
+values ('choose_an_option', 'german', 'Wähle eine der folgenden Optionen:');
 
 
 insert into ui_text_elements(key, language, value)
-values ('confidence', 'german', 'Wie sicher bist du, dass du  dich in einer Woche an diese Worte erinnern werden? (0% = überhaupt nicht zuversichtlich; 100% sehr zuversichtlich).
+values ('confidence', 'german', 'Wie sicher bist du, dass du dich in einer Woche an diese Wörter erinnern wirst? (0% = überhaupt nicht zuversichtlich; 100% sehr zuversichtlich).
 ');
 
 insert into ui_text_elements(key, language, value)
-values ('confidence_constraints', 'german', 'Gib eine Zahl zwischen 0 und 100 ein');
+values ('confidence_constraints', 'german', 'Gebe eine Zahl zwischen 0 und 100 ein');
 
 
 -- misc
 
 insert into ui_text_elements(key, language, value)
-values ('press_key_to_continue', 'german', 'Eine Taste drücken, um weiterzumachen');
+values ('press_key_to_continue', 'german', 'Diese Taste drücken, um weiterzumachen');
 
 
