@@ -1,7 +1,9 @@
 
+delete from test_definition;
+
 delete from test_definition_set;
 
-delete from test_definition;
+
 
 insert into test_definition_set(id)
 values (1);
@@ -137,10 +139,8 @@ values ('Lehel', 'Respirer', 5);
 
 -- pre-test set
 
-insert into test_definition (question, answer, setId)
-values ('Sajt', 'Käse', 3);
-insert into test_definition (question, answer, setId)
-values ('Bors', 'Pfeffer', 3);
+
+
 insert into test_definition (question, answer, setId)
 values ('Farkas', 'Wolf', 3);
 insert into test_definition (question, answer, setId)
@@ -158,9 +158,17 @@ values ('Szoba', 'Zimmer', 3);
 insert into test_definition (question, answer, setId)
 values ('Asztal', 'Tisch', 3);
 insert into test_definition (question, answer, setId)
+values ('Orvos', 'Arzt', 3);
+insert into test_definition (question, answer, setId)
 values ('Aludni', 'schlafen', 3);
 insert into test_definition (question, answer, setId)
-values ('Orvos', 'Arzt', 3);
+values ('Sajt', 'Käse', 3);
+insert into test_definition (question, answer, setId)
+values ('Bors', 'Pfeffer', 3);
+insert into test_definition (question, answer, setId)
+values ('Fagyi', 'Eis', 3);
+insert into test_definition (question, answer, setId)
+values ('Tenger', 'Ozean', 3);
 insert into test_definition (question, answer, setId)
 values ('Jegy', 'Ticket', 3);
 insert into test_definition (question, answer, setId)
@@ -168,17 +176,14 @@ values ('Vonat', 'Zug', 3);
 insert into test_definition (question, answer, setId)
 values ('Ing', 'Hemd', 3);
 insert into test_definition (question, answer, setId)
-values ('Bolt', 'Laden', 3);
-insert into test_definition (question, answer, setId)
-values ('Tenger', 'Ozean', 3);
-insert into test_definition (question, answer, setId)
 values ('Vihar', 'Sturm', 3);
 insert into test_definition (question, answer, setId)
 values ('Nagy', 'dick', 3);
 insert into test_definition (question, answer, setId)
 values ('Hold', 'Mond', 3);
 insert into test_definition (question, answer, setId)
-values ('fagyi', 'Eis', 3);
+values ('Bolt', 'Laden', 3);
+
 
 
 -- developer set (testing)
