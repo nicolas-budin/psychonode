@@ -7,8 +7,9 @@
     <script type="text/javascript">
         window.onload = function () {
             window.setTimeout(function () {
-                document.memorizeForm.submit();
+                window.location.href = encodeURI("/tests/memorize/<%= testDefinitionIndex %>/<%= timeStamp %>");
             }, 5000);
+
         };
     </script>
 
@@ -37,7 +38,6 @@
                        value="<%= answer %>">
             </div>
 
-            <input type="hidden" class="form-control" id="test_definition_index" name="test_definition_index" value="<%= testDefinitionIndex %>">
         </form>
     </div>
 </div>

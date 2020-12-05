@@ -16,10 +16,7 @@
     <p class="lead"><%= user.uITextElementsMap.test_intro_3%></p>
 </div>
 
-<form action="/tests/memorize" method="post">
-
-    <button type="submit" class="btn btn-primary"><%= user.uITextElementsMap.press_key_to_start%></button>
-</form>
+<a class="btn btn-primary" href="/tests/memorize/0/<%=timeStamp%>/" role="button"><%= user.uITextElementsMap.press_key_to_start%></a>
 
 </body>
 </html>

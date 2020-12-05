@@ -10,6 +10,15 @@ var {loggedIn, isAdmin} = require('../services/UserService')
 
 var {createTestMetaData} = require('../services/TestMetadataService')
 
+
+
+var getTimeStamp = () => {
+
+    let d = new Date();
+    let n = d.getTime();
+    return n;
+}
+
 /**
 
  */
@@ -314,6 +323,9 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
     let answer = req.body.answer;
     let testDefinitionId = req.body.test_definition_id;
 
+
+    let currTimeStamp = getTimeStamp();
+
     let user = req.user;
 
     findTestDefinitionById(testDefinitionId).then(testDefinition => {
@@ -324,7 +336,8 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
                 question: question,
                 answer: testDefinition.answer,
                 testDefinitionId: testDefinition.id,
-                user: user
+                user: user,
+                timeStamp : currTimeStamp
             });
 
         } else {
@@ -342,16 +355,19 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
         res.render('error', {message: "", error: error});
     })
 
-}).post('/memorize', loggedIn, function (req, res, next) {
+}).get('/memorize/:test_definition_index/:timestamp', loggedIn, function (req, res, next) {
 
     let user = req.user;
 
     let testDefinitionIndex = 1;
 
-    if(req.body.test_definition_index != undefined) {
-        testDefinitionIndex = req.body.test_definition_index;
+    if(req.params.test_definition_index != undefined) {
+        testDefinitionIndex = req.params.test_definition_index;
         testDefinitionIndex++;
     }
+
+
+    let currTimeStamp = getTimeStamp();
 
     findAllActiveTestDefinitions(user.language).then(testDefinitions => {
 
@@ -363,7 +379,8 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
                 question: testDefinition.question,
                 answer: testDefinition.answer,
                 testDefinitionIndex: testDefinitionIndex,
-                user: user
+                user: user,
+                timeStamp : currTimeStamp
             });
         } else {
 
