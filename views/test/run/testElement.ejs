@@ -18,7 +18,7 @@
 
         <p><%= user.uITextElementsMap.write_answer %></p>
 
-        <form action="/tests/run/submit" method="post" autocomplete="off">
+        <form action="/tests/run/submit/<%= timeStamp %>" method="post" autocomplete="off">
 
             <table>
                 <tr>

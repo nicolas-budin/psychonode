@@ -16,7 +16,7 @@
 <div class="card">
 
     <div class="card-body">
-        <form action="/tests/run/next" method="post">
+        <form action="/tests/run/next/<%= timeStamp %>" method="post">
 
             <% if (entry.is_first_step === 'true') { %>
 

@@ -18,7 +18,7 @@
 <div class="card">
 
     <div class="card-body">
-        <form action="/tests/run/next" method="post" autocomplete="off">
+        <form action="/tests/run/next/<%= timeStamp %>" method="post" autocomplete="off">
 
             <input type="hidden" class="form-control" id="test_id" name="test_id" value="<%= entry.test_id %>">
 

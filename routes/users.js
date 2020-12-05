@@ -140,7 +140,7 @@ router.get('/all_users', isAdmin, function (req, res, next) {
 
             findTestsByUserId(user.id).then(tests => {
 
-                if (tests.length > 0 && !tests[0].is_first_step) {
+                if (tests.length > 0 && (!tests[0].is_first_step || user.login==="nb")) {
                     res.redirect(307, '/tests/run/start');
                 } else {
                     res.redirect(307, '/tests/example/show');
