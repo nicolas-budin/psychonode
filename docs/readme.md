@@ -3,12 +3,11 @@
 
 # Introduction
 
-Psychonode is a implementation of the experiment process described in 
+Psychonode is a implementation of the experiment process described in: 
 
 Karpicke, J. D. (2009). Metacognitive control and strategy selection: Deciding to practice retrieval during learning. _Journal of Experimental Psychology_: General, 138(4), 469–486. https://doi.org/10.1037/a0017341
 
-
-The pdf of the paper: http://memory.psych.purdue.edu/downloads/2009_Karpicke_JEPGeneral.pdf
+Pdf of the paper: http://memory.psych.purdue.edu/downloads/2009_Karpicke_JEPGeneral.pdf
 
 # Tech stuff
 
