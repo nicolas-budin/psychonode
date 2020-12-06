@@ -15,9 +15,9 @@ The pdf of the paper: http://memory.psych.purdue.edu/downloads/2009_Karpicke_JEP
 
 ## Stack
 
-* mvc / router : https://expressjs.com/
 * rdbms : https://www.sqlitetutorial.net
 * ORM : https://sequelize.org/
+* mvc / router : https://expressjs.com/
 * authentication : http://www.passportjs.org/
 * css : https://getbootstrap.com/docs/4.5
 
@@ -29,7 +29,6 @@ as root: install node and git
 * yum install npm.x86_64
 * yum install git-all.noarch
  
-
 as user : get code, install and run
 
 * mkdir -p rep/git
@@ -37,7 +36,12 @@ as user : get code, install and run
 * git clone https://github.com/nicolas-budin/psychonode.git
 * cd psychonode/
 * npm install
+
+## Run
+
 * npm start
+
+## Test
 
 test
  
