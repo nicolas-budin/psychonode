@@ -374,7 +374,7 @@ insert into ui_text_elements(key, language, value)
 values ('try_to_remember', 'german', 'Probiere mal dir das Wort zu merken.');
 
 insert into ui_text_elements(key, language, value)
-values ('ready_to_start', 'german', 'Bist to bereit ?');
+values ('ready_to_start', 'german', 'Bist do bereit ?');
 
 
 insert into ui_text_elements(key, language, value)
