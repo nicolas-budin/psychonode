@@ -41,5 +41,6 @@ as user : get code, install and run
 
 test
  
+* npm test
 * curl localhost:3000/
 
