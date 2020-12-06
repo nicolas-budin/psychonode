@@ -10,7 +10,6 @@ Karpicke, J. D. (2009). Metacognitive control and strategy selection: Deciding t
 
 The pdf of the paper: http://memory.psych.purdue.edu/downloads/2009_Karpicke_JEPGeneral.pdf
 
-
 # Tech stuff
 
 ## Stack
@@ -20,7 +19,6 @@ The pdf of the paper: http://memory.psych.purdue.edu/downloads/2009_Karpicke_JEP
 * mvc / router : https://expressjs.com/
 * authentication : http://www.passportjs.org/
 * css : https://getbootstrap.com/docs/4.5
-
 
 ## Install
 
@@ -42,8 +40,6 @@ as user : get code, install and run
 * npm start
 
 ## Test
-
-test
  
 * npm test
 * curl localhost:3000/
