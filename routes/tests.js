@@ -204,10 +204,22 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
                 console.info("result of run test " + testData.testElement)
 
                 if (testData.testElement == undefined) {
-                    res.render('test/run/checkout', {
-                        user : user,
-                        test_id : test.test_id,
-                        timeStamp: currTimeStamp});
+
+
+                    if(test.is_first_step) {
+
+                        res.render('test/run/checkout', {
+                            user: user,
+                            test_id: test.test_id,
+                            timeStamp: currTimeStamp
+                        });
+                    } else {
+
+                        res.render('test/run/testEnd', {
+                            user: user
+                        });
+
+                    }
                 } else {
 
                     if (testData.testElement.is_success) {
