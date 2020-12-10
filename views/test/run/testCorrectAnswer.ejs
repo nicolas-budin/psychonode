@@ -4,6 +4,9 @@
 
     <%- include('../../header'); %>
 
+
+    <% if (entry.is_first_step === 'true') { %>
+
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -17,6 +20,8 @@
         });
 
     </script>
+
+    <% } %>
 
 </head>
 <body>
