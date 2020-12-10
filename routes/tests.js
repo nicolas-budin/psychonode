@@ -127,7 +127,7 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
             testElement.user_answer = test.answer;
             testElement.is_done = true;
 
-            if (testDefinition.answer.toLowerCase() === test.answer.toLowerCase()) {
+            if (testDefinition.answer.toLowerCase().trim() === test.answer.toLowerCase().trim()) {
                 testElement.is_success = true;
             }
 
@@ -348,7 +348,7 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
     findTestDefinitionById(testDefinitionId).then(testDefinition => {
 
-        if(answer.toLowerCase() === testDefinition.answer.toLowerCase()) {
+        if(answer.toLowerCase().trim() === testDefinition.answer.toLowerCase().trim()) {
 
             res.render('test/example/exampleSuccess', {
                 question: question,
