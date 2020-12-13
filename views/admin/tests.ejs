@@ -31,6 +31,7 @@
                 <thead>
                 <tr>
                     <th>Step</th>
+                    <th>Iteration</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -45,6 +46,8 @@
                         <td>
                             <a href="/users/<%= user.id %>/tests/<%= entry.id %>"><%= entry.is_first_step ? "First" : "Second" %></a>
                         </td>
+
+                        <td><%= entry.testElements != undefined && entry.testElements != null && entry.testElements.length > 0  ? (entry.testElements[0].iteration + 1) : 0 %></td>
 
                         <td>
 
@@ -67,28 +70,10 @@
 
                                 <% if (entry.is_completed) { %>
 
-                                    <% if (entry.is_first_step) { %>
-
-                                        <% if (!entry.children_id) { %>
-
-                                            <button type="submit" formaction="/tests/admin/<%= entry.id %>/next"
-                                                    class="btn btn-primary">
-                                                Start Next Step
-                                            </button>
-
-                                        <% } %>
-
-                                    <% } %>
-
-                                    <% if (!entry.is_first_step) { %>
-
-                                        <button type="submit" formaction="/tests/admin/<%= entry.id %>/new"
-                                                class="btn btn-primary">
-                                            Start New Test
-                                        </button>
-
-                                    <% } %>
-
+                                    <button type="submit" formaction="/tests/admin/<%= entry.id %>/next"
+                                            class="btn btn-primary">
+                                        Start Test <%= entry.is_first_step ? " 2" : " 1" %>
+                                    </button>
                                 <% } %>
 
                                 <% if (!entry.is_completed) { %>
@@ -102,12 +87,16 @@
 
                                     <% } %>
 
-
                                     <% if (entry.is_aborted ) { %>
 
                                         <button type="submit" formaction="/tests/admin/<%= entry.id %>/new"
                                                 class="btn btn-primary">
-                                            Start New Test
+                                            Start Again Test <%= entry.is_first_step ? " 1" : " 2" %>
+                                        </button>
+
+                                        <button type="submit" formaction="/tests/admin/<%= entry.id %>/next"
+                                                class="btn btn-primary">
+                                            Start Test <%= entry.is_first_step ? " 2" : " 1" %>
                                         </button>
 
                                     <% } %>

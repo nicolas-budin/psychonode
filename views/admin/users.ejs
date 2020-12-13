@@ -22,9 +22,9 @@
                 <th>Language</th>
                 <th>is admin</th>
                 <th>admin group</th>
-                <th>age</th>
-                <th>level</th>
-                <th>sex</th>
+                <th>Number Of Tests</th>
+                <th>Test Phase</th>
+                <th>Test Status</th>
                 <th>tests</th>
             </tr>
             </thead>
@@ -36,9 +36,9 @@
                     <td><%= entry.language %></td>
                     <td><%= entry.is_admin ? '+' : '' %></td>
                     <td><%= !entry.is_admin ? (users.filter(user => user.id == entry.parent).length == 1 ? users.filter(user => user.id == entry.parent)[0].login : '') : '' %></td>
-                    <td><%= entry.age %></td>
-                    <td><%= entry.level %></td>
-                    <td><%= entry.sex %></td>
+                    <td><%= entry.tests.length%></td>
+                    <td><%= entry.tests.length > 0 ? (entry.tests[0].is_first_step ? '1' : '2' ) : '' %></td>
+                    <td><%= entry.tests.length > 0 ? (entry.tests[0].is_completed ? 'Completed' : (entry.tests[0].is_aborted ? 'Aborted' : 'Started') ) : '' %></td>
                     <td>
                         <% if (!entry.is_admin) { %>
                             <a href="/users/<%= entry.id %>/tests">tests</a>

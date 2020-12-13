@@ -37,7 +37,7 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
             case 'next':
                 console.info("handling next action");
-                createTest(user_id, false, test.id).then(test => {
+                createTest(user_id, ! test.is_first_step, test.id).then(test => {
                     res.redirect('/users/' + user_id + '/tests');
                 }).catch(error => {
                     throw error;
@@ -47,7 +47,7 @@ router.post('/admin/:id/:action', isAdmin, function (req, res, next) {
 
             case 'new':
                 console.info("handling new action");
-                createTest(user_id, true).then(test => {
+                createTest(user_id, test.is_first_step).then(test => {
                     res.redirect('/users/' + user_id + '/tests');
                 }).catch(error => {
                     throw error;

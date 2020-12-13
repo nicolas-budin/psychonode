@@ -4,7 +4,7 @@ const {findTestElementsByTestId, getRedoAndRedisplayTestElements, TestElement, g
 
 const {findAllActiveTestDefinitions} = require('./TestDefinitionService');
 
-const {findUserById} = require('./UserService')
+const {findUserById, findAllUsers} = require('./UserService')
 
 
 const {findByTestId} = require('./TestMetadataService')
@@ -131,7 +131,30 @@ const getTestData = async (id) => {
     }
 }
 
+const getUserTestsData = async (id) => {
 
+    try {
+        const tests = await findTestsByUserId(id);
+
+        for (let i = 0; i < tests.length; i++) {
+
+            let test  = tests[i];
+
+            const testElements = await findTestElementsByTestId(test.id);
+            test.testElements = testElements;
+
+            const metadata = await findByTestId(test.id);
+            test.metadata = metadata;
+        }
+
+        return tests;
+
+    } catch (error) {
+        console.error("Failed to get tests for user: " + userId, error);
+        throw error;
+    }
+
+}
 
 /**
  * creates a test for user with userId
@@ -382,6 +405,29 @@ function between(min, max) {
 }
 
 
+const findAllUsersAndTests= async () => {
+
+    try {
+
+        const users = await findAllUsers();
+
+        let user = undefined;
+
+        for (let i = 0; i < users.length; i++) {
+            user = users[i];
+            const tests = await findTestsByUserId(user.id)
+            user.tests = tests;
+        }
+
+        return users;
+
+    } catch (error) {
+        console.error("Failed to get user list", error);
+        throw error;
+    }
+
+}
+
 exports.findTestsByUserId = findTestsByUserId;
 exports.createTest = createTest;
 exports.findTestById = findTestById;
@@ -389,3 +435,5 @@ exports.getCurrentTestIteration = getCurrentTestIteration;
 
 exports.runTest = runTest;
 exports.getTestData = getTestData;
+exports.findAllUsersAndTests = findAllUsersAndTests;
+exports.getUserTestsData = getUserTestsData;

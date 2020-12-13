@@ -4,8 +4,8 @@ var router = express.Router();
 
 const {body, validationResult} = require('express-validator');
 
-var {User, isAdmin, loggedIn, findAllUsers, findUserById} = require('../services/UserService')
-var {findTestsByUserId, getTestData} = require('../services/TestService')
+var {User, isAdmin, loggedIn, findUserById} = require('../services/UserService')
+var {findTestsByUserId, getTestData, getUserTestsData, findAllUsersAndTests} = require('../services/TestService')
 
 
 /**
@@ -14,7 +14,7 @@ var {findTestsByUserId, getTestData} = require('../services/TestService')
  */
 router.get('/all_users', isAdmin, function (req, res, next) {
 
-    findAllUsers().then(users => {
+    findAllUsersAndTests().then(users => {
         res.render('admin/users', {users: users});
     }).catch(error => {
 
@@ -29,7 +29,7 @@ router.get('/all_users', isAdmin, function (req, res, next) {
 
     let user = req.user;
 
-    findAllUsers().then(users => {
+    findAllUsersAndTests().then(users => {
         res.render('admin/users', {users: users.filter(listUser => listUser.login === user.login || listUser.parent == user.id)});
     }).catch(error => {
 
@@ -68,7 +68,7 @@ router.get('/all_users', isAdmin, function (req, res, next) {
     
     findUserById(req.params.id).then(user => {
 
-        findTestsByUserId(user.id).then(tests => {
+        getUserTestsData(user.id).then(tests => {
             res.render('admin/tests', {user: user, tests: tests});
         }).catch(error => {
             let msg = 'Unable to get user tests';
