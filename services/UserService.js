@@ -50,6 +50,9 @@ User.init({
     is_active: {
         type: DataTypes.BOOLEAN
     },
+    is_control: {
+        type: DataTypes.BOOLEAN
+    },
     age: {
         type: DataTypes.INTEGER
     },
