@@ -41,6 +41,10 @@ const exportTestCsv = async () => {
             value: 'login'
         },
         {
+            label: 'teacher id',
+            value: 'teacher_id'
+        },
+        {
             label: 'age',
             value: 'age'
         },
@@ -53,8 +57,22 @@ const exportTestCsv = async () => {
             value: 'level'
         },
         {
-            label: 'group',
-            value: 'group'
+            label: 'control group',
+            value: 'control'
+        },
+        {
+            label: 'test date',
+            value: 'test_date'
+        },
+        {
+            label: 'test phase',
+            value: 'test_phase'
+        },        {
+            label: 'test id',
+            value: 'test_id'
+        },        {
+            label: 'second test id',
+            value: 'second_test_id'
         },
         {
             label: 'language',
@@ -65,8 +83,12 @@ const exportTestCsv = async () => {
             value: 'iteration'
         },
         {
-            label: 'number of words',
+            label: 'total number of words',
             value: 'numberOfElements'
+        },
+        {
+            label: 'number of tested words',
+            value: 'numberOfNonRepeatedElements'
         },
         {
             label: 'numbOfSuccess',
@@ -109,6 +131,8 @@ const exportTests = async () => {
 
         let element = data[i];
 
+        const test = element.test;
+
         const user = element.user;
         const testElements = element.testElements;
         const metadata = element.metadata;
@@ -129,17 +153,28 @@ const exportTests = async () => {
                 //
 
 
+                exportEntry.teacher_id = user.parent;
                 exportEntry.login = user.login;
                 exportEntry.age = user.age;
                 exportEntry.sex = user.sex;
                 exportEntry.level = user.level;
                 exportEntry.language = user.language;
+                exportEntry.control = user.is_control ? "yes" : "no";
 
                 //
                 // tests
                 //
 
+                exportEntry.test_date = getFormattedDate(test.createdAt);
+                exportEntry.test_phase = test.is_first_step ? 1 : 2;
+                exportEntry.test_id = test.id;
+                exportEntry.second_test_id = test.children_id;
+
                 exportEntry.numberOfElements = iterationElements.length;
+
+                exportEntry.numberOfNonRepeatedElements = iterationElements.filter(iterationElement => {
+                    return !iterationElement.is_a_repeat
+                }).length;
 
                 exportEntry.iteration = (iteration + 1);
 
@@ -201,21 +236,16 @@ const getTestData = async () => {
 
             for (let t = 0; t < tests.length; t++) {
 
-                if (tests[t].is_first_step == true && tests[t].is_completed) {
+                if (tests[t].is_completed) {
+
                     currTest = tests[t];
-                    break;
-                }
-            }
 
-            if (currTest != undefined) {
+                    const testElements = await findTestElementsByTestId(currTest.id);
+                    const metadata = await findByTestId(currTest.id)
 
-                const testElements = await findTestElementsByTestId(currTest.id);
-
-
-                const metadata = await findByTestId(currTest.id)
-
-                if (testElements != null && testElements.length > 0) {
-                    entries.push(new ExportDataEntry(currUser, currTest, testElements, metadata));
+                    if (testElements != null && testElements.length > 0) {
+                        entries.push(new ExportDataEntry(currUser, currTest, testElements, metadata));
+                    }
                 }
             }
         }
@@ -227,6 +257,18 @@ const getTestData = async () => {
 
 
     return entries;
+}
+
+
+const getFormattedDate = (dateStr) =>  {
+
+    let date = new Date(dateStr);
+
+    let year = date.getFullYear();
+    let month = (1 + date.getMonth()).toString().padStart(2, '0');
+    let day = date.getDate().toString().padStart(2, '0');
+
+    return month + '/' + day + '/' + year;
 }
 
 exports.getTestData = getTestData;
