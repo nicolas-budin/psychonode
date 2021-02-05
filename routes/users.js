@@ -170,7 +170,8 @@ router.get('/all_users', isAdmin, function (req, res, next) {
         parent: req.user.id,
         sex: req.body.sex,
         language: req.user.language,
-        is_active: req.body.is_active != undefined ? true : false
+        is_active: req.body.is_active != undefined ? true : false,
+        is_control: req.body.is_control != undefined ? true : false
     }
 
     findUserById(formUser.id).then(user => {
@@ -182,6 +183,7 @@ router.get('/all_users', isAdmin, function (req, res, next) {
         user.sex = formUser.sex;
         user.language = formUser.language;
         user.is_active = formUser.is_active
+        user.is_control = formUser.is_control
 
         user.save().then(user => {
 

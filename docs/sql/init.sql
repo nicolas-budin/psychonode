@@ -71,6 +71,7 @@ CREATE TABLE user
     language  text    default 'french',
     is_admin  boolean default false,
     is_active boolean default true,
+    is_control  boolean default false,
     createdAt date    DEFAULT (datetime('now', 'localtime')),
     updatedAt date,
     FOREIGN KEY (language) REFERENCES language_cv (language),
