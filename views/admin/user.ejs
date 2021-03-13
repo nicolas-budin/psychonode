@@ -85,9 +85,20 @@
             </div>
 
             <div class="form-group">
-                <label for="level" class="col-form-label">Level</label>
+                <label for="level" class="col-form-label">Level (entered by student)</label>
                 <input type="text" class="form-control" id="level" name="level" value="<%= user.level %>">
             </div>
+
+
+                <div class="form-group">
+                    <label for="degree" class="col-form-label">School degree (vg / vp / college)</label>
+                    <input type="text" class="form-control" id="degree" name="degree" value="<%= user.degree %>">
+                </div>
+
+                <div class="form-group">
+                    <label for="grade" class="col-form-label">School grade (number)</label>
+                    <input type="text" class="form-control" id="grade" name="grade" value="<%= user.grade %>">
+                </div>
 
             <button type="submit" class="btn btn-primary">Save</button>
         </form>

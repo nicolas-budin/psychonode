@@ -67,6 +67,8 @@ CREATE TABLE user
     age       integer,
     sex       text,
     level     text,
+    grade     integer,
+    degree    text,
     parent    integer,
     language  text    default 'french',
     is_admin  boolean default false,

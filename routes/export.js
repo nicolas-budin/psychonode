@@ -3,7 +3,7 @@ var router = express.Router();
 
 var {User, isAdmin, loggedIn, findAllUsers, findUserById} = require('../services/UserService')
 
-var {exportTestCsv} = require('../services/ExportService')
+var {exportUserTestCsv, exportTestCsv} = require('../services/ExportService')
 
 
 
@@ -13,6 +13,22 @@ var {exportTestCsv} = require('../services/ExportService')
 router.get('/csv', isAdmin, function (req, res, next) {
 
     exportTestCsv().then(csv => {
+
+        res.header('Content-Type', 'text/csv');
+        res.attachment("export.csv");
+        return res.send(csv);
+
+    }).catch(error => {
+
+            let msg = 'Unable to export csv';
+            console.error(msg, error);
+            res.render('error', {message: msg, error: error});
+        }
+    );
+
+}).get('/csv_summary', isAdmin, function (req, res, next) {
+
+    exportUserTestCsv().then(csv => {
 
         res.header('Content-Type', 'text/csv');
         res.attachment("export.csv");

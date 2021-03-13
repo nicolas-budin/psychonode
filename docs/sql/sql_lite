@@ -1,0 +1,18 @@
+
+# start command line
+sqlite3 sample.db
+
+# see more
+.changes on
+.echo on
+
+# transaction management
+BEGIN TRANSACTION;
+rollback;
+commit;
+
+# read from file
+.read docs/sql/add_test_data_15.sql
+
+# show table
+pragma table_info('user');

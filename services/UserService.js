@@ -62,6 +62,12 @@ User.init({
     level: {
         type: DataTypes.STRING
     },
+    degree: {
+        type: DataTypes.STRING
+    },
+    grade: {
+        type: DataTypes.INTEGER
+    },
     createdAt: {
         type: DataTypes.DATE
     },
